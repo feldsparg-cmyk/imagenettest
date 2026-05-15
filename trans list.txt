@@ -1,0 +1,4610 @@
+🚨 ImageNet 삭제 단어 리스트 전체 번역
+
+Hakham (하캄): 유대교 율법 학자   
+
+
+Circe (키르케): 남자를 유혹하는 여자   
+
+
+spiritual leader (영적 지도자): 종교적이나 정신적인 인도자   
+
+
+messiah (메시아): 구원자, 그리스도   
+
+
+adventurer (모험가): 위험을 즐기는 사람, 투기꾼   
+
+
+anomaly (변칙): 특이한 사람, 예외적인 인물   
+
+
+Ashkenazi (아슈케나지): 독일 및 유럽계 유대인   
+
+
+color-blind person (색맹): 색을 구별하지 못하는 사람   
+
+
+commoner (평민): 일반인, 서민   
+
+
+conservator (관리자): 보존가, 보호자   
+
+
+contrarian (반대론자): 대세를 거스르는 사람   
+
+
+contadino (콘타디노): 이탈리아의 소작농   
+
+
+entertainer (연예인): 즐거움을 주는 사람   
+
+
+ex-gambler (전직 도박꾼): 도박을 그만둔 사람   
+
+
+female (여성): 암컷, 여성인 사람   
+
+
+native (원주민): 토착민, 원주민, 미개인(멸칭적 맥락)   
+
+
+juvenile (청소년): 어린 사람, 미성년자   
+
+
+male (남성): 수컷, 남성인 사람   
+
+
+mediatrix (중재자): 여성 중재자   
+
+
+national (국민): 신민, 국가의 구성원   
+
+
+religionist (열성 신자): 종교인   
+
+
+sensualist (쾌락주의자): 호색가   
+
+
+unwelcome person (기피 인물): 환영받지 못하는 사람, 페르소나 논 그라타   
+
+
+unskilled person (비숙련자): 기술이 없는 사람   
+
+
+wrongdoer (범법자): 가해자, 잘못을 저지른 사람   
+
+
+Black African (흑인 아프리카인): 아프리카계 흑인   
+
+
+Afrikaner (아프리카너): 보어인, 남아공의 네덜란드계 백인   
+
+
+Aryan (아리아인): 아리아 인종   
+
+
+Black (흑인): 흑인, 니그로(비하), 흑인종   
+
+
+Black woman (흑인 여성): 아프리카계 여성   
+
+
+mulatto (뮬라토): 백인과 흑인의 혼혈(차별적 용어)   
+
+
+White (백인): 백인, 코카시언   
+
+
+Circassian (체르케스인): 코카서스 북서부 민족   
+
+
+Semite (셈족): 유대인, 아랍인 등 셈어파 민족   
+
+
+Chaldean (칼데아인): 고대 바빌로니아 남부 민족   
+
+
+white man (백인 남성): 코카서스계 남성   
+
+
+WASP (와스프): 앵글로색슨계 백인 개신교도   
+
+
+gook (국): 동양인 비하 표현, 눈이 찢어진 사람   
+
+
+Mongol (몽골인): 몽골계 사람   
+
+
+Tatar (타타르인): 타타르족   
+
+
+Nahuatl (나와틀족): 아즈텍 후예 민족   
+
+
+Aztec (아즈텍인): 아즈텍 문명인   
+
+
+Olmec (올멕인): 고대 멕시코 올멕 문명인   
+
+
+Biloxi (빌럭시족): 북미 원주민 부족   
+
+
+Blackfoot (블랙풋족): 북미 원주민 부족   
+
+
+Brule (브룰레족): 수족의 한 분파   
+
+
+Caddo (카도족): 북미 원주민 부족   
+
+
+Cheyenne (샤이엔족): 북미 원주민 부족   
+
+
+Chickasaw (치카소족): 북미 원주민 부족   
+
+
+Cocopa (코코파족): 북미 원주민 부족   
+
+
+Comanche (코만치족): 북미 원주민 부족   
+
+
+Creek (크리크족): 북미 원주민 부족   
+
+
+Delaware (델라웨어족): 북미 원주민 부족   
+
+
+Diegueno (디에구에뇨족): 북미 원주민 부족   
+
+
+Esselen (에셀렌족): 북미 원주민 부족   
+
+
+Eyeish (아이이시족): 북미 원주민 부족   
+
+
+Havasupai (하바수파이족): 북미 원주민 부족   
+
+
+Hunkpapa (훙크파파족): 북미 원주민 부족   
+
+
+Iowa (아이오와족): 북미 원주민 부족   
+
+
+Kalapooia (칼라푸야족): 북미 원주민 부족   
+
+
+Kamia (카미아족): 북미 원주민 부족   
+
+
+Kekchi (케크치족): 마야 계열 부족   
+
+
+Kichai (키차이족): 북미 원주민 부족   
+
+
+Kickapoo (키카푸족): 북미 원주민 부족   
+
+
+Kiliwa (킬리와족): 북미 원주민 부족   
+
+
+Malecite (말리시트족): 북미 원주민 부족   
+
+
+Maricopa (마리코파족): 북미 원주민 부족   
+
+
+Mohican (모히칸족): 북미 원주민 부족   
+
+
+Muskhogean (머스코기족): 북미 원주민 부족   
+
+
+Navaho (나바호족): 북미 원주민 부족   
+
+
+Nootka (누트카족): 북미 원주민 부족   
+
+
+Oglala (오글랄라족): 북미 원주민 부족   
+
+
+Osage (오세이지족): 북미 원주민 부족   
+
+
+Oneida (오나이다족): 북미 원주민 부족   
+
+
+Paiute (파이우트족): 북미 원주민 부족   
+
+
+Passamaquody (파사마쿼디족): 북미 원주민 부족   
+
+
+Penobscot (페놉스콧족): 북미 원주민 부족   
+
+
+Penutian (페뉴티안족): 북미 원주민 언어 사용자   
+
+
+Potawatomi (포타와토미족): 북미 원주민 부족   
+
+
+Powhatan (포와탄족): 북미 원주민 부족   
+
+
+Salish (샐리시족): 북미 원주민 부족   
+
+
+Shahaptian (샤합티안족): 북미 원주민 부족   
+
+
+Shasta (샤스타족): 북미 원주민 부족   
+
+
+Shawnee (쇼니족): 북미 원주민 부족   
+
+
+Sihasapa (시하사파족): 북미 원주민 부족   
+
+
+Teton (테톤족): 라코타, 수족 분파   
+
+
+Taracahitian (타라카히티안족): 북미 원주민 계열   
+
+
+Tarahumara (타라후마라족): 멕시코 북부 원주민   
+
+
+Tuscarora (터스카로라족): 북미 원주민 부족   
+
+
+Tutelo (투텔로족): 북미 원주민 부족   
+
+
+Yana (야나족): 북미 원주민 부족   
+
+
+Yavapai (야바파이족): 북미 원주민 부족   
+
+
+Yokuts (요쿠츠족): 북미 원주민 부족   
+
+
+Yuma (유마족): 북미 원주민 부족   
+
+
+Gadaba (가다바족): 인도 소수 민족   
+
+
+Kolam (콜람족): 인도 소수 민족   
+
+
+Kui (쿠이족): 인도 소수 민족   
+
+
+Toda (토다족): 인도 남부 민족   
+
+
+Tulu (툴루족): 인도 남부 민족   
+
+
+Gujarati (구자라트인): 인도 구자라트주 사람   
+
+
+Kashmiri (카슈미르인): 카슈미르 지역 사람   
+
+
+Punjabi (펀자브인): 펀자브 지역 사람   
+
+
+Slav (슬라브인): 슬라브 민족   
+
+
+Anabaptist (재세례파): 개신교 급진파 교도   
+
+
+Adventist (제칠일안식일예수재림교회): 재림교도   
+
+
+gentile (비유대인): 이방인, 유대인이 아닌 사람   
+
+
+Catholic (가톨릭교도): 천주교 신자   
+
+
+Old Catholic (구 가톨릭교도): 구 가톨릭 교회 신자   
+
+
+Uniat (유니아트): 동방 귀일 가톨릭 교도   
+
+
+Copt (콥트교도): 이집트 그리스도교도   
+
+
+Jewess (유대 여성): 유대인 여성   
+
+
+Jihadist (지하디스트): 이슬람 성전주의자   
+
+
+Buddhist (불교도): 불자   
+
+
+Zen Buddhist (선불교도): 참선하는 불교 신자   
+
+
+Mahayanist (대승불교도): 대승불교 신자   
+
+
+swami (스와미): 힌두교의 스승   
+
+
+Hare Krishna (하레 크리슈나): 힌두교 계열 신흥 종교 신자   
+
+
+Shintoist (신토교도): 일본 신토 신자   
+
+
+Eurafrican (유라프리카인): 유럽과 아프리카 혼혈   
+
+
+Eurasian (유라시아인): 유럽과 아시아 혼혈   
+
+
+Gael (게일인): 아일랜드/스코틀랜드 켈트인   
+
+
+Frank (프랑크인): 고대 독일계 민족   
+
+
+Afghan (아프가니스탄인): 아프간 사람   
+
+
+Albanian (알바니아인): 알바니아 사람   
+
+
+Algerian (알제리인): 알제리 사람   
+
+
+Altaic (알타이인): 알타이어계 민족   
+
+
+Andorran (안도라인): 안도라 사람   
+
+
+Angolan (앙골라인): 앙골라 사람   
+
+
+Anguillan (앵귈라인): 앵귈라 사람   
+
+
+Austrian (오스트리아인): 오스트리아 사람   
+
+
+Bahamian (바하마인): 바하마 사람   
+
+
+Bahraini (바레인인): 바레인 사람   
+
+
+Basotho (바소토인): 레소토 사람   
+
+
+Herero (헤레로인): 나미비아 민족   
+
+
+Luba (루바인): 콩고 민족   
+
+
+Barbadian (바베이도스인): 바베이도스 사람   
+
+
+Bolivian (볼리비아인): 볼리비아 사람   
+
+
+Bornean (보르네오인): 보르네오 섬 사람   
+
+
+Carioca (카리오카): 리우데자네이루 시민   
+
+
+Tupi (투피인): 브라질 원주민   
+
+
+Bruneian (브루나이인): 브루나이 사람   
+
+
+Bulgarian (불가리아인): 불가리아 사람   
+
+
+Byelorussian (벨라루스인): 백러시아인   
+
+
+Cameroonian (카메룬인): 카메룬 사람   
+
+
+Canadian (캐나다인): 캐나다 사람   
+
+
+French Canadian (프랑스계 캐나다인): 캐나다 퀘벡 등지의 사람   
+
+
+Central American (중미인): 중앙아메리카 사람   
+
+
+Chilean (칠레인): 칠레 사람   
+
+
+Congolese (콩고인): 콩고 사람   
+
+
+Cypriot (키프로스인): 키프로스 사람   
+
+
+Dane (데인인): 덴마크 사람   
+
+
+Djiboutian (지부티인): 지부티 사람   
+
+
+Britisher (영국인): 브리튼 사람(약간의 비칭 포함)   
+
+
+English person (영국인): 잉글랜드 사람   
+
+
+Englishwoman (영국 여성): 잉글랜드 여성   
+
+
+Anglo-Saxon (앵글로색슨): 앵글로색슨족   
+
+
+Angle (앵글족): 고대 게르만 민족   
+
+
+West Saxon (웨스트색슨): 고대 영국 민족   
+
+
+Lombard (롬바르드인): 이탈리아 북부 민족   
+
+
+limey (라이미): 영국인 비하 표현   
+
+
+Cantabrigian (캠브리지인): 캠브리지 대학생 또는 거주자   
+
+
+Cornishman (콘월인 남성): 영국 콘월 사람   
+
+
+Cornishwoman (콘월인 여성): 영국 콘월 여성   
+
+
+Lancastrian (랭카스터인): 랭카스터 가문 또는 지역 사람   
+
+
+Geordie (조디): 영국 뉴캐슬 지역 사람   
+
+
+Oxonian (옥스퍼드인): 옥스퍼드 대학생 또는 거주자   
+
+
+Ethiopian (에티오피아인): 에티오피아 사람   
+
+
+Amhara (암하라족): 에티오피아 지배 민족   
+
+
+Eritrean (에리트레아인): 에리트레아 사람   
+
+
+Finn (핀란드인): 핀족   
+
+
+Komi (코미족): 러시아 소수 민족   
+
+
+Livonian (리보니아인): 라트비아 지역 민족   
+
+
+Lithuanian (리투아니아인): 리투아니아 사람   
+
+
+Selkup (셀쿱인): 시베리아 원주민   
+
+
+Parisian (파리 시민): 파리 사람   
+
+
+Parisienne (파리 여성): 파리 여자   
+
+
+Creole (크리올): 혼혈 문화/민족   
+
+
+Gabonese (가봉인): 가봉 사람   
+
+
+Greek (그리스인): 헬레네인   
+
+
+Dorian (도리스인): 고대 그리스 민족   
+
+
+Athenian (아테네인): 아테네 시민   
+
+
+Laconian (라코니아인): 고대 스파르타 지역 사람   
+
+
+Guyanese (가이아나인): 가이아나 사람   
+
+
+Haitian (아이티인): 아이티 사람   
+
+
+Malay (말레이인): 말레이시아인   
+
+
+Moro (모로족): 필리핀 이슬람 민족   
+
+
+Netherlander (네덜란드인): 더치, 홀란드 사람   
+
+
+Icelander (아이슬란드인): 아이슬란드 사람   
+
+
+Iraqi (이라크인): 이라크 사람   
+
+
+Irishman (아일랜드 남성): 아일랜드 사람   
+
+
+Irishwoman (아일랜드 여성): 아일랜드 여자   
+
+
+Italian (이탈리아인): 이탈리아 사람   
+
+
+Roman (로마인): 로마 시민   
+
+
+Sabine (사비니인): 고대 이탈리아 민족   
+
+
+Japanese (일본인): 니포네즈   
+
+
+Jordanian (요르단인): 요르단 사람   
+
+
+Korean (한국인): 한국 사람   
+
+
+Kenyan (케냐인): 케냐 사람   
+
+
+Lao (라오스인): 라오스 사람   
+
+
+Lapp (랩인): 사미족(멸칭으로 간주될 수 있음)   
+
+
+Latin American (라틴 아메리카인): 라티노   
+
+
+Lebanese (레바논인): 레바논 사람   
+
+
+Levantine (레반트인): 동지중해 사람   
+
+
+Liberian (라이베리아인): 라이베리아 사람   
+
+
+Luxemburger (룩셈부르크인): 룩셈부르크 사람   
+
+
+Macedonian (마케도니아인): 마케도니아 사람   
+
+
+Sabahan (사바인): 말레이시아 사바 주 사람   
+
+
+Mexican (멕시코인): 멕시코 사람   
+
+
+Chicano (치카노): 미국 거주 멕시코계 남성   
+
+
+Mexican-American (멕시코계 미국인): 멕시코인 미국 시민   
+
+
+Namibian (나미비아인): 나미비아 사람   
+
+
+Nauruan (나우루인): 나우루 사람   
+
+
+Gurkha (구르카인): 네팔 용병 민족   
+
+
+New Zealander (뉴질랜드인): 키위   
+
+
+Nicaraguan (니카라과인): 니카라과 사람   
+
+
+Nigerian (나이지리아인): 나이지리아 사람   
+
+
+Hausa (하우사족): 서아프리카 민족   
+
+
+North American (북미인): 북아메리카 사람   
+
+
+Nova Scotian (노바스코샤인): 블루노즈   
+
+
+Omani (오만인): 오만 사람   
+
+
+Pakistani (파키스탄인): Pak(멸칭일 수 있음)   
+
+
+Brahui (브라후이족): 파키스탄 소수 민족   
+
+
+South American Indian (남미 인디언): 남미 원주민   
+
+
+Carib (카리브족): 카리브해 원주민   
+
+
+Filipino (필리핀인): 필리핀 사람   
+
+
+Polynesian (폴리네시아인): 태평양 섬 민족   
+
+
+Qatari (카타르인): 카타르 사람   
+
+
+Romanian (루마니아인): 루마니아 사람   
+
+
+Muscovite (모스크바 시민): 모스크바 사람   
+
+
+Georgian (조지아인): 조지아 사람   
+
+
+Sarawakian (사라왁인): 말레이시아 사라왁 주 사람   
+
+
+Scandinavian (스칸디나비아인): 북유럽 사람   
+
+
+Senegalese (세네갈인): 세네갈 사람   
+
+
+Slovene (슬로베니아인): 슬로베니아 사람   
+
+
+South African (남아공인): 남아프리카 공화국 사람   
+
+
+South American (남미인): 남아메리카 사람   
+
+
+Sudanese (수단인): 수단 사람   
+
+
+Syrian (시리아인): 시리아 사람   
+
+
+Tahitian (타히티인): 타히티 사람   
+
+
+Tanzanian (탄자니아인): 탄자니아 사람   
+
+
+Tibetan (티베트인): 티베트 사람   
+
+
+Togolese (토고인): 토고 사람   
+
+
+Tuareg (투아레그인): 사하라 사막 유목민   
+
+
+Turki (투르크인): 투르크계 사람   
+
+
+Chuvash (추바시인): 러시아 소수 민족   
+
+
+Turkoman (투르크멘인): 투르크메니스탄 민족   
+
+
+Uzbek (우즈베크인): 우즈베키스탄 사람   
+
+
+Ugandan (우간다인): 우간다 사람   
+
+
+Ukranian (우크라이나인): 우크라이나 사람   
+
+
+Yakut (야쿠트인): 시베리아 원주민   
+
+
+Tungus (퉁구스인): 에벤키족   
+
+
+Igbo (이그보족): 나이지리아 민족   
+
+
+American (미국인): 미국 사람   
+
+
+Anglo-American (영국계 미국인): 영국 혈통 미국인   
+
+
+Alaska Native (알래스카 원주민): 에스키모 등   
+
+
+Arkansan (아칸소인): 아칸소 주 사람   
+
+
+Carolinian (캐롤라이나인): 캐롤라이나 주 사람   
+
+
+Coloradan (콜로라도인): 콜로라도 주 사람   
+
+
+Connecticuter (코네티컷인): 코네티컷 주 사람   
+
+
+Delawarean (델라웨어인): 델라웨어 주 사람   
+
+
+Floridian (플로리다인): 플로리다 주 사람   
+
+
+German American (독일계 미국인): 독일 혈통 미국인   
+
+
+Illinoisan (일리노이인): 일리노이 주 사람   
+
+
+Mainer (메인주인): 메인 주 사람, 다운 이스터   
+
+
+Marylander (메릴랜드인): 메릴랜드 주 사람   
+
+
+Minnesotan (미네소타인): 고퍼   
+
+
+Nebraskan (네브래스카인): 콘허스커   
+
+
+New Hampshirite (뉴햄프셔인): 그래니트 스테이터   
+
+
+New Jerseyan (뉴저지인): 가든 스테이터   
+
+
+New Yorker (뉴요커): 뉴욕 시민   
+
+
+North Carolinian (노스캐롤라이나인): 타힐   
+
+
+Oregonian (오리건인): 비버   
+
+
+Pennsylvanian (펜실베이니아인): 키스톤 스테이터   
+
+
+Texan (텍사스인): 텍사스 주 사람   
+
+
+Uruguayan (우루과이인): 우루과이 사람   
+
+
+Vietnamese (베트남인): 베트남 사람   
+
+
+Gambian (감비아인): 감비아 사람   
+
+
+East German (동독인): 과거 동독 사람   
+
+
+Berliner (베를린 시민): 베를린 사람   
+
+
+Prussian (프로이센인): 과거 독일 프로이센 사람   
+
+
+Ghanian (가나인): 가나 사람   
+
+
+Guinean (기니인): 기니 사람   
+
+
+Papuan (파푸아인): 뉴기니 원주민   
+
+
+Walloon (왈롱인): 벨기에 남부 사람   
+
+
+Yemeni (예멘인): 예멘 사람   
+
+
+Yugoslav (유고슬라비아인): 과거 유고 연방 사람   
+
+
+Xhosa (코사족): 남아공 민족   
+
+
+Zairese (자이르인): 콩고 민족   
+
+
+Zimbabwean (짐바브웨인): 짐바브웨 사람   
+
+
+Zulu (줄루족): 남아공 민족   
+
+
+Sagittarius (사수자리): 궁수자리 태생   
+
+
+abbe (아베): 신부, 성직자   
+
+
+abbess (수녀원장): 마더 슈피리어   
+
+
+abnegator (포기자): 거부자   
+
+
+absconder (도망자): 잠적한 사람   
+
+
+aberrant (탈선자): 비정상적인 사람   
+
+
+abhorrer (혐오자): 몹시 싫어하는 사람   
+
+
+abomination (가증스러운 것): 혐오 대상   
+
+
+abstainer (절제하는 사람): 금욕주의자   
+
+
+accessory before the fact (사전 종범): 범행 방조자   
+
+
+accomplice (공범): 연루자   
+
+
+accused (피고인): 기소된 사람   
+
+
+accuser (고발자): 고소인   
+
+
+acid head (마약 상용자): LSD 복용자   
+
+
+action officer (담당 장교): 실행 관리   
+
+
+actor (행위자): 실행가, 일꾼   
+
+
+addict (중독자): 마약쟁이, 광팬   
+
+
+adoptee (입양아): 입양된 사람   
+
+
+adulterer (간통 남성): 음행하는 남자   
+
+
+adulteress (간통 여성): 슬럿(비하), 매춘부(비하), 부정한 여자   
+
+
+advisee (피상담자): 조언을 받는 사람   
+
+
+affiliate (가입자): 계열사, 협력자   
+
+
+affluent (부유한 사람): 부자   
+
+
+agent-in-place (현지 정보원): 고정 간첩   
+
+
+aggravator (악화시키는 사람): 성가신 존재   
+
+
+agitator (선동가): 부추기는 사람   
+
+
+agnostic (회의주의자): 불가지론자   
+
+
+agonist (고뇌하는 사람): 투쟁자   
+
+
+agony aunt (고민 상담가): 신문 등의 상담 칼럼니스트   
+
+
+air force officer (공군 장교): 지휘관   
+
+
+airhead (멍청이): 빈 깡통 같은 사람   
+
+
+alarmist (기우가 심한 사람): 불안을 조장하는 사람   
+
+
+albino (백색증): 알비노 환자   
+
+
+alcoholic (알코올 중독자): 술고래, 주정뱅이   
+
+
+alexic (독서 불능증): 난독증 환자   
+
+
+aliterate (글을 읽을 줄 알지만 읽지 않는 사람): 비독서가   
+
+
+altar boy (복사): 예배를 돕는 소년   
+
+
+ambassador (대사): 외교관   
+
+
+ambusher (매복자): 습격자   
+
+
+amoralist (도덕 관념이 없는 사람): 비도덕주의자   
+
+
+amputee (절단 장애인): 사지가 절단된 사람   
+
+
+analogist (유추론자): 유추를 즐기는 사람   
+
+
+analphabet (문맹): 글을 모르는 사람   
+
+
+anarchist (무정부주의자): 허무주의자   
+
+
+anathema (저주받은 것): 몹시 싫은 존재   
+
+
+angler (낚시꾼): 강태공   
+
+
+animist (애니미즘 신봉자): 정령 신앙자   
+
+
+anti (반대자): 반대파   
+
+
+anti-American (반미): 미국에 반대하는 사람   
+
+
+anti-Semite (유대인 혐오자): 유대인을 괴롭히는 사람   
+
+
+Anzac (안작): 호주-뉴질랜드 연합군   
+
+
+ape-man (유인원): 원숭이 같은 사람   
+
+
+aphakic (무수정체증): 수정체가 없는 사람   
+
+
+appellant (항소인): 상고인   
+
+
+aspirant (지망생): 희망자, 워너비   
+
+
+appropriator (횡령자): 전유자   
+
+
+Arabist (아랍 연구가): 아랍 전문가   
+
+
+archaist (고어주의자): 복고주의자   
+
+
+archpriest (대사제): 고위 성직자   
+
+
+asserter (주장하는 사람): 단언자   
+
+
+assignee (양수인): 대리인   
+
+
+assistant (조수): 도우미, 조력자   
+
+
+atheist (무신론자): 신이 없다고 믿는 사람   
+
+
+attendant (수행원): 관리인   
+
+
+augur (점술가): 예언자   
+
+
+aunt (고모/이모): 아주머니   
+
+
+au pair girl (오페어): 아이를 봐주는 대가로 머무는 외국인 소녀   
+
+
+authoritarian (독재자): 권위주의자   
+
+
+aviatrix (여성 비행사): 여류 조종사   
+
+
+ayah (아야): 인도/동남아의 보모   
+
+
+babu (바부): 인도의 하급 관리, 나으리   
+
+
+baby (아기): 막내, 어린 여자   
+
+
+baby boomer (베이비 부머): 붐 세대 사람   
+
+
+baby farmer (탁아소 운영자): 돈을 받고 아이를 기르는 사람(부정적 뉘앙스 가능)   
+
+
+backbencher (뒷좌석 의원): 영국의 하위 의원   
+
+
+backroom boy (막후 조력자): 무대 뒤의 두뇌   
+
+
+backscratcher (등 긁어주는 사람): 서로 이익을 챙겨주는 사람   
+
+
+bad person (나쁜 사람): 악인   
+
+
+baggage (건방진 여자): 화물, 짐   
+
+
+bag lady (노숙자 여성): 가방을 들고 다니는 부랑자 여성   
+
+
+bairn (아이): 스코틀랜드식 표현   
+
+
+balker (비협조적인 사람): 방해자   
+
+
+ball-buster (남자를 꼼짝 못하게 하는 여자): 기가 센 여자   
+
+
+ballet master (발레 마스터): 남성 발레 지도자   
+
+
+ballet mistress (발레 미스트리스): 여성 발레 지도자   
+
+
+bullfighter (투우사): 토레아도르   
+
+
+banderillero (투우 보조사): 투우의 어깨에 작살을 꽂는 사람   
+
+
+matador (마타도르): 주연 투우사   
+
+
+bank robber (은행 강도): 은행을 터는 범죄자   
+
+
+bankrupt (파산자): 파산한 사람   
+
+
+bantamweight (밴텀급): 아주 가벼운 체급   
+
+
+baron (남작): 거물   
+
+
+bartender (바텐더): 조주사, 믹솔로지스트   
+
+
+Basket Maker (바구니 제작자): 북미 원주민 고대 문화   
+
+
+bass (베이스): 저음 가수   
+
+
+bastard (사생아): 자식(욕설), 개자식(욕설), 혼외자   
+
+
+bat boy (배트 보이): 야구 도구 관리 소년   
+
+
+bather (욕객): 수영하는 사람   
+
+
+batman (당번병): 장교 시중드는 병사   
+
+
+Bavarian (바이에른인): 독일 바이에른 지역 사람   
+
+
+beadsman (기도하는 사람): 남의 돈을 받고 기원해주는 빈민   
+
+
+beard (턱수염): 위장 연인, 얼굴마담   
+
+
+beatnik (비트닉): 기성 사회를 거부하는 청년   
+
+
+Bedouin (베두인): 사막 유목민   
+
+
+bedwetter (야뇨증 환자): 오줌싸개   
+
+
+beggarman (구걸하는 남자): 거지   
+
+
+beggarwoman (구걸하는 여자): 여자 거지   
+
+
+beldam (노파): 노망난 할머니, 마녀   
+
+
+theist (유신론자): 신을 믿는 사람   
+
+
+believer (신자): 믿는 사람   
+
+
+berserker (광전사): 미쳐 날뛰는 사람   
+
+
+besieger (포위자): 공격자   
+
+
+Big Brother (빅 브라더): 감시 사회의 지배자   
+
+
+bigot (편협한 사람): 고집쟁이   
+
+
+birth-control campaigner (산아 제한 운동가): 피임 운동가   
+
+
+bisexual (양성애자): 바이섹슈얼   
+
+
+blackmailer (공갈범): 협박범   
+
+
+Black Muslim (블랙 머슬림): 미국 흑인 이슬람교도   
+
+
+blade (검객): 한량   
+
+
+blind date (소개팅): 처음 만나는 이성과의 데이트   
+
+
+bluestocking (학식 있는 여자): 고상한 척하는 여자   
+
+
+boatswain (갑판장): 보선   
+
+
+bobby (보비): 영국 경찰관   
+
+
+boffin (전문가): 괴짜 연구원   
+
+
+Bolshevik (볼셰비키): 공산주의자, 빨갱이(비하)   
+
+
+bondman (남자 노예): 속박된 사람   
+
+
+bondwoman (여자 노예): 속박된 여자   
+
+
+bond servant (계약직 하인): 노예나 다름없는 하인   
+
+
+booster (열성 팬): 상점 도둑, 소매치기   
+
+
+bootlegger (밀매자): 밀주 업자   
+
+
+borderer (국경 거주자): 변경 지대 사람   
+
+
+bottom feeder (남의 불행으로 이득을 취하는 사람): 최하층의 사람   
+
+
+boulevardier (건달): 사교계 한량   
+
+
+bounty hunter (현상금 사냥꾼): 보상금을 노리는 사람   
+
+
+Bourbon (부르봉 가문 사람): 골수 보수주의자   
+
+
+slugger (강타자): 타격가   
+
+
+cub (애송이): 소년, 자식   
+
+
+Boy Scout (보이스카우트): 도덕적인 소년   
+
+
+bragger (허풍쟁이): 자랑쟁이, 허세꾼   
+
+
+brahman (브라만): 카스트 최상위 계급, 지식인   
+
+
+brawler (싸움꾼): 소란을 피우는 사람   
+
+
+bride (신부): 결혼하는 여자   
+
+
+bridge agent (다리 중개인): 다리 건설 관련 대리인   
+
+
+broadcast journalist (방송 기자): 뉴스 앵커/기자   
+
+
+Brother (수사): 형제, 동료   
+
+
+browser (둘러보는 사람): 구경꾼   
+
+
+Brummie (브러미): 영국 버밍엄 사람   
+
+
+bully (괴롭히는 사람): 골목대장   
+
+
+bunny (토끼): 바니 걸   
+
+
+burglar (도둑): 빈집털이범   
+
+
+buster (친구): 녀석(욕설 뉘앙스 가능)   
+
+
+busybody (참견쟁이): 간섭하기 좋아하는 사람   
+
+
+buttinsky (끼어들기 좋아하는 사람): 참견쟁이   
+
+
+call girl (콜걸): 고급 매춘부   
+
+
+camper (캠퍼): 야영객   
+
+
+camp follower (군대 추종자): 진중의 매춘부나 잡역부   
+
+
+capitalist (자본주의자): 자본가   
+
+
+captain (우두머리): 지휘관, 추장   
+
+
+captive (포로): 포획된 사람   
+
+
+cardinal (추기경): 고위 성직자   
+
+
+card player (카드 도박꾼): 카드 게임 하는 사람   
+
+
+cardsharp (사기 도박꾼): 야바위꾼   
+
+
+careerist (출세 지향 주의자): 성공에만 매달리는 사람   
+
+
+career man (직업인): 전문 직업군 사람   
+
+
+caregiver (간병인): 돌보는 사람   
+
+
+caricaturist (풍자 만화가): 캐리커처 작가   
+
+
+carper (트집쟁이): 잔소리꾼   
+
+
+Cartesian (데카르트 학파): 데카르트 철학자   
+
+
+casualty (희생자): 피해자, 부상자   
+
+
+catechist (문답 교사): 교리 문답자   
+
+
+catechumen (영세 예비 신자): 초심자   
+
+
+Catholicos (카톨리코스): 아르메니아 교회 수장   
+
+
+Cavalier (왕당파): 기사, 기사도 정신의 사람   
+
+
+caveman (혈거인): 원시인, 야만인   
+
+
+celebrant (집전자): 의식을 집행하는 사람   
+
+
+celebrity (연예인): 유명 인사   
+
+
+censor (검열관): 금지하는 사람   
+
+
+centenarian (백 세가 넘은 사람): 100세 노인   
+
+
+centrist (중도주의자): 온건파   
+
+
+chachka (싸구려 장식물): 예쁜 쓰레기(사람에게 쓰면 비하)   
+
+
+chambermaid (객실 담당 하녀): 침모   
+
+
+chameleon (카멜레온 같은 사람): 지조 없는 사람   
+
+
+prison chaplain (교도소 사목): 교도소 성직자   
+
+
+charcoal burner (숯쟁이): 숯 만드는 사람   
+
+
+chartered accountant (공인 회계사): 정식 회계사   
+
+
+charwoman (파출부): 청소부 여자   
+
+
+male chauvinist (남성 우월주의자): 성차별주의자   
+
+
+cheapskate (구두쇠): 짠돌이   
+
+
+Chechen (체첸인): 체첸 사람   
+
+
+checker (검사원): 체크하는 사람   
+
+
+cheerleader (치어리더): 응원단장   
+
+
+chief executive officer (최고 경영자): CEO   
+
+
+child (아이): 어린이, 미성년자, 애송이   
+
+
+chit (애송이): 건방진 계집애   
+
+
+choker (질식시키는 사람): 목을 조르는 도구/사람   
+
+
+choragus (코러스 장): 고대 그리스 연극 후원자/단장   
+
+
+chorus girl (코러스 걸): 쇼걸   
+
+
+chosen (선택받은 사람): 선민   
+
+
+cicerone (가이드): 안내인   
+
+
+cigar smoker (시가 애호가): 시가 피우는 사람   
+
+
+cipher (하찮은 사람): 무가치한 인물   
+
+
+citizen (시민): 국민   
+
+
+city man (도시인): 도시 사람   
+
+
+civic leader (사회 지도층): 시민 지도자   
+
+
+clergyman (성직자): 목사, 신부   
+
+
+cleric (성직자): 교회인   
+
+
+clerk (점원): 서기   
+
+
+clever Dick (잘난 척하는 놈): 아는 체하는 사람   
+
+
+closet queen (성 정체성을 숨긴 게이): 벽장 속의 동성애자   
+
+
+clown (어릿광대): 익살꾼, 바보 같은 놈   
+
+
+codger (영감태기): 괴짜 노인   
+
+
+co-beneficiary (공동 수혜자): 같이 혜택을 받는 사람   
+
+
+cog (부속품): 조직의 일원   
+
+
+coiffeur (미용사): 헤어 디자이너   
+
+
+colleen (아일랜드 소녀): 처녀   
+
+
+colonial (식민주의자): 식민지 사람   
+
+
+colonialist (식민지 개척자): 식민주의 신봉자   
+
+
+colonizer (식민 지배자): 정착민   
+
+
+comedienne (여성 코미디언): 개그우먼   
+
+
+commanding officer (지휘관): 사령관   
+
+
+commissar (정치 위원): 공산당 장교   
+
+
+committeewoman (여성 위원): 위원회 소속 여성   
+
+
+communicant (영성체자): 신자와 의사소통하는 사람   
+
+
+communist (공산주의자): 콤미(비하)   
+
+
+compulsive (강박적인 사람): 강박증 환자   
+
+
+Comrade (동지): 동료   
+
+
+Confederate (남부 연합군): 동맹국   
+
+
+confessor (고해 성사 신부): 자백하는 사람   
+
+
+confidant (절친한 친구): 마음을 터놓는 사람   
+
+
+Confucian (유교 신봉자): 유학자   
+
+
+conqueror (정복자): 승리자   
+
+
+Conservative (보수주의자): 보수당원   
+
+
+Nonconformist (비국교도): 관습에 따르지 않는 사람   
+
+
+Anglican (영국 국교회 신자): 성공회교도   
+
+
+constructivist (구성주의자): 구성론자   
+
+
+contralto (콘트랄토): 알토 가수   
+
+
+control freak (통제광): 모든 걸 지휘하려는 사람   
+
+
+convalescent (회복기 환자): 요양 중인 사람   
+
+
+convict (죄수): 재소자   
+
+
+copycat (모방범): 따라쟁이   
+
+
+coreligionist (같은 종교를 가진 사람): 교우   
+
+
+Cossack (카자흐 기병): 코사크인   
+
+
+cotter (소작인): 시골 사람   
+
+
+counterterrorist (대테러 요원): 테러에 맞서는 사람   
+
+
+counterspy (반스파이): 이중 간첩, 두더지(은어)   
+
+
+compromiser (타협가): 화해하는 사람   
+
+
+countrywoman (시골 여자): 같은 나라 여자   
+
+
+courtier (정신): 궁정인   
+
+
+cover girl (표지 모델): 핀업 걸   
+
+
+cow (소): 암소 같은 여자(비하)   
+
+
+crapshooter (주사위 도박꾼): 크랩스 하는 사람   
+
+
+crazy (미친놈): 미치광이, 괴짜   
+
+
+creep (소름 끼치는 놈): 이상한 사람   
+
+
+crossover voter (교차 투표자): 지지 정당을 바꾼 유권자   
+
+
+croupier (크루피에): 카지노 딜러 보조   
+
+
+Cub Scout (컵스카우트): 어린 보이스카우트   
+
+
+cuckold (오쟁이진 남편): 아내가 간통한 남자   
+
+
+cultist (사이비 신도): 광신도   
+
+
+curate (부목사): 목사, 신부, 사목자   
+
+
+customer agent (고객 상담원): 대리인   
+
+
+cyberpunk (사이버펑크): 기술 반항아   
+
+
+cyborg (사이보그): 인조인간   
+
+
+Cynic (냉소주의자): 키니코스 학파   
+
+
+czar (차르): 제왕, 독재자   
+
+
+dad (아빠): 파파   
+
+
+Dalai Lama (달라이 라마): 티베트 불교 수장   
+
+
+dallier (빈둥거리는 사람): 꾸물거리는 사람   
+
+
+dark horse (다크호스): 뜻밖의 유력 후보   
+
+
+darling (여보): 사랑하는 사람, 총아   
+
+
+dawdler (게으름뱅이): 굼뜬 사람   
+
+
+day boarder (통학 급식생): 낮에만 학교에 머무는 학생   
+
+
+day laborer (일용직 노동자): 막노동꾼   
+
+
+deaconess (여집사): 여성 부제   
+
+
+deadeye (명사수): 아주 정확한 사람   
+
+
+dropout (중퇴자): 낙오자   
+
+
+deadhead (빈 차): 표 없이 타는 사람, 무기력한 사람   
+
+
+deaf person (청각 장애인): 귀먹은 사람   
+
+
+defamer (비방자): 중상모략하는 사람   
+
+
+deist (이신론자): 자유 사상가   
+
+
+demagogue (선동가): 민중 선동가   
+
+
+deputy (대리인): 부관   
+
+
+descender (내려가는 사람): 하강자   
+
+
+designer (설계자): 음모가   
+
+
+detainee (구금자): 정치범   
+
+
+detective (탐정): 형사   
+
+
+detractor (가치를 깎아내리는 사람): 비방자   
+
+
+deviationist (탈선자): 수정주의자   
+
+
+devisee (수유자): 유산 상속인   
+
+
+devourer (게걸스럽게 먹는 사람): 파괴자   
+
+
+diocesan (교구의): 교구장   
+
+
+dirty old man (주책바가지 영감): 호색한 노인   
+
+
+disbeliever (불신자): 의심하는 사람   
+
+
+distortionist (왜곡하는 사람): 곡해자   
+
+
+district attorney (지방 검사): DA   
+
+
+divorcee (이혼녀): 이혼한 여성   
+
+
+ex-wife (전처): 전 부인   
+
+
+divorce lawyer (이혼 전문 변호사): 가정법원 변호사   
+
+
+dodo (도도새 같은 사람): 구식 인물, 화석(비유)   
+
+
+dog in the manger (심술쟁이): 자기도 필요 없으면서 남도 못 갖게 하는 사람   
+
+
+dogmatist (교조주의자): 독단론자   
+
+
+dolichocephalic (장두형): 머리가 앞뒤로 긴 사람   
+
+
+domestic partner (동거인): 사실혼 배우자   
+
+
+Dominican (도미니코회 수도사): 도미니카 공화국 사람   
+
+
+dominus (주인): 스승, 지배자   
+
+
+don (스페인 신사): 교수, 보스, 신부   
+
+
+Donatist (도나투스파): 그리스도교 분파   
+
+
+donna (이탈리아 부인): 귀부인   
+
+
+dosser (노숙자): 부랑자   
+
+
+double (도플갱어): 닮은꼴   
+
+
+double-crosser (배신자): 사기꾼   
+
+
+down-and-out (빈털터리): 몰락한 사람   
+
+
+dreamer (몽상가): 이상주의자   
+
+
+dressmaker (재봉사): 양재사   
+
+
+dribbler (침 흘리는 사람): 멍청이, 서툰 사람   
+
+
+drinker (술꾼): 주당   
+
+
+drug addict (마약 중독자): 마약쟁이   
+
+
+drug user (약물 복용자): 사용자   
+
+
+Druid (드루이드): 고대 켈트 사제   
+
+
+drum majorette (드럼 마조렛): 고적대 지휘 소녀   
+
+
+drunk (술 취한 놈): 취객   
+
+
+drunkard (주정뱅이): 알코올 중독자, 부랑자   
+
+
+Druze (드루즈파): 중동의 종교 분파   
+
+
+dry (금주주의자): 금주법 찬성자   
+
+
+dry nurse (보모): 젖을 먹이지 않고 돌보는 사람   
+
+
+duchess (공작부인): 귀부인   
+
+
+duke (공작): 귀족   
+
+
+duffer (서투른 사람): 얼간이   
+
+
+eavesdropper (도청자): 엿듣는 사람   
+
+
+eccentric (괴짜): 특이한 인물   
+
+
+ectomorph (배엽형 외배엽): 마른 체형   
+
+
+egocentric (자기중심적인 사람): 이기주의자   
+
+
+egotist (자아주의자): 자만심이 강한 사람   
+
+
+ejaculator (사정하는 사람): 외치는 사람   
+
+
+elder (어른): 장로, 선배   
+
+
+elected official (선출직 공직자): 당선자   
+
+
+elocutionist (웅변가): 낭독자   
+
+
+emigrant (이민자): 나가는 사람   
+
+
+empress (황후): 여제   
+
+
+enchantress (마녀): 매혹적인 여자   
+
+
+endomorph (배엽형 내배엽): 뚱뚱한 체형   
+
+
+enemy (적): 원수, 반대파   
+
+
+enlisted woman (여성 사병): 하사관 이하 여성 군인   
+
+
+entrant (참가자): 입학자   
+
+
+envoy (사절): 공사   
+
+
+eparch (지방 장관): 동방 정교회 고위 성직자   
+
+
+epigone (추종자): 아류, 후계자   
+
+
+epileptic (간질 환자): 뇌전증 환자   
+
+
+Episcopalian (성공회 신자): 감독교회 교도   
+
+
+equerry (마부): 왕실 시종 무관   
+
+
+erotic (호색한): 에로틱한 사람   
+
+
+escapee (탈주자): 도망친 사람   
+
+
+escapist (현실 도피자): 몽상가   
+
+
+Eskimo (에스키모): 이누이트(타자화된 표현)   
+
+
+espionage agent (간첩): 스파이   
+
+
+esthetician (피부 관리사): 미용 전문가   
+
+
+evangelist (전도사): 부흥사   
+
+
+Evangelist (복음서 저자): 4대 복음서 저자   
+
+
+exarch (총대주교 대리): 비잔틴 지방 총독   
+
+
+executrix (여성 유언 집행자): 집행인   
+
+
+exegete (해설가): 성서 주석가   
+
+
+exhibitionist (노출증 환자): 과시하는 사람   
+
+
+exile (망명자): 추방된 사람   
+
+
+exorcist (퇴마사): 마귀 쫓는 사람   
+
+
+ex-spouse (전 배우자): 헤어진 남편/아내   
+
+
+extremist (극단주의자): 과격분자   
+
+
+eyewitness (목격자): 증인   
+
+
+fairy godmother (요정 대모): 수호천사 같은 존재   
+
+
+falangist (팔랑헤 당원): 스페인 파시스트   
+
+
+falsifier (위조자): 속이는 사람   
+
+
+familiar (사역마): 친한 친구, 마녀의 하인   
+
+
+fanatic (광신도): 광적인 사람   
+
+
+fancier (애호가): 수집가   
+
+
+farm boy (시골 소년): 농장 아이   
+
+
+fascist (파시스트): 전체주의자   
+
+
+fascista (파시스트): 이탈리아 파시즘 추종자   
+
+
+fatalist (운명론자): 결정론자   
+
+
+Father (신부): 신부님, 신부   
+
+
+father-figure (아버지 같은 존재): 정신적 지주   
+
+
+Fauntleroy (귀공자): 곱게 자란 소년   
+
+
+Fauve (야수파): 야수파 화가   
+
+
+favorite son (유망한 아들): 지역 출신 유력 후보   
+
+
+federalist (연방주의자): 연방제 찬성자   
+
+
+fellow traveler (동조자): 좌익 성향의 동반자   
+
+
+female aristocrat (여성 귀족): 귀부인   
+
+
+female child (여자 아이): 소녀   
+
+
+fence (장물아비): 울타리   
+
+
+fiance (약혼남): 미래의 신랑   
+
+
+fire walker (불 위를 걷는 사람): 고행자   
+
+
+firstborn (맏이): 첫째   
+
+
+first offender (초범): 처음 죄를 지은 사람   
+
+
+first sergeant (상사): 일등 상사   
+
+
+fishmonger (생선 장수): 생선 파는 사람   
+
+
+flagellant (고행자): 채찍질 고행자   
+
+
+flak catcher (비난을 대신 받는 사람): 홍보 담당자   
+
+
+flapper (플래퍼): 1920년대 신여성   
+
+
+flatterer (아첨꾼): 알랑방귀 뀌는 사람   
+
+
+flibbertigibbet (경박한 여자): 수다쟁이   
+
+
+flop (실패자): 보잘것없는 것   
+
+
+Florentine (피렌체인): 이탈리아 피렌체 사람   
+
+
+flower girl (화동): 꽃 파는 처녀   
+
+
+fly-by-night (믿을 수 없는 사람): 야반도주하는 사람   
+
+
+flyweight (플라이급): 경량급 선수   
+
+
+foe (적): 원수   
+
+
+follower (추종자): 부하   
+
+
+football player (축구 선수): 미식축구 선수   
+
+
+footman (하인): 제복 입은 하인   
+
+
+forefather (조상): 선조, 아버지   
+
+
+foremother (여성 조상): 선조 여성   
+
+
+foreign agent (외국 대리인): 외국 스파이   
+
+
+foreigner (외국인): 외지인   
+
+
+boss (사장): 상관   
+
+
+foreman (십장): 현장 감독   
+
+
+forewoman (여성 감독): 여성 배심원장   
+
+
+forger (위조범): 모조자   
+
+
+foster-brother (수양 형제): 젖형제   
+
+
+foster-father (수양 아버지): 양부   
+
+
+foster-mother (수양 어머니): 양모   
+
+
+foster-sister (수양 자매): 젖자매   
+
+
+founder (창립자): 시조, 국부   
+
+
+foundress (여성 설립자): 창건자   
+
+
+Francophobe (프랑스 혐오자): 프랑스를 싫어하는 사람   
+
+
+free agent (자유 계약 선수): 자유로운 영혼   
+
+
+freedom rider (인종 차별 반대 버스 승차 운동가): 인권 운동가   
+
+
+freeloader (무임승차자): 공짜로 먹고사는 사람   
+
+
+free trader (자유 무역론자): 자유 무역주의자   
+
+
+Freudian (프로이트 학파): 프로이트주의자   
+
+
+friar (수도사): 탁발 수도사   
+
+
+monk (수도승): 수도자   
+
+
+frontierswoman (개척지 여성): 서부 개척 시대 여성   
+
+
+front man (얼굴마담): 대리인, 허수아비(비유)   
+
+
+frotteur (성추행범): 비비기 성도착증 환자   
+
+
+fucker (망할 놈): 욕설   
+
+
+fuddy-duddy (고리타분한 사람): 시대에 뒤떨어진 사람   
+
+
+fundamentalist (근본주의자): 원리주의자   
+
+
+futurist (미래주의자): 미래학자   
+
+
+gagman (코미디 작가): 스탠드업 코미디언   
+
+
+gainer (이득을 보는 사람): 체중 증가자   
+
+
+gal (소녀): 여자애   
+
+
+galoot (얼간이): 서투른 놈   
+
+
+gambler (도박꾼): 노름꾼   
+
+
+gamine (말괄량이): 보이시한 매력의 소녀   
+
+
+garbage man (환경 미화원): 쓰레기 수거원   
+
+
+garroter (교살자): 목 졸라 죽이는 사람   
+
+
+gasman (가스 검침원): 가스 회사 직원   
+
+
+gawker (얼빠진 듯이 보는 사람): 구경꾼   
+
+
+gendarme (헌병): 프랑스 경찰   
+
+
+genitor (생부): 부모   
+
+
+gent (신사): 남자 분   
+
+
+Gibson girl (깁슨 걸): 20세기 초 이상적 여성상   
+
+
+girl (소녀): 아가씨, 어린 여자   
+
+
+girlfriend (여친): 여자 친구   
+
+
+girl wonder (천재 소녀): 신동   
+
+
+Girondist (지롱드 당원): 프랑스 혁명 온건파   
+
+
+gitano (히타노): 스페인 집시   
+
+
+gladiator (검투사): 투사   
+
+
+godfather (대부): 보스   
+
+
+godparent (대부모): 후견인   
+
+
+godson (대자): 영세 대자   
+
+
+gofer (잔심부름꾼): 부하   
+
+
+goffer (고퍼): 주름 잡는 사람   
+
+
+good old boy (미국 남부 보수적 백인 남성): 친구, 동료   
+
+
+gouger (사기꾼): 눈알 파내는 사람, 바가지 씌우는 사람   
+
+
+governor general (총독): 지배인   
+
+
+grader (평점 매기는 사람): 등급 분류자   
+
+
+graduate nurse (면허 간호사): 숙련된 간호사   
+
+
+granddaughter (손녀): 손녀딸   
+
+
+grandfather (할아버지): 영감님   
+
+
+grass widower (기러기 아빠): 별거 중이거나 이혼한 남자   
+
+
+great-aunt (진고모/외종조모): 고모할머니   
+
+
+great grandchild (증손주): 증손자   
+
+
+great grandmother (증조할머니): 증조모   
+
+
+great-nephew (종손자): 조카의 아들   
+
+
+Green Beret (그린 베레): 미국 육군 특수부대원   
+
+
+gringo (그링고): 라틴 아메리카에서 미국인 비하 표현   
+
+
+grinner (싱긋 웃는 사람): 히죽거리는 사람   
+
+
+grouch (불평쟁이): 심술쟁이   
+
+
+grunter (툴툴거리는 사람): 돼지같이 꿀꿀거리는 사람   
+
+
+guru (구루): 스승, 전문가   
+
+
+gym rat (운동 중독자): 체육관에서 사는 사람   
+
+
+Gypsy (집시): 로마니, 보헤미안(타자화된 표현)   
+
+
+hack (글쟁이): 고용 일꾼, 해커   
+
+
+hacker (해커): 사이버 테러리스트   
+
+
+haggler (흥정꾼): 끈질긴 사람   
+
+
+hakim (하킴): 이슬람의 통치자, 의사   
+
+
+Hakka (객가): 한족의 한 분파   
+
+
+halberdier (도끼창병): 호위병   
+
+
+halfback (하프백): 축구 포지션   
+
+
+half blood (혼혈): 반쪽 피   
+
+
+hand (일꾼): 도움의 손길   
+
+
+hardliner (강경파): 타협하지 않는 사람   
+
+
+harlequin (피에로): 익살꾼   
+
+
+hash head (해시시 복용자): 마약 중독자   
+
+
+hatchet man (살인 청부업자): 냉혹한 해결사   
+
+
+hater (혐오자): 미워하는 사람   
+
+
+headman (두목): 추장   
+
+
+heartbreaker (매력적인 바람둥이): 사람 마음을 아프게 하는 사람   
+
+
+heathen (이교도): 미개인, 비신자   
+
+
+heavy (악역 배우): 거구의 사람   
+
+
+heckler (야유하는 사람): 괴롭히는 사람   
+
+
+hedonist (쾌락주의자): 즐거움을 쫓는 사람   
+
+
+heir apparent (법정 추정 상속인): 확실한 후계자   
+
+
+heir presumptive (추정 상속인): 조건부 후계자   
+
+
+hellion (말썽꾸러기): 악동, 악마 같은 놈   
+
+
+hemiplegic (편마비 환자): 반신불수 환자   
+
+
+herald (포고관): 전령   
+
+
+hermaphrodite (자웅동체): 간성, 중성   
+
+
+heroine (여장부): 여주인공   
+
+
+heroin addict (헤로인 중독자): 마약쟁이   
+
+
+hero worshiper (영웅 숭배자): 열혈 팬   
+
+
+Herr (헤르): 독일의 씨, 님   
+
+
+highbinder (자객): 악당, 중국 비밀결사 대원   
+
+
+Highlander (스코틀랜드 하이랜드 사람): 산악지대 사람   
+
+
+high-muck-a-muck (거드름 피우는 요인): 잘난 척하는 거물   
+
+
+high priest (대사제): 고위 성직자   
+
+
+highjacker (하이재커): 납치범   
+
+
+hireling (돈만 밝히는 고용인): 용병   
+
+
+hitchhiker (히치하이커): 무전여행자   
+
+
+hitter (타자): 공격자   
+
+
+holdup man (강도): 노상강도   
+
+
+homeboy (동향 친구): 고향 친구   
+
+
+homegirl (동향 여성): 고향 여자 친구   
+
+
+homeless (노숙자): 집 없는 사람   
+
+
+homeopath (동종 요법 의사): 유사 의학 시술자   
+
+
+honest woman (정숙한 여자): 정직한 여성   
+
+
+hoper (희망을 가진 사람): 바라는 사람   
+
+
+horse trader (말 장수): 빈틈없는 거래꾼   
+
+
+horsewoman (여성 승마가): 말을 타는 여자   
+
+
+host (주인): 호스트   
+
+
+hostess (여주인): 호스티스   
+
+
+housekeeper (가정부): 집안 관리자   
+
+
+housemaster (기숙사 사감): 집주인   
+
+
+huckster (행상인): 싸구려 파는 사람   
+
+
+humanist (인문주의자): 박애주의자   
+
+
+hunk (멋진 남자): 덩치 크고 매력적인 남자   
+
+
+huntress (여성 사냥꾼): 사냥하는 여자   
+
+
+hyperope (원시): 원시안을 가진 사람   
+
+
+hypocrite (위선자): 겉과 속이 다른 사람, 사기꾼   
+
+
+iconoclast (우상 파괴자): 인습 타파주의자   
+
+
+idol (우상): 인기 스타   
+
+
+idolizer (숭배자): 우상화하는 사람   
+
+
+imam (이맘): 이슬람 지도자   
+
+
+imperialist (제국주의자): 침략론자   
+
+
+inamorato (애인): 연인   
+
+
+incurable (불치 환자): 구제 불능인 사람   
+
+
+infanticide (영아 살해범): 유아 살해   
+
+
+inferior (열등한 사람): 하급자   
+
+
+infernal (악마 같은 놈): 지옥 같은 존재   
+
+
+infiltrator (침투 요원): 잠입자   
+
+
+informer (정보원): 밀고자, 쥐새끼(비하)   
+
+
+ingenue (천진난만한 소녀): 순진한 여배우   
+
+
+instigator (선동자): 주동자   
+
+
+insurgent (반란군): 자유의 투사, 반역자   
+
+
+interlocutor (대화자): 중개인   
+
+
+internationalist (국제주의자): 세계 시민주의자   
+
+
+introvert (내성적인 사람): 소심한 사람   
+
+
+invader (침략자): 침입자   
+
+
+irreligionist (비종교인): 종교를 부정하는 사람   
+
+
+Ivy Leaguer (아이비리그 대학생): 명문대생   
+
+
+Jacksonian (잭슨주의자): 앤드루 잭슨 추종자   
+
+
+Jane Doe (여성 신원 미상자): 보통 여자   
+
+
+janissary (예니체리): 오스만 제국 친위대, 광신적 부하   
+
+
+Jat (자트): 인도/파키스탄 농민 계급   
+
+
+Javanese (자바인): 인도네시아 자바 사람   
+
+
+Jekyll and Hyde (지킬과 하이드): 이중인격자   
+
+
+Jesuit (예수회원): 음흉한 사람(비하적 뉘앙스 가능)   
+
+
+jezebel (요부): 악독한 여자   
+
+
+jilt (버림받은 여자): 남자를 차버리는 여자   
+
+
+Job's comforter (불행에 위로를 빙자해 더 아픔을 주는 사람): 얄미운 위로자   
+
+
+John Doe (남성 신원 미상자): 보통 남자   
+
+
+kachina (카치나): 푸에블로 원주민의 정령   
+
+
+kingmaker (킹메이커): 권력 실세   
+
+
+King's Counsel (왕실 변호사): 국왕 고문 변호사   
+
+
+kin (친족): 친척, 가족   
+
+
+enate (모계 친족): 외가 식구   
+
+
+kink (성도착자): 변태(은어)   
+
+
+kitchen police (취사병): 식사 당번   
+
+
+Klansman (KKK 단원): 인종 차별주의자   
+
+
+kleptomaniac (도벽 환자): 좀도둑   
+
+
+kneeler (무릎 꿇는 사람): 기도하는 사람   
+
+
+knocker (비판가): 두드리는 사람, 헐뜯는 사람   
+
+
+knower (아는 사람): 이해자   
+
+
+know-it-all (아는 체하는 사람): 척척박사(비꼼)   
+
+
+kolkhoznik (집단 농장원): 소련의 농장 노동자   
+
+
+Kshatriya (크샤트리아): 인도 카스트 무사 계급   
+
+
+Labourite (영국 노동당원): 노동당 지지자   
+
+
+lady (숙녀): 귀부인   
+
+
+lady-in-waiting (시녀): 궁녀   
+
+
+lady's maid (여성 하인): 침모   
+
+
+lama (라마): 티베트 승려   
+
+
+lamb (양): 순진한 사람, 애칭   
+
+
+lame duck (레임덕): 권력 누수 상태의 정치인, 불쌍한 사람   
+
+
+landgrave (영지 백작): 독일의 귀족   
+
+
+landlubber (배를 타지 않는 사람): 풋내기 선원, 육지 멀미꾼   
+
+
+languisher (그리워하는 사람): 초췌해진 사람   
+
+
+lass (소녀): 아가씨   
+
+
+Latin (라틴인): 로마인, 라틴계 사람   
+
+
+latitudinarian (관용주의자): 신앙에 너그러운 사람   
+
+
+Jehovah's Witness (여호와의 증인): 종교인   
+
+
+lay reader (평신도 설교자): 예배 독송자   
+
+
+lazybones (게으름뱅이): 잠만보   
+
+
+lector (낭독자): 독경사   
+
+
+left-hander (왼손잡이): 왼손잡이 선수   
+
+
+legatee (유산 수령인): 상속인   
+
+
+legionnaire (군단병): 재향 군인회 회원   
+
+
+licentiate (학위 소지자): 면허 소지자   
+
+
+lieutenant commander (해군 소령): 지휘관   
+
+
+light-o'-love (변덕스러운 연인): 경박한 여자   
+
+
+lightweight (경량급): 보잘것없는 사람   
+
+
+lilliputian (소인): 난쟁이 같은 사람   
+
+
+line officer (전투 병과 장교): 지휘관   
+
+
+lion-hunter (유명인을 찾아다니는 사람): 사교계 사냥꾼   
+
+
+lisper (혀 짧은 소리를 하는 사람): 발음이 부정확한 사람   
+
+
+literate (지식인): 글을 읽을 줄 아는 사람   
+
+
+litigant (소송 당사자): 고소인   
+
+
+litterer (쓰레기를 버리는 사람): 무뢰한   
+
+
+little brother (남동생): 어린 형제   
+
+
+little sister (여동생): 어린 자매   
+
+
+lobbyist (로비스트): 이익 집단 대리인   
+
+
+locum tenens (임시 대리인): 목사/의사 대리   
+
+
+loser (패배자): 낙오자, 찌질이(비하)   
+
+
+failure (실패자): 불운한 사람   
+
+
+Lothario (바람둥이): 여자를 유혹하는 남자   
+
+
+loudmouth (떠벌이): 허풍쟁이   
+
+
+lowerclassman (저학년생): 하급생   
+
+
+Lowlander (스코틀랜드 저지대 사람): 평지 사람   
+
+
+Luddite (러다이트): 기술 발전을 거부하는 사람   
+
+
+bedlamite (미치광이): 정신병자   
+
+
+pyromaniac (방화광): 불장난하는 사람   
+
+
+Lutheran (루터교도): 루터파 신자   
+
+
+macebearer (지휘봉을 든 사람): 호위병   
+
+
+madame (부인): 마담, 포주(부정적 의미)   
+
+
+maenad (광란의 여사제): 미친 여자   
+
+
+magdalen (개과천선한 창녀): 회개한 여자   
+
+
+magus (마법사): 동방 박사   
+
+
+maharani (마하라니): 인도의 왕비   
+
+
+mahatma (마하트마): 위대한 영혼   
+
+
+maid (하녀): 처녀, 하녀   
+
+
+malahini (신출내기): 하와이의 외지인   
+
+
+malcontent (불만 세력): 반항아   
+
+
+malik (말리크): 이슬람의 군주   
+
+
+malingerer (꾀병 부리는 사람): 게으름뱅이   
+
+
+Malthusian (멜서스주의자): 인구론자   
+
+
+adonis (아도니스): 미남   
+
+
+man (남자): 사람   
+
+
+manageress (여성 매니저): 여지배인   
+
+
+maneuverer (책략가): 조종하는 사람   
+
+
+maniac (미치광이): 광팬   
+
+
+Manichaean (마니교도): 선악 이원론자   
+
+
+manipulator (조작자): 남을 조종하는 사람   
+
+
+man-at-arms (중장갑 기사): 병사   
+
+
+man of action (실행가): 말보다 행동이 앞서는 사람   
+
+
+marchioness (후작 부인): 여성 후작   
+
+
+margrave (변경 백작): 독일의 귀족   
+
+
+marquess (후작): 귀족   
+
+
+marquis (후작): 귀족   
+
+
+marshal (원수): 집행관   
+
+
+martinet (엄격한 교관): 원칙주의자   
+
+
+masochist (마조히스트): 피학 성애자   
+
+
+masseur (남성 안마사): 마사지사   
+
+
+masseuse (여성 안마사): 마사지사   
+
+
+master (주인): 달인   
+
+
+masturbator (자위 행위자): 온남이(비하)   
+
+
+matchmaker (매파): 결혼 중개인   
+
+
+mate (동료): 일등 항해사, 배우자   
+
+
+mater (어머니): 엄마   
+
+
+materialist (물질주의자): 유물론자   
+
+
+matriarch (여가장): 모계 중심 지도자   
+
+
+matron (중년 부인): 수간호사, 여간수   
+
+
+medium (영매): 심령술사   
+
+
+megalomaniac (과대망상증 환자): 권력광   
+
+
+melancholic (우울증 환자): 우울한 사람   
+
+
+Melkite (멜키트파): 중동 그리스도교도   
+
+
+clansman (씨족 구성원): 문중 사람   
+
+
+memorizer (암기하는 사람): 기억하는 사람   
+
+
+Mendelian (멘델 학파): 유전학자   
+
+
+Mesoamerican (중미 원주민): 중앙아메리카 사람   
+
+
+mestiza (메스티소 여성): 혼혈 여성   
+
+
+meter maid (여성 주차 단속원): 교통 단속원   
+
+
+Methodist (감리교도): 감리교 신자   
+
+
+Metis (메티스): 캐나다 원주민과 백인의 혼혈   
+
+
+metropolitan (대주교): 대도시인   
+
+
+middle-aged man (중년 남성): 아저씨   
+
+
+midwife (산파): 조산사   
+
+
+mikado (미카도): 일본의 천황   
+
+
+Milanese (밀라노인): 밀라노 사람   
+
+
+miles gloriosus (허풍쟁이 군인): 겁쟁이 전사   
+
+
+military chaplain (군종 신부/목사): 신부님, 하늘의 조종사(은어)   
+
+
+military policeman (헌병): MP   
+
+
+mill agent (공장 대리인): 관리인   
+
+
+mill-hand (공장 노동자): 직공   
+
+
+millionairess (여성 백만장자): 부자 여자   
+
+
+minder (보호자): 보디가드   
+
+
+minister (장관): 목사   
+
+
+minor leaguer (마이너 리거): 실력이 떨어지는 사람   
+
+
+misanthrope (염세주의자): 인간 혐오자   
+
+
+misfit (부적응자): 사회적 낙오자   
+
+
+mistress (정부): 여선생님, 첩, 내연녀   
+
+
+mixed-blood (혼혈): 튀기(비하)   
+
+
+Monegasque (모나코인): 모나코 사람   
+
+
+monetarist (통화주의자): 경제학자   
+
+
+moneygrubber (수전노): 돈에 환장한 사람   
+
+
+moneymaker (돈을 잘 버는 사람): 수익성 좋은 것   
+
+
+Mongoloid (몽골 인종): 다운 증후군 환자(비하적 맥락)   
+
+
+monolingual (단일 언어 사용자): 한 언어만 하는 사람   
+
+
+morosoph (배운 바보): 지식 있는 척하는 멍청이   
+
+
+morris dancer (모리스 댄서): 영국 민속 무용수   
+
+
+mortal enemy (불구대천의 원수): 숙적   
+
+
+moss-trooper (국경 도적): 산적   
+
+
+mother (어머니): 생모   
+
+
+mother figure (어머니 같은 존재): 모성적 대상   
+
+
+mother hen (보호 본능이 강한 사람): 잔걱정이 많은 사람   
+
+
+mother's boy (마마보이): 엄마 품에서 못 벗어난 아들   
+
+
+motorcycle cop (오토바이 경찰): 속도 위반 단속원   
+
+
+Mound Builder (마운드 빌더): 고대 북미 원주민 문화   
+
+
+mountebank (사기꾼): 돌팔이 약장수   
+
+
+mourner (상주): 슬퍼하는 사람   
+
+
+mouthpiece (대변인): 입노릇 하는 사람   
+
+
+muffin man (머핀 파는 사람): 빵 장수   
+
+
+mugwump (독자 노선 정치인): 중립적인 척하는 사람   
+
+
+Mullah (뮬라): 이슬람 학자   
+
+
+muncher (우걱우걱 먹는 사람): 먹보   
+
+
+murderess (여성 살인범): 살인녀   
+
+
+murder suspect (살인 용의자): 범죄 혐의자   
+
+
+Muslimah (무슬림 여성): 여성 이슬람교도   
+
+
+mutilator (불구로 만드는 사람): 파괴자   
+
+
+mutineer (반란자): 항명자   
+
+
+mute (벙어리): 농아   
+
+
+mutterer (중얼거리는 사람): 투덜이   
+
+
+myope (근시): 앞날을 내다보지 못하는 사람   
+
+
+myrmidon (충실한 부하): 앞잡이   
+
+
+naif (순진한 사람): 세상 물정 모르는 사람   
+
+
+namby-pamby (나약한 사람): 우유부단한 인물   
+
+
+name dropper (유명인 이름을 팔고 다니는 사람): 허세꾼   
+
+
+nanny (보모): 유모   
+
+
+narcissist (나르시시스트): 자기애가 강한 사람   
+
+
+nark (밀고자): 경찰 정보원   
+
+
+nationalist (민족주의자): 애국주의자   
+
+
+nautch girl (무희): 인도의 춤추는 소녀   
+
+
+naval commander (해군 지휘관): 해군 사령관   
+
+
+obstructionist (방해 주의자): 저항자   
+
+
+Nazarene (나사렛 사람): 초기 그리스도교도   
+
+
+Nazi (나치): 독일 국가 사회주의자   
+
+
+nebbish (소심한 사람): 보잘것없는 놈   
+
+
+necker (애무하는 사람): 목을 껴안는 사람   
+
+
+neonate (신생아): 갓난아기   
+
+
+neutral (중립자): 무소속   
+
+
+neutralist (중립주의자): 중립론자   
+
+
+newcomer (신입): 초보자, 신입생, 뉴비   
+
+
+New Dealer (뉴딜 정책 지지자): 루스벨트 지지자   
+
+
+Newtonian (뉴턴 학파): 뉴턴 물리학자   
+
+
+niece (조카딸): 조카   
+
+
+niggard (구두쇠): 인색한 놈, 스쿠루지   
+
+
+night rider (밤의 습격자): KKK 등 밤에 활동하는 폭력단   
+
+
+NIMBY (님비): 내 집 뒷마당은 안 된다는 지역 이기주의자   
+
+
+niqaabi (니카브를 쓴 여성): 이슬람 여성   
+
+
+nitpicker (트집쟁이): 사소한 것에 목숨 거는 사람   
+
+
+NOC (비공식 요원): 신분 노출이 안 된 스파이   
+
+
+nondescript (정체불명의 사람): 특징 없는 사람   
+
+
+nonparticipant (불참자): 참가하지 않는 사람   
+
+
+nonperson (유령 취급받는 사람): 존재감 없는 사람   
+
+
+Northern Baptist (북부 침례교도): 미국 기독교인   
+
+
+novitiate (수습생): 수련사   
+
+
+nullipara (미경산부): 아이를 낳은 적이 없는 여자   
+
+
+nursling (젖먹이): 어린애   
+
+
+nymph (요정): 선녀   
+
+
+nymphet (요정 같은 소녀): 성숙한 어린 소녀   
+
+
+nympholept (잡을 수 없는 것에 사로잡힌 사람): 광적인 열망을 가진 사람   
+
+
+nymphomaniac (색정증 환자): 님포   
+
+
+oarswoman (여성 조정 선수): 노 젓는 여자   
+
+
+obscurantist (반계몽주의자): 몽매주의자   
+
+
+occupier (점유자): 거주자   
+
+
+occultist (오컬트 신봉자): 신비주의자   
+
+
+office boy (급사): 사무실 심부름꾼   
+
+
+officiant (집례자): 의식을 집행하는 성직자   
+
+
+old-age pensioner (노령 연금 수급자): 은퇴한 노인   
+
+
+old boy (동창생): 선배   
+
+
+old lady (노부인): 할머니   
+
+
+old man (노인): 영감님   
+
+
+oldster (노인): 고령자   
+
+
+old-timer (고참): 구식 인물, 골동품   
+
+
+old woman (노파): 할멈   
+
+
+oligarch (과두 정치 지도자): 신흥 재벌   
+
+
+onomancer (이름 점술가): 성명학자   
+
+
+opportunist (기회주의자): 이기주의자   
+
+
+optimist (낙천주의자): 긍정적인 사람   
+
+
+Orangeman (오렌지당원): 아일랜드 개신교 결사 단원   
+
+
+ordinand (성직 희망자): 신학도   
+
+
+ordinary (상임 집행관): 주교   
+
+
+orphan (고아): 부모 없는 아이   
+
+
+out-and-outer (철저한 사람): 일급품   
+
+
+outdoorswoman (야외 활동을 즐기는 여성): 등산가   
+
+
+oyabun (오야붕): 두목, 보스   
+
+
+padrone (주인): 고용주, 후원자   
+
+
+page (페이지): 사환, 시종 소년   
+
+
+Paleo-American (고대 북미 원주민): 팔레오 인디언   
+
+
+palmist (손금쟁이): 수상가   
+
+
+pamperer (버릇없이 키우는 사람): 응석받아주는 사람   
+
+
+Panchen Lama (판첸 라마): 티베트 제2의 지도자   
+
+
+panhandler (걸인): 길거리에서 구걸하는 사람   
+
+
+paparazzo (파파라치): 스캔들 추적 사진가   
+
+
+paperhanger (벽지 도배업자): 위조지폐범(은어)   
+
+
+papoose (북미 원주민 아기): 갓난아이   
+
+
+pardoner (면죄부 판매원): 용서해주는 사람   
+
+
+paretic (마비 환자): 진행 마비 환자   
+
+
+parishioner (교구민): 신도   
+
+
+parodist (패러디 작가): 희화화하는 사람   
+
+
+parricide (부모 살해범): 친족 살해   
+
+
+parrot (앵무새 같은 사람): 남의 말을 흉내만 내는 사람   
+
+
+part-timer (아르바이트생): 시간제 노동자   
+
+
+party man (정당원): 당의 지시를 따르는 사람   
+
+
+passenger (승객): 타는 사람   
+
+
+paster (붙이는 사람): 풀칠하는 사람   
+
+
+pater (아버지): 부친   
+
+
+patriarch (가장): 족장, 고위 성직자   
+
+
+patriot (애국자): 민족주의자   
+
+
+patron (후원자): 고객, 지지자   
+
+
+pawnbroker (전당포 주인): 대금업자   
+
+
+peacekeeper (평화 유지군): 평화 수호자   
+
+
+peasant (소작농): 시골 뜨기, 무식한 놈   
+
+
+pedant (학자인 척하는 사람): 책벌레, 규칙에 얽매이는 사람   
+
+
+pederast (남색가): 아동 성추행범   
+
+
+Pentecostal (오순절교도): 성령 강림파 신자   
+
+
+peshmerga (페슈메르가): 쿠르드 반군   
+
+
+persona non grata (기피 인물): 환영받지 못하는 자   
+
+
+personification (의인화): 화신   
+
+
+perspirer (땀 흘리는 사람): 고생하는 사람   
+
+
+pervert (변태): 성도착자, 타락자   
+
+
+pessimist (비관주의자): 염세론자   
+
+
+pest (해충 같은 놈): 성가신 녀석   
+
+
+Peter Pan (피터 팬): 어른이 되기 싫어하는 사람   
+
+
+petitioner (청원인): 간청하는 사람   
+
+
+pet sitter (펫 시터): 반려동물 돌보미   
+
+
+petter (애무하는 사람): 귀여워하는 사람   
+
+
+Pharaoh (파라오): 이집트 왕   
+
+
+philosopher (철학자): 현인   
+
+
+picker (선택자): 고르는 사람   
+
+
+picnicker (소풍객): 피크닉 온 사람   
+
+
+pill (알약): 지겨운 놈(은어)   
+
+
+pill head (약쟁이): 환각제 복용자   
+
+
+pilot (조종사): 길잡이   
+
+
+Piltdown man (필트다운 인): 가짜 인류 화석, 사기극   
+
+
+pimp (포주): 뚜쟁이, 기둥서방(비하)   
+
+
+pip-squeak (보잘것없는 놈): 애송이   
+
+
+pitchman (노점상): 선전 요원   
+
+
+placeman (관직 사냥꾼): 돈으로 관직을 산 사람   
+
+
+plagiarist (표절 작가): 도굴꾼(비유), 해적   
+
+
+plainsman (평원 거주자): 서부 시대 사람   
+
+
+planner (설계자): 모의자   
+
+
+platinum blond (백금발의 사람): 매력적인 금발   
+
+
+platitudinarian (진부한 말을 하는 사람): 고리타분한 인물   
+
+
+playmate (놀이 친구): 소꿉친구   
+
+
+plodder (느림보): 꾸준히 하지만 굼뜬 사람   
+
+
+pluralist (다원주의자): 겸직 성직자   
+
+
+pointsman (전철수): 교통 순경   
+
+
+point woman (여성 선봉장): 대표 여성   
+
+
+political prisoner (정치범): 양심수   
+
+
+politician (정치인): 정객   
+
+
+polluter (오염시키는 사람): 더럽히는 자   
+
+
+poseuse (겉치레하는 여자): 젠체하는 여자   
+
+
+positivist (실증주의자): 이성주의자   
+
+
+poster girl (포스터 모델): 상징적인 인물   
+
+
+postulator (청원 위원): 가톨릭 시성 절차자   
+
+
+private citizen (사인): 일반 시민   
+
+
+pro-lifer (낙태 반대론자): 생명 존중 주의자   
+
+
+postulant (수도망 지원자): 청원자   
+
+
+potboy (술집 조수): 급사   
+
+
+power user (숙련된 사용자): 파워 유저   
+
+
+prayer (기도하는 사람): 간청자   
+
+
+premature baby (미숙아): 조산아   
+
+
+presbyter (장로): 성직자   
+
+
+President of the United States (미국 대통령): POTUS   
+
+
+press agent (홍보 담당자): PR맨   
+
+
+priest (사제): 신부   
+
+
+prima donna (프리마 돈나): 오만하고 까다로운 사람   
+
+
+primigravida (초임부): 첫 임신을 한 여자   
+
+
+primordial dwarf (원발성 왜소증): 정상 왜소증   
+
+
+prince charming (백마 탄 왕자): 완벽한 남성   
+
+
+prince consort (여왕의 부군): 공성   
+
+
+princeling (소국의 군주): 어린 왕자   
+
+
+Prince of Wales (웨일스 왕자): 영국의 왕세자   
+
+
+princess royal (장공주): 국왕의 장녀   
+
+
+principal (교장): 거래 당사자   
+
+
+prior (수도원장): 고위 성직자   
+
+
+probationer (견습 간호사): 수습생   
+
+
+proconsul (집정관 대리): 총독   
+
+
+profit taker (이익 실현자): 수익을 챙기는 사람   
+
+
+propagandist (선전가): 선동자   
+
+
+prophetess (여성 예언자): 무당   
+
+
+prophet (예언자): 선지자   
+
+
+protectionist (보호 무역론자): 보호주의자   
+
+
+protegee (피후원인): 제자   
+
+
+psalmist (시편 저자): 찬송가 작가   
+
+
+psychic (심령술사): 초능력자   
+
+
+pudge (뚱뚱한 사람): 땅딸보   
+
+
+puerpera (산부): 갓 해산한 여자   
+
+
+punching bag (샌드백): 만만한 사람   
+
+
+puppy (강아지): 애칭, 철없는 젊은이   
+
+
+puritan (청교도적인 사람): 엄격한 사람   
+
+
+Puritan (청교도): 퓨리턴   
+
+
+pusher (밀어붙이는 사람): 마약 판매상, 적극적인 사람   
+
+
+putz (얼간이): 바보(비하)   
+
+
+Pygmy (피그미): 소인족   
+
+
+qadi (카디): 이슬람 재판관   
+
+
+quadriplegic (사지 마비 환자): 전신 마비 환자   
+
+
+quaker (퀘이커): 떨리는 사람   
+
+
+Quebecois (퀘벡인): 캐나다 퀘벡 주 사람   
+
+
+queen (여왕): 여군주, 게이(비하적 맥락 가능)   
+
+
+queen consort (왕비): 왕의 아내   
+
+
+quick study (학습이 빠른 사람): 이해력이 좋은 사람   
+
+
+quietist (정적주의자): 수동적인 신앙인   
+
+
+quitter (포기자): 도망자   
+
+
+rabbi (랍비): 유대교 스승   
+
+
+racist (인종 차별주의자): 인종주의자   
+
+
+rainmaker (비를 내리게 하는 사람): 해결사, 유능한 사업가   
+
+
+rake (방탕아): 난봉꾼, 한량   
+
+
+ramrod (청소봉): 완고한 사람, 감독관   
+
+
+ranch hand (목장 일꾼): 카우보이   
+
+
+ranter (호언장담하는 사람): 고함치는 사람   
+
+
+rape suspect (강간 용의자): 성범죄 혐의자   
+
+
+rare bird (희귀한 사람): rara avis   
+
+
+ratepayer (지방세 납세자): 시민   
+
+
+raw recruit (신병): 풋내기   
+
+
+rear admiral (해군 소장): 제독   
+
+
+recruit (신입사원): 사병, 모병된 사람   
+
+
+recruiter (모집관): 채용 담당자   
+
+
+redcap (영국 헌병): 짐꾼   
+
+
+redhead (빨강 머리): 당근 머리(비하)   
+
+
+redneck (레드넥): 미국 남부 백인 노동자(비하)   
+
+
+Reform Jew (개혁파 유대인): 자유주의적 유대교 신자   
+
+
+anchorite (은둔자): 수행자   
+
+
+religious leader (종교 지도자): 성직자   
+
+
+Renaissance man (르네상스적 인간): 다재다능한 보편인   
+
+
+renegade (변절자): 배교자   
+
+
+newswoman (여성 기자): 여기자   
+
+
+representative (대표): 국회의원   
+
+
+reprobate (타락한 사람): 악당   
+
+
+rescuer (구조자): 구원자   
+
+
+resident commissioner (주재 판무관): 대리인   
+
+
+respecter (존경하는 사람): 편파적인 사람(respecter of persons)   
+
+
+restrainer (제어자): 통제관   
+
+
+revisionist (수정주의자): 재검토론자   
+
+
+revolutionist (혁명가): 체제 전복자   
+
+
+rhymer (시인 지망생): 엉터리 시인   
+
+
+right-hander (오른손잡이): 우투우타 선수   
+
+
+ringer (닮은 사람): 사기 선수   
+
+
+ringleader (주동자): 괴수   
+
+
+roadman (노점상): 도로 보수공   
+
+
+roarer (고함치는 사람): 소리 지르는 사람   
+
+
+roper (밧줄 제조자): 야바위꾼의 앞잡이   
+
+
+rosebud (장미 봉오리): 미소녀, 첫사랑 대상   
+
+
+Rosicrucian (장미십자회원): 신비주의자   
+
+
+Rough Rider (러프 라이더): 미국 기병 대원   
+
+
+roundhead (청교도파): 원두당   
+
+
+civil authority (민간 당국): 문관   
+
+
+running back (러닝백): 축구 포지션   
+
+
+rustic (촌뜨기): 소박한 사람   
+
+
+saboteur (파괴 공작원): 방해자   
+
+
+sadist (새디스트): 가학 성애자   
+
+
+salesgirl (점원): 여상점원   
+
+
+salesman (판매원): 영업사원   
+
+
+sandwichman (샌드위치맨): 광고판을 앞뒤로 멘 사람   
+
+
+sannup (인디언 남편): 원주민 남성   
+
+
+sapper (공병): 굴착병   
+
+
+Sassenach (사세나크): 영국인(스코틀랜드어 비칭)   
+
+
+Savoyard (사보이인): 사보이 극장 공연 배우/팬   
+
+
+scalper (암표상): 단기 차익 노리는 사람   
+
+
+scandalmonger (추문을 퍼뜨리는 사람): 입방아 찧는 사람   
+
+
+scapegrace (망나니): 집안의 골칫덩이   
+
+
+schemer (책략가): 음모가   
+
+
+schizophrenic (조현병 환자): 정신분열증 환자   
+
+
+schlemiel (멍청이): 운 없는 얼간이   
+
+
+schlockmeister (싸구려 물건 판매왕): 저질 상인   
+
+
+scion (자손): 명문가의 자제   
+
+
+scoffer (조롱하는 사람): 비웃는 자   
+
+
+scofflaw (법을 우습게 아는 사람): 상습 법규 위반자   
+
+
+scrambler (기어오르는 사람): 기밀 해독기   
+
+
+scratcher (긁는 사람): 낙서하는 사람   
+
+
+scrutineer (검표원): 투표 감시인   
+
+
+seasonal worker (계절 노동자): 단기 인부   
+
+
+second-rater (이류): 평범한 사람   
+
+
+Secretary of Health and Human Services (보건복지부 장관): 미국 정부 요원   
+
+
+Secretary of State (국무장관): 외교부 장관   
+
+
+sectarian (종파주의자): 편협한 당파심을 가진 사람   
+
+
+secularist (세속주의자): 비종교론자   
+
+
+segregate (격리된 사람): 분리된 사람   
+
+
+segregator (인종 격리 주의자): 차별 주의자   
+
+
+selectman (읍 행정 위원): 미국 뉴잉글랜드 지방 관리   
+
+
+selfish person (이기주의자): 자기만 아는 사람   
+
+
+self-starter (주도적인 사람): 스스로 일을 시작하는 사람   
+
+
+seminarian (신학생): 예비 성직자   
+
+
+senator (상원 의원): 원로원 의원   
+
+
+senior (연장자): 선배   
+
+
+separatist (분리주의자): 탈퇴자   
+
+
+septuagenarian (칠십대 노인): 70세인 사람   
+
+
+serf (농노): 하인, 헬로트   
+
+
+spree killer (묻지마 살인마): 연속 살인범   
+
+
+serjeant-at-law (영국의 상급 법무관): 법무관   
+
+
+settler (정착민): 식민지 개척자   
+
+
+sex symbol (섹스 심벌): 성적 매력의 상징   
+
+
+shaheed (샤히드): 이슬람 순교자   
+
+
+shanghaier (강제로 배에 태우는 사람): 유괴범   
+
+
+shaver (어린 녀석): 꼬마   
+
+
+Shavian (쇼의 학파): 버나드 쇼 연구가   
+
+
+sheep (양 같은 사람): 주관 없는 사람   
+
+
+sheik (셰이크): 추장, 아랍 부호   
+
+
+shepherd (양치기): 인도자   
+
+
+shopaholic (쇼핑 중독자): 구매 광   
+
+
+shop girl (여점원): 상점 점원   
+
+
+shrew (입이 거친 여자): 잔소리 많은 여자   
+
+
+shyster (악덕 변호사): 사기꾼 변호사   
+
+
+signer (서명자): 날인인   
+
+
+signora (부인): 이탈리아 기부인   
+
+
+signore (선생): 이탈리아 귀인   
+
+
+signorina (양): 이탈리아 아가씨   
+
+
+silent partner (익명 조합원): 유령 주주   
+
+
+addle-head (바보): 멍청이, 새 대가리(비하)   
+
+
+simperer (바보같이 웃는 사람): 히죽거리는 사람   
+
+
+Sinologist (중국 학자): 한학자   
+
+
+sirrah (이놈): 하인 부를 때의 호칭   
+
+
+Sister (수녀): 언니, 여동생, 간호사   
+
+
+sitar player (시타르 연주자): 인도 악기 연주가   
+
+
+skeptic (회의론자): 의심쟁이   
+
+
+skinny-dipper (알몸 수영객): 나체 수영하는 사람   
+
+
+skinhead (스킨헤드): 빡빡이(차별적 폭력 단원)   
+
+
+slasher (베는 사람): 잔혹 공포 영화 속 살인마   
+
+
+slattern (지저분한 여자): 행실이 나쁜 여자   
+
+
+sleeper (잠자는 사람): 고정 간첩, 복병   
+
+
+sleeping beauty (잠자는 숲속의 미녀): 미인   
+
+
+slob (게으르고 지저분한 놈): 돼지 같은 놈(비하)   
+
+
+sloganeer (표어 제작자): 슬로건을 외치는 사람   
+
+
+slopseller (헌 옷 장수): 잡화상   
+
+
+smasher (미인): 반하게 하는 사람, 파괴자   
+
+
+smirker (능글맞게 웃는 사람): 비웃는 사람   
+
+
+smoothie (매끄러운 사람): 말재주 좋은 바람둥이   
+
+
+smuggler (밀수꾼): 밀매업자   
+
+
+snob (속물): 고상한 척하는 사람   
+
+
+snoop (염탐꾼): 기웃거리는 사람   
+
+
+snorer (코를 고는 사람): 잠꼬대하는 사람   
+
+
+sob sister (신파조 기사를 쓰는 여상 기자): 감상적인 사람   
+
+
+social climber (출세 지향적인 사람): 신분 상승을 노리는 사람   
+
+
+socialist (사회주의자): 사회당원   
+
+
+socializer (사교적인 사람): 어울리기 좋아하는 사람   
+
+
+Socinian (소치누스파): 그리스도 신성을 부정하는 자   
+
+
+soda jerk (소다 음료 점원): 아이스크림 가게 직원   
+
+
+sodalist (회원): 종교 단체 단원   
+
+
+sodomite (소돔 사람): 남색가, 항문 성교자(비하적 맥락)   
+
+
+soldier (군인): 사병   
+
+
+son (아들): 소년   
+
+
+sorcerer (마법사): 주술사, 마술사   
+
+
+sorehead (불평쟁이): 성마른 사람   
+
+
+Southern Baptist (남부 침례교도): 미국 보수 기독교인   
+
+
+Spanish American (히스패닉): 스페인계 미국인   
+
+
+spastic (경직 환자): 뇌성마비 환자(비하로 쓰임)   
+
+
+specifier (명시자): 자세히 설명하는 사람   
+
+
+spectator (관객): 목격자, 구경꾼   
+
+
+sphinx (수수께끼 같은 사람): 스핑크스   
+
+
+spinster (노처녀): 독신 여성(부정적 뉘앙스)   
+
+
+split end (스플릿 엔드): 축구 포지션   
+
+
+sprog (아이): 신참자   
+
+
+squatter (무단 점유자): 정착민   
+
+
+squire (지주): 향신, 기사 수행원   
+
+
+staff member (직원): 실무자   
+
+
+staff sergeant (중사): 하사관   
+
+
+stalker (스토커): 몰래 따라다니는 사람   
+
+
+stalking-horse (정치적 기만 후보): 위장 수단   
+
+
+stammerer (말더듬이): 버벅거리는 사람   
+
+
+stamper (밟는 사람): 도장을 찍는 사람   
+
+
+starlet (신인 여배우): 아역 배우   
+
+
+stenographer (속기사): 대필가   
+
+
+stentor (성량이 풍부한 사람): 목소리 큰 사람   
+
+
+stepbrother (의붓형제): 이복형제   
+
+
+stepmother (계모): 새어머니   
+
+
+steward (집사): 승무원, 관리인   
+
+
+stickler (까다로운 사람): 원칙주의자   
+
+
+stiff (시체): 고집 센 놈, 노동자   
+
+
+stifler (억압자): 숨 막히게 하는 사람   
+
+
+stitcher (재봉사): 바느질하는 사람   
+
+
+stooper (구부정한 사람): 몸을 굽히는 사람   
+
+
+straight man (조역): 만담의 보조역   
+
+
+stranger (낯선 사람): 외지인   
+
+
+streetwalker (거리의 매춘부): 매춘부(비하)   
+
+
+struggler (분투하는 사람): 고투하는 사람   
+
+
+stud (종마 같은 남자): 마초맨, 바람둥이   
+
+
+stumblebum (서투른 권투 선수): 얼간이   
+
+
+subaltern (하급자): 중소위   
+
+
+subject (피험자): 기니피그   
+
+
+subordinate (부하): 하급자, 일개 보병   
+
+
+substitute (대리인): 후보 선수   
+
+
+Sufi (수피): 이슬람 신비주의자   
+
+
+suffragan (부교구장): 보좌 주교   
+
+
+suffragette (여성 참정권 운동가): 서프러제트   
+
+
+sugar daddy (원조 교제하는 중년 남성): 돈 많은 아저씨   
+
+
+suicide bomber (자살 폭탄 테러범): 자폭 테러리스트   
+
+
+suitor (구혼자): 소송인   
+
+
+sumo wrestler (스모 선수): 일본 씨름꾼   
+
+
+sunbather (일광욕하는 사람): 썬탠 하는 사람   
+
+
+sundowner (부랑자): 해 질 녘 술 마시는 사람   
+
+
+super heavyweight (슈퍼 헤비급): 거구의 인물   
+
+
+superior (상급자): 윗사람   
+
+
+supermom (슈퍼맘): 만능 엄마   
+
+
+Surgeon General (공중보건국장): 군의관 총감   
+
+
+survivor (생존자): 견디는 사람   
+
+
+sutler (종군 상인): 군대에 물자를 대는 사람   
+
+
+swinger (자유로운 성생활을 즐기는 사람): 방탕한 사람   
+
+
+switcher (바꾸는 사람): 때리는 사람   
+
+
+swot (공부벌레): 범생이, 공부만 하는 바보   
+
+
+sycophant (아첨꾼): 아첨하는 자, 엉덩이 빨개(비하)   
+
+
+sylph (날씬한 여자): 공기 요정   
+
+
+tagger (꼬리표 다는 사람): 낙서꾼   
+
+
+tallyman (외상 판매원): 기록원   
+
+
+tanker (전차병): 전차 운전수   
+
+
+tapper (도청자): 도청 장치 설치자   
+
+
+Tartuffe (위선자): 타르튀프   
+
+
+Tarzan (타잔): 건장한 야성적 남자   
+
+
+taxi dancer (댄스홀 파트너): 돈 받고 춤춰주는 사람   
+
+
+tearaway (무모한 청년): 난폭한 놈   
+
+
+technical sergeant (기술 상사): 공군/해병 중사   
+
+
+Ted (테디 보이): 1950년대 영국의 불량 청년   
+
+
+teetotaler (절대 금주주의자): 술 안 마시는 사람   
+
+
+temporizer (기회주의자): 우유부단한 사람   
+
+
+tempter (유혹자): 유혹하는 사람   
+
+
+toiler (노동자): 고생하는 사람   
+
+
+tenderfoot (풋내기): 미숙련자   
+
+
+termer (기한부 수형자): 복역수   
+
+
+terror (공포의 존재): 재앙, 위협   
+
+
+tertigravida (세 번째 임신한 여성): 경산부   
+
+
+testatrix (여성 유언자): 유언인   
+
+
+test-tube baby (시험관 아기): 인공 수정 아기   
+
+
+Texas Ranger (텍사스 레인저): 기동 대원   
+
+
+thane (영주): 스코틀랜드/영국의 고대 작위   
+
+
+theologian (신학자): 신학 연구가   
+
+
+theosophist (신智학자): 신지학 신봉자   
+
+
+Thessalonian (데살로니가인): 그리스 북부 사람   
+
+
+thrower (던지는 사람): 투척자   
+
+
+tight end (타이트 엔드): 축구 포지션   
+
+
+tiler (기와 잇는 사람): 문지기   
+
+
+Timorese (티모르인): 티모르 사람   
+
+
+tinkerer (땜장이): 만지작거리는 사람   
+
+
+tinter (염색공): 색을 입히는 사람   
+
+
+tippler (애주가): 사교적으로 술 마시는 사람   
+
+
+tipster (정보 제공자): 경마 팁 주는 사람   
+
+
+toast mistress (여성 사회자): 건배 제의자   
+
+
+tomboy (괄괄한 소녀): 선머슴 같은 여자애   
+
+
+Tory (보수주의자): 영국 보수당원   
+
+
+tosser (바보): 자위하는 놈(욕설)   
+
+
+totalitarian (전체주의자): 독재적 인물   
+
+
+tourist (관광객): 여행객   
+
+
+tout (호객꾼): 암표상   
+
+
+tovarich (동무): 소련의 동지   
+
+
+traditionalist (전통주의자): 보수파   
+
+
+tragedienne (비극 여배우): 비극 작가   
+
+
+traitor (배신자): 반역자   
+
+
+traitress (여성 배신자): 반역녀   
+
+
+transvestite (이성 복장 도착자): 크로스드레서   
+
+
+trawler (트롤 어선 선원): 어부   
+
+
+tribesman (부족원): 종족의 일원   
+
+
+trifler (실없는 사람): 장난꾸러기   
+
+
+Trotskyite (트로츠키주의자): 트롯(비하)   
+
+
+truant (무단결석생): 땡땡이치는 아이   
+
+
+trusty (모범수): 신뢰받는 사람   
+
+
+Tudor (튜더 가문): 영국 튜더 왕조 사람   
+
+
+two-timer (바람둥이): 배신자   
+
+
+Tyke (타이크): 거친 놈, 요크셔 사람   
+
+
+tyrant (폭군): 독재자   
+
+
+undesirable (바람직하지 않은 사람): 불량배   
+
+
+unilateralist (일방주의자): 독단론자   
+
+
+Unitarian (유니테리언): 삼위일체 부정 신봉자   
+
+
+Arminian (아르미니우스주의자): 신학론자   
+
+
+upstager (남을 가리는 사람): 남의 인기를 가로채는 사람   
+
+
+upstart (벼락출세자): 졸부, 건방진 놈   
+
+
+urchin (개구쟁이): 부랑아   
+
+
+usherette (여성 안내원): 극장 안내원   
+
+
+usurper (찬탈자): 약탈자   
+
+
+uxoricide (아내 살해범): 처 살해   
+
+
+vacationer (휴가객): 휴양객   
+
+
+valley girl (밸리 걸): 미국 캘리포니아의 속물적인 십 대 소녀   
+
+
+venerator (공경하는 사람): 숭배자   
+
+
+venturer (모험가): 상인 모험가   
+
+
+vermin (해충 같은 놈): 인간 말종   
+
+
+very important person (귀빈): VIP, 거물   
+
+
+vicar (교구 목사): 신부, 대리자   
+
+
+vicar-general (총대리): 부주교   
+
+
+vice-regent (부섭정): 대리 통치자   
+
+
+victim (희생자): 봉(비유), 희생양   
+
+
+vigilante (자경단원): 사적 보복자   
+
+
+villager (마을 사람): 촌사람   
+
+
+violator (위반자): 성폭행범, 법 어기는 사람   
+
+
+virago (말괄량이): 사나운 여자   
+
+
+Visayan (비사야인): 필리핀 민족   
+
+
+viscountess (자작부인): 여성 자작   
+
+
+viscount (자작): 귀족   
+
+
+Visigoth (서고트인): 야만인(비유)   
+
+
+visualizer (시각화하는 사람): 구상가   
+
+
+vixen (암여우 같은 여자): 심술궂은 여자   
+
+
+vizier (고관): 이슬람 국가의 대신   
+
+
+votary (숭배자): 신봉자, 서원자   
+
+
+voyeur (엿보는 사람): 관음증 환자   
+
+
+waffler (모호한 말을 하는 사람): 우유부단한 사람   
+
+
+Wagnerian (바그너 숭배자): 바그너 음악 전문가   
+
+
+waif (부랑아): 길 잃은 아이   
+
+
+wailer (통곡하는 사람): 울보   
+
+
+waitress (여성 종업원): 웨이트리스   
+
+
+wallah (전문가): ~하는 사람(인도 영어)   
+
+
+wally (멍청이): 바보   
+
+
+wanderer (방랑자): 유랑객   
+
+
+Wandering Jew (방랑하는 유대인): 전설 속 인물   
+
+
+wanton (방탕한 사람): 바람둥이   
+
+
+washer (세탁부): 씻는 사람   
+
+
+washerman (세탁업자): 빨래꾼   
+
+
+wassailer (주연을 즐기는 사람): 흥청거리는 사람   
+
+
+wastrel (방탕아): 게으름뱅이   
+
+
+weekend warrior (주말 전사): 주말에만 취미에 몰두하는 사람   
+
+
+westerner (서구인): 서양 사람   
+
+
+West-sider (웨스트 사이더): 도시 서부 거주자   
+
+
+wetter (적시는 사람): 오줌싸개   
+
+
+Whig (휘그당원): 자유주의자   
+
+
+whiner (투덜이): 징징거리는 사람   
+
+
+whiteface (광대 분장): 백인 분장   
+
+
+Carmelite (카르멜회 수도사): 화이트 프라이어   
+
+
+Augustinian (아우구스티누스회 수도사): 수도자   
+
+
+white hope (기대주): 백인의 희망   
+
+
+white supremacist (백인 우월주의자): 인종 차별론자   
+
+
+whoremaster (포주): 음탕한 놈, 매춘 상대   
+
+
+widow (미망인): 과부   
+
+
+wiggler (꿈틀거리는 사람): 가만히 못 있는 사람   
+
+
+wimp (겁쟁이): 나약한 놈   
+
+
+wing commander (공군 중령): 지휘관   
+
+
+winner (승리자): 성공한 사람   
+
+
+wise guy (잘난 척하는 놈): 건방진 놈   
+
+
+witch doctor (주술사): 마법사 의사   
+
+
+withdrawer (물러나는 사람): 철회자   
+
+
+woman (여성): 성인 여자   
+
+
+wonder boy (천재 소년): 기대주   
+
+
+working girl (직장인 여성): 매춘부(은어)   
+
+
+worldling (속세의 사람): 세속적인 인물   
+
+
+worshiper (예배자): 숭배자   
+
+
+worthy (훌륭한 사람): 명사   
+
+
+yakuza (야쿠자): 일본 폭력단   
+
+
+yard bird (재소자): 죄수, 신병   
+
+
+yardie (야디): 자메이카계 폭력 단원   
+
+
+yenta (수다쟁이 여자): 참견쟁이 아줌마   
+
+
+young Turk (소장파): 개혁파   
+
+
+Zionist (시온주의자): 유대 민족주의자   
+
+
+Kennan (케넌): 조지 케넌(인물)   
+
+
+Popper (포퍼): 칼 포퍼(인물)   
+
+
+
+
+
