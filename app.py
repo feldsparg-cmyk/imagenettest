@@ -39,7 +39,7 @@ if "translated_cache" not in st.session_state:
     st.session_state.translated_cache = {}
 
 # ---------------------------------------------------------
-# 1. 환경 설정 및 데이터 로드
+# 1. 환경 설정 및 데이터 로드 (파싱 로직 강화)
 # ---------------------------------------------------------
 @st.cache_resource
 def setup_environment():
@@ -62,12 +62,20 @@ def load_offline_translations(filepath="trans list.txt"):
                 line = line.strip()
                 if not line or line.startswith('🚨') or line.startswith('='):
                     continue
+                
+                # [수정됨] 뜻풀이가 있는 경우와 없는 경우 모두 강제로 잡아내도록 정규식 완화
                 match = re.match(r"^(.*?)\((.*?)\)\s*:\s*(.*)$", line)
                 if match:
                     eng = match.group(1).strip().lower()
                     kor = match.group(2).strip()
                     kdef = match.group(3).strip()
                     trans_dict[eng] = {"word": kor, "def": kdef}
+                else:
+                    match_no_def = re.match(r"^(.*?)\((.*?)\)", line)
+                    if match_no_def:
+                        eng = match_no_def.group(1).strip().lower()
+                        kor = match_no_def.group(2).strip()
+                        trans_dict[eng] = {"word": kor, "def": ""}
     return trans_dict
 
 @st.cache_data
@@ -131,7 +139,7 @@ model, processor, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
 # ---------------------------------------------------------
-# 3. 단어 임베딩 추출 로직 (진행도 실시간 업데이트 적용)
+# 3. 단어 임베딩 추출 로직
 # ---------------------------------------------------------
 def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
     if "EMBEDDINGS_CACHE" not in st.session_state:
@@ -183,14 +191,7 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
     st.session_state.EMBEDDINGS_CACHE[cache_key] = (text_features, target_labels)
     return text_features, target_labels
 
-# ---------------------------------------------------------
-# [추가됨] 3.5 모바일 초고해상도 사진 대응 리사이징 함수
-# ---------------------------------------------------------
 def resize_image_for_memory(image, max_size=1000):
-    """
-    갤럭시 S2X 등 최신 스마트폰의 초고해상도 사진 업로드 시
-    서버 메모리 초과 및 프리징(먹통) 현상을 방지하기 위해 해상도를 안전하게 줄여줍니다.
-    """
     w, h = image.size
     if max(w, h) > max_size:
         if w > h:
@@ -199,12 +200,11 @@ def resize_image_for_memory(image, max_size=1000):
         else:
             new_h = max_size
             new_w = int(w * (max_size / h))
-        # 해상도를 줄이면서 안티앨리어싱 적용
         return image.resize((new_w, new_h), Image.Resampling.LANCZOS)
     return image
 
 # ---------------------------------------------------------
-# 4. 이미지 분석
+# 4. 이미지 분석 (UI 로직 완벽 수정)
 # ---------------------------------------------------------
 def get_realtime_translation(eng_word):
     if eng_word in st.session_state.translated_cache:
@@ -223,13 +223,10 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
 
     update_progress(10, "이미지 분석 준비 중...")
     
-    # 이미지가 RGBA 모드일 경우 RGB로 변환 (투명 배경 제거)
     if image.mode != 'RGB':
         image = image.convert('RGB')
         
     img_cv = np.array(image)
-    # PIL(RGB) 배열을 그대로 사용
-    
     img_h, img_w, _ = img_cv.shape
     dynamic_thickness = max(2, int(img_w * 0.005))
     dynamic_font_size = max(16, int(img_w * 0.025))
@@ -238,12 +235,11 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     update_progress(30, "얼굴 영역 탐지 중...")
     gray_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2GRAY)
     
-    # [수정됨] 해상도가 정규화(최대 1000px) 되었으므로, 인식 파라미터를 모바일에 유리하게 완화
     faces = face_detection.detectMultiScale(
         gray_cv, 
-        scaleFactor=1.1,      # 더 촘촘하게 스캔 (1.15 -> 1.1)
-        minNeighbors=5,       # 깐깐한 인식 기준 완화 (8 -> 5)
-        minSize=(30, 30)      # 최소 얼굴 크기 하한선 적용
+        scaleFactor=1.1,      
+        minNeighbors=5,       
+        minSize=(30, 30)      
     )
 
     img_pil = Image.fromarray(img_cv)
@@ -302,8 +298,12 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
             display_box_text = f"{eng_word}({kor_word})" if kor_word else eng_word
             display_texts.append(display_box_text)
             
-            if kor_def:
-                detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}"
+            # [수정됨] 단어의 뜻풀이(kor_def)가 없더라도 is_unsafe가 True면 무조건 위험군으로 시각화
+            if is_unsafe:
+                if kor_def:
+                    detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}"
+                else:
+                    detail_text = f"🚨 {eng_word}({kor_word})"
                 res_dict = {"text": detail_text, "type": "unsafe"}
             else:
                 detail_text = f"✅ {eng_word}({kor_word})" if kor_word else eng_word
@@ -348,7 +348,6 @@ if option == "웹캠 캡처":
     if camera_image is not None:
         image_to_process = Image.open(camera_image)
         image_to_process = ImageOps.exif_transpose(image_to_process)
-        # [수정됨] 거대한 모바일 사진을 안전한 크기로 즉시 압축
         image_to_process = resize_image_for_memory(image_to_process)
 
 elif option == "사진 업로드":
@@ -356,7 +355,6 @@ elif option == "사진 업로드":
     if uploaded_file is not None:
         image_to_process = Image.open(uploaded_file)
         image_to_process = ImageOps.exif_transpose(image_to_process)
-        # [수정됨] 거대한 모바일 사진을 안전한 크기로 즉시 압축
         image_to_process = resize_image_for_memory(image_to_process)
 
 if image_to_process is not None:
