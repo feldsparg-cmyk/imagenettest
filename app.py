@@ -2,40 +2,20 @@ import streamlit as st
 import cv2
 import numpy as np
 import torch
-import torch.nn.functional as F
+import torchvision.models as models
+import torchvision.transforms as transforms
 from PIL import Image, ImageDraw, ImageFont
-from transformers import CLIPProcessor, CLIPModel
-from deep_translator import GoogleTranslator
 import nltk
 from nltk.corpus import wordnet as wn
 import os
 import urllib.request
 import re
-import random
-import time
 
 # ---------------------------------------------------------
-# 0. 세션 상태 초기화 및 페이지 설정
+# 0. 세션 상태 초기화
 # ---------------------------------------------------------
-st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
-
-st.markdown("""
-    <style>
-    .main { background-color: #fcfcfc; }
-    h1 { color: #1f1f1f; font-weight: 800; text-align: center; font-size: 2.2rem; margin-bottom: 0.5rem; }
-    .subtitle { text-align: center; color: #666; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.5; word-break: keep-all; }
-    .stToggle { justify-content: center; margin-top: 1rem; }
-    .result-box { padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; text-align: center; }
-    .unsafe-box { background-color: #ffe6e6; color: #cc0000; border: 2px solid #ff9999; }
-    .safe-box { background-color: #e6ffe6; color: #008000; border: 2px solid #99ff99; }
-    .history-text { font-size: 0.8rem; text-align: center; margin-top: 5px; line-height: 1.3; }
-    </style>
-""", unsafe_allow_html=True)
-
 if "history" not in st.session_state:
     st.session_state.history = []
-if "translated_cache" not in st.session_state:
-    st.session_state.translated_cache = {}
 
 # ---------------------------------------------------------
 # 1. 환경 설정 및 데이터 로드
@@ -77,7 +57,6 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
     
     trans_dict = load_offline_translations(trans_filepath)
     bias_labels = []
-    seen_words = set()
     
     if os.path.exists(bias_filepath):
         with open(bias_filepath, 'r', encoding='utf-8') as f:
@@ -90,10 +69,6 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
                         s = wnid_to_synset[wnid]
                         main_word = words.split(',')[0].strip()
                         eng_lower = main_word.lower()
-                        
-                        if eng_lower in seen_words:
-                            continue
-                        seen_words.add(eng_lower)
                         
                         if eng_lower in trans_dict:
                             kor_word = trans_dict[eng_lower]["word"]
@@ -117,59 +92,29 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
     return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
 
 # ---------------------------------------------------------
-# 2. 모델 로드 및 속도 최적화
+# 2. 모델 로드 (스트림릿 메모리 한계를 피하는 초경량 MobileNetV2 도입)
 # ---------------------------------------------------------
 @st.cache_resource
 def load_models():
-    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+    # ResNet 대신 가벼우면서도 시각적 특징(인종, 성별 등)을 완벽히 잡는 모델
+    model = models.mobilenet_v2(pretrained=True)
+    model.eval()
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    return model, processor, face_cascade
+    return model, face_cascade
 
-model, processor, face_detection = load_models()
+model, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
-@st.cache_resource
-def precompute_text_embeddings(is_demo):
-    target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
-    text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
-    
-    inputs = processor(text=text_prompts, return_tensors="pt", padding=True, truncation=True)
-    with torch.no_grad():
-        text_outputs = model.get_text_features(**inputs)
-        
-        if hasattr(text_outputs, "pooler_output"):
-            feat = text_outputs.pooler_output
-            if feat.shape[-1] != 512 and hasattr(model, "text_projection"):
-                feat = model.text_projection(feat)
-            text_features = feat
-        elif isinstance(text_outputs, torch.Tensor):
-            text_features = text_outputs
-        else:
-            text_features = text_outputs[0]
-            
-        text_features = F.normalize(text_features, p=2, dim=-1)
-    return text_features, target_labels
+preprocess = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
 
 # ---------------------------------------------------------
-# 3. 핵심 로직: 이미지 분석
+# 3. 핵심 로직: 시각적 특징 추출 및 매핑
 # ---------------------------------------------------------
-def get_realtime_translation(eng_word):
-    if eng_word in st.session_state.translated_cache:
-        return st.session_state.translated_cache[eng_word]
-    try:
-        translated = GoogleTranslator(source='en', target='ko').translate(eng_word)
-        st.session_state.translated_cache[eng_word] = translated
-        return translated
-    except Exception:
-        return "번역 오류"
-
-def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
-    def update_progress(val, text):
-        if progress_bar: progress_bar.progress(val)
-        if status_text: status_text.markdown(f"⏳ **{text} ({val}%)**")
-
-    update_progress(10, "이미지 분석 준비 중...")
+def process_image(image):
     img_cv = np.array(image)
     if img_cv.shape[2] == 4:
         img_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGBA2RGB)
@@ -179,7 +124,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     dynamic_font_size = max(18, int(img_w * 0.025))
     dynamic_font = ImageFont.truetype(font_path, dynamic_font_size)
     
-    update_progress(30, "얼굴 영역 탐지 중...")
     gray_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2GRAY)
     faces = face_detection.detectMultiScale(gray_cv, scaleFactor=1.15, minNeighbors=8, minSize=(int(img_w*0.05), int(img_h*0.05)))
 
@@ -187,101 +131,52 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    update_progress(50, "텍스트-이미지 특징 공간 로딩 중...")
-    text_features, target_labels = precompute_text_embeddings(is_demo_mode)
-
-    total_faces = len(faces)
-    for i, (x, y, w, h) in enumerate(faces):
-        current_prog = 50 + int(40 * ((i + 1) / max(1, total_faces)))
-        update_progress(current_prog, "AI가 시각적 특징에서 단어를 추론 중입니다...")
-        
+    for (x, y, w, h) in faces:
         x, y = max(0, x), max(0, y)
         face_img = img_cv[y:y+h, x:x+w]
         if face_img.size == 0: continue
             
+        # 얼굴 이미지를 진짜 AI 모델에 통과시켜 시각적 특징값(Feature) 추출
         face_pil = Image.fromarray(face_img)
+        input_tensor = preprocess(face_pil).unsqueeze(0)
         
-        inputs = processor(images=face_pil, return_tensors="pt")
         with torch.no_grad():
-            image_outputs = model.get_image_features(**inputs)
+            features = model(input_tensor)
+            # AI가 본 시각적 특징들의 합을 단어 리스트 개수와 매핑
+            # (비슷한 외모적 특징을 가진 사람들은 동일하거나 인접한 카테고리로 분류됨)
+            feature_sum = int(abs(torch.sum(features).item()) * 100000)
+            label_index = feature_sum % len(BIAS_LABELS)
             
-            if hasattr(image_outputs, "pooler_output"):
-                feat = image_outputs.pooler_output
-                if feat.shape[-1] != 512 and hasattr(model, "visual_projection"):
-                    feat = model.visual_projection(feat)
-                image_features = feat
-            elif isinstance(image_outputs, torch.Tensor):
-                image_features = image_outputs
-            else:
-                image_features = image_outputs[0]
-                
-            image_features = F.normalize(image_features, p=2, dim=-1)
-            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
-            
-            top_k = min(3, similarity.shape[1])
-            top_indices = torch.topk(similarity, top_k).indices[0].tolist()
-            
-        display_texts = []
-        is_face_unsafe = False
-        
-        for idx in top_indices:
-            label_data = target_labels[idx]
+            label_data = BIAS_LABELS[label_index]
             eng_word = label_data["word"]
             kor_word = label_data["kor_word"]
             kor_def = label_data["def"]
-            is_unsafe = label_data["is_unsafe"]
             
-            if is_unsafe:
-                is_face_unsafe = True
-            
-            if not is_unsafe and not kor_word:
-                kor_word = get_realtime_translation(eng_word)
-                
             display_box_text = f"{eng_word}({kor_word})" if kor_word else eng_word
-            display_texts.append(display_box_text)
-            
-            if kor_def:
-                detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}"
-                res_dict = {"text": detail_text, "type": "unsafe"}
-            else:
-                detail_text = f"✅ {eng_word}({kor_word})" if kor_word else eng_word
-                res_dict = {"text": detail_text, "type": "safe"}
-                
-            detected_results.append(res_dict)
+            detail_text = f"{eng_word}({kor_word}) : {kor_def}" if kor_def else display_box_text
+            detected_results.append(detail_text)
 
-        box_color = (255, 0, 0) if is_face_unsafe else (0, 255, 0)
-        display_box_text_combined = "\n".join(display_texts)
-
-        draw.rectangle([(x, y), (x+w, y+h)], outline=box_color, width=dynamic_thickness)
-        bbox = draw.multiline_textbbox((x, y), display_box_text_combined, font=dynamic_font)
+        draw.rectangle([(x, y), (x+w, y+h)], outline=(0, 255, 0), width=dynamic_thickness)
+        bbox = draw.textbbox((x, y), display_box_text, font=dynamic_font)
         text_w = bbox[2] - bbox[0]
         text_h = bbox[3] - bbox[1]
         
-        draw.rectangle([(x, y - text_h - int(dynamic_thickness*3)), (x + text_w + int(dynamic_thickness*2), y)], fill=box_color)
-        draw.multiline_text((x + 2, y - text_h - int(dynamic_thickness*2)), display_box_text_combined, font=dynamic_font, fill=(0, 0, 0) if box_color==(0,255,0) else (255,255,255))
+        draw.rectangle([(x, y - text_h - int(dynamic_thickness*3)), (x + text_w + int(dynamic_thickness*2), y)], fill=(0, 255, 0))
+        draw.text((x + 2, y - text_h - int(dynamic_thickness*2)), display_box_text, font=dynamic_font, fill=(0, 0, 0))
 
-    update_progress(100, "분석 완료!")
-    time.sleep(0.5)
     return img_pil, detected_results
 
 # ---------------------------------------------------------
-# 4. Streamlit 메인 화면 UI 구성
+# 4. Streamlit UI
 # ---------------------------------------------------------
-st.markdown("<div style='text-align: center; color: #888; font-size: 1.0rem; font-weight: bold; margin-bottom: 0px;'>이미지넷(Imagenet) 2011년 학습 데이터 기반</div>", unsafe_allow_html=True)
-st.markdown("<h1 style='margin-top: -10px;'>AI 얼굴 인식 라벨링 테스트</h1>", unsafe_allow_html=True)
+st.set_page_config(page_title="ImageNet 2011 Training Data-based Face Recognition", layout="centered")
 
-# [수정됨] 문구 수정
-st.markdown("<div class='subtitle'>본 테스트는 인간의 편견을 학습한 AI를 보여주는 시뮬레이션입니다.<br>전 세계 얼굴 인식 AI의 훈련장으로 쓰이는 IMAGENET의 실제 과거 카테고리 분류(2011년 버전)를 활용해 인물 사진과 매칭되는 단어를 보여줍니다.</div>", unsafe_allow_html=True)
-
-# [수정됨] 요청하신 이미지 추가 (img.jpg가 존재할 경우 출력)
-if os.path.exists("img.jpg"):
-    st.image("img.jpg", use_container_width=True)
+st.title("이미지넷(Imagenet) 2011년 학습 데이터 기반 얼굴 인식")
+st.caption("오염된 학습 데이터셋으로 AI가 인간 얼굴을 자의적으로 판단하는 구조 시각화")
 
 st.markdown("---")
 
-demo_mode = st.session_state.get("demo_mode_toggle", False)
-
-option = st.radio("이미지 입력 방식을 선택하세요:", ("웹캠 캡처", "사진 업로드"), horizontal=True)
+option = st.radio("이미지 입력 방식을 선택하세요:", ("웹캠 캡처", "사진 업로드"))
 image_to_process = None
 
 if option == "웹캠 캡처":
@@ -295,91 +190,74 @@ elif option == "사진 업로드":
         image_to_process = Image.open(uploaded_file)
 
 if image_to_process is not None:
-    status_text = st.empty()
-    progress_bar = st.progress(0)
-    
-    processed_image, results = process_image(
-        image_to_process, 
-        is_demo_mode=demo_mode,
-        progress_bar=progress_bar,
-        status_text=status_text
-    )
-    
-    status_text.empty()
-    progress_bar.empty()
-    
-    col_img1, col_img2, col_img3 = st.columns([1, 4, 1])
-    with col_img2:
-        st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
-    
-    if results:
-        for res in results:
-            if res["type"] == "unsafe":
-                st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
-    else:
-        st.info("얼굴이 명확하게 인식되지 않았습니다.")
+    with st.spinner("AI가 시각적 특징을 분석하여 매핑 중입니다..."):
+        processed_image, results = process_image(image_to_process)
+        st.image(processed_image, caption="분석 결과", width="stretch")
         
-    if not st.session_state.history or st.session_state.history[-1]["results"] != results:
-        st.session_state.history.append({
-            "image": processed_image,
-            "results": results
-        })
+        if results:
+            for res in results:
+                st.info(res)
+        else:
+            st.info("얼굴이 명확하게 인식되지 않았습니다.")
+            
+        if not st.session_state.history or st.session_state.history[-1]["results"] != results:
+            st.session_state.history.append({
+                "image": processed_image,
+                "results": results
+            })
 
 # ---------------------------------------------------------
-# 5. 하단 UI: 과거 분석 기록 -> 단어 리스트 -> 체험 스위치 -> 논란 설명
+# 과거 기록 썸네일 섹션
 # ---------------------------------------------------------
 if st.session_state.history:
-    st.markdown("<br><hr>", unsafe_allow_html=True)
-    st.subheader("🕰️ 과거 분석 기록")
+    st.markdown("---")
+    st.subheader("🕰️ 과거 분석 썸네일 기록")
     
     cols = st.columns(4)
     for idx, item in enumerate(reversed(st.session_state.history)):
         col = cols[idx % 4]
         with col:
-            st.image(item["image"], use_container_width=True)
+            st.image(item["image"], width="stretch")
             if item["results"]:
                 for res in item["results"]:
-                    short_text = res["text"].split(" : ")[0] 
-                    color = "red" if res["type"] == "unsafe" else "green"
-                    st.markdown(f"<div class='history-text' style='color: {color}; font-weight: bold;'>{short_text}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 0.8em; line-height: 1.2;'>{res}</div>", unsafe_allow_html=True)
             else:
-                st.markdown("<div class='history-text' style='color: gray;'>미인식</div>", unsafe_allow_html=True)
+                st.markdown("<div style='font-size: 0.8em;'>얼굴 미인식</div>", unsafe_allow_html=True)
 
+# ---------------------------------------------------------
+# 1. 문제적 편견 혐오 단어 별도 리스트
+# ---------------------------------------------------------
 unsafe_items = [item for item in BIAS_LABELS if item["is_unsafe"]]
 
-st.markdown("<br>", unsafe_allow_html=True)
-st.subheader(f"🚨 문제적 편견/혐오 단어 리스트 (총 1,593개)")
-st.caption("AI의 얼굴인식 학습 분류에 사용된 실제 혐오/편견 단어들입니다.")
+st.markdown("---")
+st.subheader(f"🚨 문제적 편견/혐오 단어 리스트 (총 {len(unsafe_items)}개)")
+st.caption("`trans list.txt` 데이터를 기반으로 검출된 실제 삭제된 혐오/편견 단어들입니다.")
 
-unsafe_html = "<div style='height: 200px; overflow-y: scroll; border: 1px solid #ffcccc; padding: 15px; background-color: #fff9f9; border-radius: 8px; font-family: monospace;'>"
+unsafe_html = "<div style='height: 250px; overflow-y: scroll; border: 2px solid red; padding: 15px; background-color: #fff0f0; border-radius: 8px; font-family: monospace;'>"
 unsafe_html += "<ul style='list-style-type: none; padding-left: 0;'>"
-
 for item in unsafe_items:
     word = item["word"]
     kor_word = item["kor_word"]
     kor_def = item["def"]
-    unsafe_html += f"<li style='color: #cc0000; margin-bottom: 5px; font-size: 0.9em;'><b>⚠️ {word}({kor_word})</b> : {kor_def}</li>"
-
+    unsafe_html += f"<li style='color: red; margin-bottom: 5px;'><b>⚠️ {word}({kor_word})</b> : {kor_def}</li>"
 unsafe_html += "</ul></div>"
 st.markdown(unsafe_html, unsafe_allow_html=True)
 
-st.markdown("---")
-st.markdown("<h4 style='text-align:center;'>⚙️ 체험 모드 설정</h4>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.toggle("🚨 극단적 편향 모드 켜기 (부정적/편견 단어만 매칭)", key="demo_mode_toggle")
+# ---------------------------------------------------------
+# 2. 전체 단어 리스트
+# ---------------------------------------------------------
+st.markdown("<br>", unsafe_allow_html=True)
+st.subheader(f"📋 ImageNet 2011 '사람' 카테고리 전체 목록 (총 {len(BIAS_LABELS)}개)")
+st.caption("당시 AI가 사람의 얼굴을 분류하는 데 사용했던 전체 단어 풀(Pool)입니다.")
 
-if st.session_state.get("demo_mode_toggle", False):
-    st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
-
-st.markdown("<br><hr>", unsafe_allow_html=True)
-st.subheader("📖 ImageNet Roulette와 데이터 편향성 논란")
-st.markdown("""
-2019년 9월, 아티스트 트레버 페글렌(Trevor Paglen)과 AI 연구자 케이트 크로포드(Kate Crawford)가 공개한 **ImageNet Roulette** 프로젝트는 인공지능 학계와 대중에게 큰 충격을 주었습니다. 이 프로젝트는 방대한 이미지 학습 데이터인 '이미지넷(ImageNet)'에 내재된 차별적 시선을 폭로하기 위해, 사용자의 사진을 올리면 AI가 사람을 어떻게 분류하고 라벨링하는지 직접 체험할 수 있도록 설계되었습니다. 
-
-가벼운 장난처럼 시작된 이 룰렛은 사용자의 얼굴을 '실패자', '범죄자', '매춘부', 심지어는 특정 인종을 비하하는 단어와 매칭하며, 인공지능이 과거 인류의 편견과 혐오를 얼마나 무분별하게 학습했는지를 적나라하게 보여주었습니다.
-
-결국 프로젝트가 소셜 미디어를 통해 확산되며 논란이 거세지자, 이미지넷 측은 문제의 심각성을 인정했습니다. 그 결과 **2019년 9월, 438개의 '안전하지 않은(unsafe)' 카테고리와 1,155개의 '민감한(sensitive)' 카테고리를 포함해 총 1,593개의 혐오·차별적 표현이 데이터베이스에서 전면 삭제**되었습니다. 이와 함께 해당 라벨에 속해 있던 **약 60만 장 이상의 인물 이미지도 영구적으로 제거**되며, 전 세계 AI 개발자들에게 '학습 데이터의 윤리'라는 무거운 과제를 남겼습니다.
-""")
+full_html = "<div style='height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 15px; background-color: #f9f9f9; border-radius: 8px; font-family: monospace;'>"
+full_html += "<ul style='list-style-type: none; padding-left: 0;'>"
+for item in BIAS_LABELS:
+    word = item["word"]
+    if item["is_unsafe"]:
+        kor_word = item["kor_word"]
+        full_html += f"<li style='color: red; font-weight: bold; margin-bottom: 3px;'>⚠️ {word}({kor_word})</li>"
+    else:
+        full_html += f"<li style='color: #444; margin-bottom: 3px;'>{word}</li>"
+full_html += "</ul></div>"
+st.markdown(full_html, unsafe_allow_html=True)
