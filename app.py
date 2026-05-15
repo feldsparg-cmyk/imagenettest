@@ -66,16 +66,18 @@ h1 { display: block; width: 100%; text-align: center !important; font-size: 2rem
 /* 에러 박스 (업로드 실패) */
 .upload-error { background-color: #fff8ed; border: 1px solid #f5d9a3; border-radius: 6px; padding: 12px 16px; font-size: 0.88rem; color: #a05c00; margin-top: 10px; word-break: keep-all; }
 
-/* 섹션 헤더 */
+/* 섹션 헤더 및 앵커 링크(쇠사슬 아이콘) 숨김 처리 */
 h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; color: #111 !important; word-break: keep-all; text-align: center; } 
+a.header-anchor { display: none !important; }
 
 /* Streamlit 기본 요소 오버라이드 */
 .stRadio > label { font-size: 0.88rem; color: #555; word-break: keep-all; }
 .stRadio [role="radiogroup"] { gap: 8px; }
 .stMarkdown p { word-break: keep-all; overflow-wrap: break-word; }
 
-/* 토글 글씨 쪼개짐 완벽 방지 (최상위 강제) */
-.stToggle { display: flex; justify-content: center; width: 100%; }
+/* 토글 UI 강제 정렬 및 텍스트 쪼개짐 방지 */
+.stToggle { display: flex; justify-content: center; align-items: center; width: 100%; margin: 0 auto; }
+.stToggle label { display: flex !important; justify-content: center !important; align-items: center !important; }
 .stToggle label, 
 .stToggle div, 
 .stToggle p, 
@@ -246,45 +248,68 @@ def get_text_embeddings(is_demo):
     return text_features, target_labels
 
 # ---------------------------------------------------------
-# 4. 강력한 이미지 통합 전처리 함수
+# 4. 강력한 이미지 통합 전처리 함수 (구형 JPG 오류 완벽 대응)
 # ---------------------------------------------------------
 
 def load_and_prep_image(file_or_cam):
     error_msg = None
     img = None
+    raw_bytes = None
 
     try:
+        # 파일 포인터를 바이트로 읽기
         if hasattr(file_or_cam, 'read'):
             raw_bytes = file_or_cam.read()
             if not raw_bytes or len(raw_bytes) < 8:
                 return None, "파일이 비어있거나 손상되었습니다."
             stream = io.BytesIO(raw_bytes)
         else:
+            # 웹캠 등 이미 BytesIO와 유사한 스트림인 경우
             stream = file_or_cam
+            if hasattr(stream, 'getvalue'):
+                raw_bytes = stream.getvalue()
 
+        # PIL ImageFile 설정: 잘린 이미지도 부분 복원 허용
         from PIL import ImageFile
         ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+        # 1차 시도: PIL을 이용한 표준 디코딩
         try:
             img = Image.open(stream)
             img.load()
         except Exception as e:
             err_lower = str(e).lower()
-            if img is not None:
-                pass 
+            
+            # 2차 시도 (Fallback): OpenCV 강제 디코딩 (구형/손상 헤더 JPG 우회)
+            if raw_bytes and ("cannot identify" in err_lower or "no decoder" in err_lower or "truncated" in err_lower or "premature" in err_lower):
+                try:
+                    np_arr = np.frombuffer(raw_bytes, np.uint8)
+                    cv_img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+                    if cv_img is not None:
+                        # OpenCV는 BGR로 읽으므로 RGB로 변환
+                        cv_img_rgb = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+                        img = Image.fromarray(cv_img_rgb)
+                    else:
+                        raise Exception("OpenCV fallback failed")
+                except Exception as fallback_e:
+                    # Fallback 마저 실패하면 원본 오류 메시지 기반 에러 반환
+                    if "cannot identify" in err_lower or "no decoder" in err_lower:
+                        return None, "지원하지 않는 파일 형식입니다. (JPG, PNG, WebP, BMP, TIFF 권장)"
+                    elif "truncated" in err_lower or "premature" in err_lower:
+                        return None, "파일이 불완전하게 저장되어 있습니다. 다시 저장 후 업로드해 보세요."
+                    else:
+                        return None, f"이미지를 열 수 없습니다: {str(e)}"
             else:
-                if "cannot identify" in err_lower or "no decoder" in err_lower:
-                    return None, "지원하지 않는 파일 형식입니다. (JPG, PNG, WebP, BMP, TIFF 권장)"
-                elif "truncated" in err_lower or "premature" in err_lower:
-                    return None, "파일이 불완전하게 저장되어 있습니다. 다시 저장 후 업로드해 보세요."
-                else:
-                    return None, f"이미지를 열 수 없습니다: {str(e)}"
+                if img is None:
+                    return None, f"이미지를 처리하는 중 오류가 발생했습니다: {str(e)}"
 
+        # EXIF 회전 보정 (iPhone, Android 사진 대응)
         try:
             img = ImageOps.exif_transpose(img)
         except Exception:
             pass
 
+        # 색 공간 통합 변환 (모든 모드 → RGB)
         if img.mode == 'RGBA':
             background = Image.new('RGB', img.size, (255, 255, 255))
             background.paste(img, mask=img.split()[3])
@@ -306,10 +331,12 @@ def load_and_prep_image(file_or_cam):
         elif img.mode != 'RGB':
             img = img.convert('RGB')
 
+        # 최소 크기 검사
         w, h = img.size
         if w < 50 or h < 50:
             return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
 
+        # 최대 크기 제한 (메모리 절약)
         max_size = 1200
         if max(w, h) > max_size:
             if w > h:
@@ -411,7 +438,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
             kor_def = label_data["def"]
             is_unsafe = label_data["is_unsafe"]
 
-            # [수정] chink 단어의 한국어 의미 강제 변경 (사진 분석 결과 표기용)
+            # chink 단어의 한국어 의미 강제 변경
             if eng_word.lower() == "chink":
                 kor_word = "눈 찢어진 동양인"
 
@@ -594,7 +621,7 @@ for item in filtered_unsafe_items:
     word = item["word"]
     kor_word = item["kor_word"]
     
-    # [수정] chink 단어의 한국어 의미 강제 변경 (하단 리스트 표기용)
+    # chink 단어의 한국어 의미 강제 변경
     if word.lower() == "chink":
         kor_word = "눈 찢어진 동양인"
         
@@ -607,11 +634,10 @@ st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
 st.markdown("<h4 style='text-align:center; margin-bottom:1rem;'>⚙ 체험 모드 설정</h4>", unsafe_allow_html=True)
 
-# [수정] 토글 글씨 쪼개짐 완벽 방지를 위해 컬럼 레이아웃을 없애고 컨테이너로 감싸기
-st.markdown("<div style='display: flex; justify-content: center; width: 100%;'>", unsafe_allow_html=True)
-# 텍스트 사이에 강제 줄바꿈 방지 공백 삽입
-st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
-st.markdown("</div>", unsafe_allow_html=True)
+# st.columns를 사용하여 토글을 완벽하게 가운데 정렬
+col_dummy1, col_toggle, col_dummy2 = st.columns([1, 2, 1])
+with col_toggle:
+    st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
 
 if st.session_state.get("demo_mode_toggle", False):
     st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
