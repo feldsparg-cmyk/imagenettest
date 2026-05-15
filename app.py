@@ -3,9 +3,8 @@ import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
-import torchvision.models as models
-import torchvision.transforms as transforms
 from PIL import Image, ImageDraw, ImageFont
+from transformers import CLIPProcessor, CLIPModel
 from deep_translator import GoogleTranslator
 import nltk
 from nltk.corpus import wordnet as wn
@@ -14,6 +13,7 @@ import urllib.request
 import re
 import random
 import time
+import gc
 
 # ---------------------------------------------------------
 # 0. 세션 상태 초기화 및 페이지 설정
@@ -118,45 +118,63 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
     return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
 
 # ---------------------------------------------------------
-# 2. 초경량 모델 로드 및 고정 좌표계(Clustering) 생성
+# 2. 정확도 높은 CLIP 모델 로드 (경량화 해제)
 # ---------------------------------------------------------
 @st.cache_resource
-def load_lightweight_models():
-    # 600MB CLIP 모델 대신 40MB의 초경량 ResNet18을 사용하여 얼굴 특징(512차원)만 추출
-    model = models.resnet18(pretrained=True)
-    model.fc = torch.nn.Identity() # 분류기를 제거하고 512차원 특징값만 출력하도록 수정
-    model.eval()
-    
+def load_models():
+    # 정확도 복구를 위해 온전한 CLIP 모델 사용
+    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    
-    preprocess = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
-    return model, face_cascade, preprocess
+    return model, processor, face_cascade
 
-model, face_detection, preprocess = load_lightweight_models()
+model, processor, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
+# ---------------------------------------------------------
+# 3. 핵심 로직: 미니 배치 처리를 통한 메모리 폭발 방지
+# ---------------------------------------------------------
 @st.cache_resource
-def get_label_coordinates(is_demo):
-    """
-    단어들에 영구적이고 고정된 512차원 수학적 좌표를 부여합니다.
-    시드(seed)가 고정되어 있으므로, 비슷한 특징을 가진 얼굴은 항상 일관된 특정 단어 그룹에 묶이게 됩니다.
-    """
+def precompute_text_embeddings(is_demo):
     target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
+    text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
     
-    # 결과를 일관되게 만들기 위해 난수 시드 고정
-    torch.manual_seed(42)
-    # 각 단어마다 512차원의 고유한 좌표 부여
-    label_vectors = torch.randn(len(target_labels), 512)
-    label_vectors = F.normalize(label_vectors, p=2, dim=1)
+    all_text_features = []
+    batch_size = 64 # 메모리 과부하를 막기 위해 한 번에 64개의 단어씩만 연산
     
-    return label_vectors, target_labels
+    # 미니 배치 연산 루프
+    for i in range(0, len(text_prompts), batch_size):
+        batch_prompts = text_prompts[i:i+batch_size]
+        inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
+        
+        with torch.no_grad():
+            text_outputs = model.get_text_features(**inputs)
+            
+            if hasattr(text_outputs, "pooler_output"):
+                feat = text_outputs.pooler_output
+                if feat.shape[-1] != 512 and hasattr(model, "text_projection"):
+                    feat = model.text_projection(feat)
+            elif isinstance(text_outputs, torch.Tensor):
+                feat = text_outputs
+            else:
+                feat = text_outputs[0]
+                
+            feat = F.normalize(feat, p=2, dim=-1)
+            all_text_features.append(feat)
+            
+        # 매 배치마다 사용이 끝난 변수들을 강제 삭제하여 메모리 확보
+        del inputs
+        del text_outputs
+    
+    # 파이썬 가비지 컬렉터로 메모리 청소
+    gc.collect()
+    
+    # 분할 연산된 특징들을 하나의 행렬로 병합
+    text_features = torch.cat(all_text_features, dim=0)
+    return text_features, target_labels
 
 # ---------------------------------------------------------
-# 3. 핵심 로직: 초고속 특징 매칭 (Clustering 기법)
+# 4. 이미지 분석
 # ---------------------------------------------------------
 def get_realtime_translation(eng_word):
     if eng_word in st.session_state.translated_cache:
@@ -191,8 +209,8 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    update_progress(50, "편향 데이터 좌표계 동기화 중...")
-    label_vectors, target_labels = get_label_coordinates(is_demo_mode)
+    update_progress(50, "텍스트-이미지 특징 공간 동기화 중...")
+    text_features, target_labels = precompute_text_embeddings(is_demo_mode)
 
     total_faces = len(faces)
     for i, (x, y, w, h) in enumerate(faces):
@@ -204,19 +222,28 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         if face_img.size == 0: continue
             
         face_pil = Image.fromarray(face_img)
-        input_tensor = preprocess(face_pil).unsqueeze(0)
         
+        inputs = processor(images=face_pil, return_tensors="pt")
         with torch.no_grad():
-            # 얼굴 이미지에서 512차원의 형태적 특징(인종, 피부색, 안경 등) 추출
-            face_feature = model(input_tensor)
-            face_feature = F.normalize(face_feature, p=2, dim=1)
+            image_outputs = model.get_image_features(**inputs)
             
-            # 얼굴 특징과 1593개 단어 좌표 간의 거리(유사도) 계산
-            similarity = (face_feature @ label_vectors.T).squeeze()
+            if hasattr(image_outputs, "pooler_output"):
+                feat = image_outputs.pooler_output
+                if feat.shape[-1] != 512 and hasattr(model, "visual_projection"):
+                    feat = model.visual_projection(feat)
+                image_features = feat
+            elif isinstance(image_outputs, torch.Tensor):
+                image_features = image_outputs
+            else:
+                image_features = image_outputs[0]
+                
+            image_features = F.normalize(image_features, p=2, dim=-1)
             
-            # 가장 가까운 좌표에 위치한 단어 3개 추출
-            top_k = min(3, similarity.shape[0])
-            top_indices = torch.topk(similarity, top_k).indices.tolist()
+            # 의미론적 유사도 계산 (높은 정확도)
+            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+            
+            top_k = min(3, similarity.shape[1])
+            top_indices = torch.topk(similarity, top_k).indices[0].tolist()
             
         display_texts = []
         is_face_unsafe = False
@@ -262,7 +289,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     return img_pil, detected_results
 
 # ---------------------------------------------------------
-# 4. Streamlit 메인 화면 UI 구성
+# 5. Streamlit 메인 화면 UI 구성
 # ---------------------------------------------------------
 st.markdown("<div style='text-align: center; color: #888; font-size: 1.0rem; font-weight: bold; margin-bottom: 0px;'>이미지넷(Imagenet) 2011년 학습 데이터 기반</div>", unsafe_allow_html=True)
 st.markdown("<h1 style='margin-top: -10px;'>AI 얼굴 인식 라벨링 테스트</h1>", unsafe_allow_html=True)
@@ -322,7 +349,7 @@ if image_to_process is not None:
         })
 
 # ---------------------------------------------------------
-# 5. 하단 UI: 과거 분석 기록 -> 단어 리스트 -> 체험 스위치 -> 논란 설명
+# 6. 하단 UI: 과거 분석 기록 -> 단어 리스트 -> 체험 스위치 -> 논란 설명
 # ---------------------------------------------------------
 if st.session_state.history:
     st.markdown("<br><hr>", unsafe_allow_html=True)
