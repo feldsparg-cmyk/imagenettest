@@ -30,6 +30,8 @@ st.markdown("""
     .unsafe-box { background-color: #ffe6e6; color: #cc0000; border: 2px solid #ff9999; }
     .safe-box { background-color: #e6ffe6; color: #008000; border: 2px solid #99ff99; }
     .history-text { font-size: 0.8rem; text-align: center; margin-top: 5px; line-height: 1.3; }
+    .person-header { text-align: center; font-weight: bold; font-size: 1.1rem; margin-top: 20px; color: #333; }
+    .legend-box { text-align: center; font-size: 0.85rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-top: 10px; margin-bottom: 20px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -39,7 +41,7 @@ if "translated_cache" not in st.session_state:
     st.session_state.translated_cache = {}
 
 # ---------------------------------------------------------
-# 1. 환경 설정 및 데이터 로드 (파싱 로직 강화)
+# 1. 환경 설정 및 데이터 로드
 # ---------------------------------------------------------
 @st.cache_resource
 def setup_environment():
@@ -62,8 +64,6 @@ def load_offline_translations(filepath="trans list.txt"):
                 line = line.strip()
                 if not line or line.startswith('🚨') or line.startswith('='):
                     continue
-                
-                # [수정됨] 뜻풀이가 있는 경우와 없는 경우 모두 강제로 잡아내도록 정규식 완화
                 match = re.match(r"^(.*?)\((.*?)\)\s*:\s*(.*)$", line)
                 if match:
                     eng = match.group(1).strip().lower()
@@ -191,20 +191,41 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
     st.session_state.EMBEDDINGS_CACHE[cache_key] = (text_features, target_labels)
     return text_features, target_labels
 
-def resize_image_for_memory(image, max_size=1000):
-    w, h = image.size
-    if max(w, h) > max_size:
-        if w > h:
-            new_w = max_size
-            new_h = int(h * (max_size / w))
-        else:
-            new_h = max_size
-            new_w = int(w * (max_size / h))
-        return image.resize((new_w, new_h), Image.Resampling.LANCZOS)
-    return image
+# ---------------------------------------------------------
+# [수정됨] 강력한 이미지 통합 전처리 함수 (오류 완벽 차단)
+# ---------------------------------------------------------
+def load_and_prep_image(file_or_cam):
+    try:
+        img = Image.open(file_or_cam)
+        
+        # 1. EXIF 메타데이터 회전 보정 (에러 발생 시 무시)
+        try:
+            img = ImageOps.exif_transpose(img)
+        except Exception:
+            pass
+            
+        # 2. 강제 RGB 변환 (RGBA, CMYK 등 배열 충돌 방지)
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+            
+        # 3. 해상도 폭발 방지 (동적 리사이징)
+        max_size = 1000
+        w, h = img.size
+        if max(w, h) > max_size:
+            if w > h:
+                new_w = max_size
+                new_h = int(h * (max_size / w))
+            else:
+                new_h = max_size
+                new_w = int(w * (max_size / h))
+            img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            
+        return img
+    except Exception as e:
+        return None
 
 # ---------------------------------------------------------
-# 4. 이미지 분석 (UI 로직 완벽 수정)
+# 4. 이미지 분석
 # ---------------------------------------------------------
 def get_realtime_translation(eng_word):
     if eng_word in st.session_state.translated_cache:
@@ -222,11 +243,8 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         if status_text: status_text.markdown(f"⏳ **{text} ({val}%)**")
 
     update_progress(10, "이미지 분석 준비 중...")
-    
-    if image.mode != 'RGB':
-        image = image.convert('RGB')
-        
     img_cv = np.array(image)
+    
     img_h, img_w, _ = img_cv.shape
     dynamic_thickness = max(2, int(img_w * 0.005))
     dynamic_font_size = max(16, int(img_w * 0.025))
@@ -251,7 +269,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     total_faces = len(faces)
     for i, (x, y, w, h) in enumerate(faces):
         current_prog = 60 + int(40 * ((i + 1) / max(1, total_faces)))
-        update_progress(current_prog, "AI가 시각적 특징에서 단어를 추론 중입니다...")
+        update_progress(current_prog, f"AI가 시각적 특징에서 단어를 추론 중입니다... ({i+1}/{total_faces})")
         
         x, y = max(0, x), max(0, y)
         face_img = img_cv[y:y+h, x:x+w]
@@ -282,6 +300,9 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         display_texts = []
         is_face_unsafe = False
         
+        # [수정됨] 인물별 그룹화를 위한 배열 초기화
+        person_results = []
+        
         for idx in top_indices:
             label_data = target_labels[idx]
             eng_word = label_data["word"]
@@ -298,7 +319,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
             display_box_text = f"{eng_word}({kor_word})" if kor_word else eng_word
             display_texts.append(display_box_text)
             
-            # [수정됨] 단어의 뜻풀이(kor_def)가 없더라도 is_unsafe가 True면 무조건 위험군으로 시각화
             if is_unsafe:
                 if kor_def:
                     detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}"
@@ -309,10 +329,14 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
                 detail_text = f"✅ {eng_word}({kor_word})" if kor_word else eng_word
                 res_dict = {"text": detail_text, "type": "safe"}
                 
-            detected_results.append(res_dict)
+            person_results.append(res_dict)
+
+        # [수정됨] 결과물 리스트를 인물 단위로 묶어서 추가
+        detected_results.append({"person": i + 1, "labels": person_results})
 
         box_color = (255, 0, 0) if is_face_unsafe else (0, 255, 0)
-        display_box_text_combined = "\n".join(display_texts)
+        # [수정됨] 사진의 바운딩 박스 텍스트 최상단에 [인물 N] 추가
+        display_box_text_combined = f"[인물 {i+1}]\n" + "\n".join(display_texts)
 
         draw.rectangle([(x, y), (x+w, y+h)], outline=box_color, width=dynamic_thickness)
         bbox = draw.multiline_textbbox((x, y), display_box_text_combined, font=dynamic_font)
@@ -346,16 +370,12 @@ image_to_process = None
 if option == "웹캠 캡처":
     camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
     if camera_image is not None:
-        image_to_process = Image.open(camera_image)
-        image_to_process = ImageOps.exif_transpose(image_to_process)
-        image_to_process = resize_image_for_memory(image_to_process)
+        image_to_process = load_and_prep_image(camera_image)
 
 elif option == "사진 업로드":
     uploaded_file = st.file_uploader("얼굴이 나온 사진을 업로드하세요.", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
-        image_to_process = Image.open(uploaded_file)
-        image_to_process = ImageOps.exif_transpose(image_to_process)
-        image_to_process = resize_image_for_memory(image_to_process)
+        image_to_process = load_and_prep_image(uploaded_file)
 
 if image_to_process is not None:
     status_text = st.empty()
@@ -376,11 +396,17 @@ if image_to_process is not None:
         st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
     
     if results:
-        for res in results:
-            if res["type"] == "unsafe":
-                st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
+        # [수정됨] 하단 결과창에 색상 범례 명시
+        st.markdown("<div class='legend-box'>🔴 <b>빨간색:</b> 이미지넷이 판단한 편견이 담긴 단어로 판단해 삭제된 단어<br>🟢 <b>초록색:</b> 아직 AI가 학습에 참고하는 단어</div>", unsafe_allow_html=True)
+        
+        # [수정됨] 결과물을 인물별로 묶어서 그룹화하여 출력
+        for person_data in results:
+            st.markdown(f"<div class='person-header'>👤 인물 {person_data['person']}</div>", unsafe_allow_html=True)
+            for res in person_data['labels']:
+                if res["type"] == "unsafe":
+                    st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
     else:
         st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
         
@@ -403,10 +429,13 @@ if st.session_state.history:
         with col:
             st.image(item["image"], use_container_width=True)
             if item["results"]:
-                for res in item["results"]:
-                    short_text = res["text"].split(" : ")[0] 
-                    color = "red" if res["type"] == "unsafe" else "green"
-                    st.markdown(f"<div class='history-text' style='color: {color}; font-weight: bold;'>{short_text}</div>", unsafe_allow_html=True)
+                # [수정됨] 썸네일 히스토리에도 인물별 그룹화 적용
+                for person_data in item["results"]:
+                    st.markdown(f"<div class='history-text' style='color: #222; font-weight: bold; margin-top: 8px;'>[인물 {person_data['person']}]</div>", unsafe_allow_html=True)
+                    for res in person_data['labels']:
+                        short_text = res["text"].split(" : ")[0] 
+                        color = "red" if res["type"] == "unsafe" else "green"
+                        st.markdown(f"<div class='history-text' style='color: {color}; font-weight: bold;'>{short_text}</div>", unsafe_allow_html=True)
             else:
                 st.markdown("<div class='history-text' style='color: gray;'>미인식</div>", unsafe_allow_html=True)
 
