@@ -252,9 +252,9 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     
     faces = face_detection.detectMultiScale(
         gray_cv, 
-        scaleFactor=1.1,      
-        minNeighbors=5,       
-        minSize=(30, 30)      
+        scaleFactor=1.05,      
+        minNeighbors=3,       
+        minSize=(50, 50)      
     )
 
     img_pil = Image.fromarray(img_cv)
