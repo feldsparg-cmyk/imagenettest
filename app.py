@@ -40,7 +40,7 @@ html, body, [class*="css"] {
 /* 상단 태그 */
 .eyebrow { text-align: center; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #999; text-transform: uppercase; margin-bottom: 0.6rem; }
 
-/* 메인 타이틀 (가운데 정렬 속성 강화) */
+/* 메인 타이틀 */
 h1 { display: block; width: 100%; text-align: center !important; font-size: 2rem !important; font-weight: 600 !important; color: #111 !important; letter-spacing: -0.03em; line-height: 1.3; margin-bottom: 1rem !important; word-break: keep-all; }
 
 /* 서브타이틀 */
@@ -67,17 +67,19 @@ h1 { display: block; width: 100%; text-align: center !important; font-size: 2rem
 .upload-error { background-color: #fff8ed; border: 1px solid #f5d9a3; border-radius: 6px; padding: 12px 16px; font-size: 0.88rem; color: #a05c00; margin-top: 10px; word-break: keep-all; }
 
 /* 섹션 헤더 */
-h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; color: #111 !important; word-break: keep-all; text-align: center; } /* 중앙 정렬 추가 */
+h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; color: #111 !important; word-break: keep-all; text-align: center; } 
 
-/* Streamlit 기본 요소 오버라이드 (텍스트 넘침 방지 및 토글 UI 보완) */
+/* Streamlit 기본 요소 오버라이드 */
 .stRadio > label { font-size: 0.88rem; color: #555; word-break: keep-all; }
 .stRadio [role="radiogroup"] { gap: 8px; }
 .stMarkdown p { word-break: keep-all; overflow-wrap: break-word; }
 
-/* 토글 글씨 쪼개짐 완벽 방지: Streamlit의 내부 마크다운 컨테이너까지 직접 타겟팅 */
-.stToggle label { display: flex; align-items: center; justify-content: center; }
-.stToggle label p { margin-bottom: 0; }
-.stToggle label [data-testid="stMarkdownContainer"] p { white-space: nowrap !important; } 
+/* 토글 글씨 쪼개짐 완벽 방지 (최상위 강제) */
+.stToggle { display: flex; justify-content: center; width: 100%; }
+.stToggle label, 
+.stToggle div, 
+.stToggle p, 
+.stToggle span { white-space: nowrap !important; word-break: keep-all !important; }
 
 /* 진행 바 텍스트 */
 .progress-label { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #888; text-align: center; margin-top: 4px; word-break: keep-all; }
@@ -94,26 +96,19 @@ h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; co
 
 /* 2. 모바일 및 태블릿 대응 반응형 디자인 */
 @media screen and (max-width: 768px) {
-    .block-container { 
-        padding-top: 1.5rem; 
-        padding-bottom: 2rem; 
-        padding-left: 1.2rem; 
-        padding-right: 1.2rem; 
-    }
+    .block-container { padding-top: 1.5rem; padding-bottom: 2rem; padding-left: 1.2rem; padding-right: 1.2rem; }
     h1 { font-size: 1.5rem !important; }
     .subtitle { font-size: 0.85rem; padding: 0 5px; }
     .mode-section { padding: 1rem; }
     .word-list-container { padding: 10px 12px; }
-    /* 모바일 화면이 너무 작을 경우 텍스트 크기를 살짝 줄여 삐져나가지 않도록 보완 */
-    .stToggle label [data-testid="stMarkdownContainer"] p { font-size: 0.85rem; }
+    .stToggle p { font-size: 0.85rem !important; }
 }
 
 @media screen and (max-width: 480px) {
     h1 { font-size: 1.3rem !important; }
     .result-box { font-size: 0.85rem; padding: 10px 12px; }
     .article-text { font-size: 0.85rem; line-height: 1.6; }
-    /* 아주 작은 모바일 화면에서도 줄바꿈 절대 안됨 */
-    .stToggle label [data-testid="stMarkdownContainer"] p { font-size: 0.75rem; }
+    .stToggle p { font-size: 0.75rem !important; }
 }
 </style>""", unsafe_allow_html=True)
 
@@ -416,6 +411,10 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
             kor_def = label_data["def"]
             is_unsafe = label_data["is_unsafe"]
 
+            # [수정] chink 단어의 한국어 의미 강제 변경 (사진 분석 결과 표기용)
+            if eng_word.lower() == "chink":
+                kor_word = "눈 찢어진 동양인"
+
             if is_unsafe:
                 is_face_unsafe = True
 
@@ -581,7 +580,7 @@ unsafe_items = [item for item in BIAS_LABELS if item["is_unsafe"]]
 # 단어 리스트 ABC 오름차순 정렬
 unsafe_items = sorted(unsafe_items, key=lambda x: x["word"].lower())
 
-# [추가] 리스트에서 'abbe', 'abbess' 제거 로직
+# 리스트에서 'abbe', 'abbess' 제거 로직
 filtered_unsafe_items = [item for item in unsafe_items if item["word"].lower() not in ["abbe", "abbess"]]
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -594,6 +593,11 @@ unsafe_html = "<div class='word-list-container'><ul style='list-style-type:none;
 for item in filtered_unsafe_items:
     word = item["word"]
     kor_word = item["kor_word"]
+    
+    # [수정] chink 단어의 한국어 의미 강제 변경 (하단 리스트 표기용)
+    if word.lower() == "chink":
+        kor_word = "눈 찢어진 동양인"
+        
     kor_def = item["def"]
     unsafe_html += f"<li style='color:#c0392b; margin-bottom:6px; font-size:0.82em;'>⚠ <b>{word}({kor_word})</b> : {kor_def}</li>"
 unsafe_html += "</ul></div>"
@@ -602,10 +606,12 @@ st.markdown(unsafe_html, unsafe_allow_html=True)
 st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
 st.markdown("<h4 style='text-align:center; margin-bottom:1rem;'>⚙ 체험 모드 설정</h4>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    # 파이썬 레벨 트릭 대신 CSS로 강제 적용될 수 있도록 원래 텍스트로 복원 (CSS에서 white-space: nowrap !important 적용)
-    st.toggle("🚨 극단적 편향 모드 켜기 (부정적/편견 단어만 매칭)", key="demo_mode_toggle")
+
+# [수정] 토글 글씨 쪼개짐 완벽 방지를 위해 컬럼 레이아웃을 없애고 컨테이너로 감싸기
+st.markdown("<div style='display: flex; justify-content: center; width: 100%;'>", unsafe_allow_html=True)
+# 텍스트 사이에 강제 줄바꿈 방지 공백 삽입
+st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
+st.markdown("</div>", unsafe_allow_html=True)
 
 if st.session_state.get("demo_mode_toggle", False):
     st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
@@ -619,7 +625,7 @@ st.markdown("""
 <br><br>
 피부색과 성별, 옷차림만으로 당신은 범죄자, 알코올 중독자라는 낙인이 붙을 수도 있다. 트레버 페글렌은 2019년 관객 참여형 프로젝트 '이미지넷 룰렛(ImageNet Roulette)'을 진행하며 AI가 인간을 분류하는 방식에 내재된 편견을 가감 없이 드러냈다.
 <br><br>
-이미지넷이란 세계 최대 규모의 이미지 데이터베이스로 1,400만개 이상의 이미지와 2만개가 넘는 카테고리 분류를 두고 있다. 지금도 전 세계 개발자들이 이미지넷을 인공지능의 훈련장으로 쓰며 이미지 학습과 얼굴 인식 AI의 기반으로 활용하고 있다.
+이미지넷이란 세계 최대 규모의 이미지 데이터베이스로 1,400만개 이상의 이미지와 2만개가 넘는 카테고리 분류를 두고 있다. 지금도 전 세계 개발자들이 이미지넷을 인공지능의 훈련장으로 쓰며 이미지 학습과 얼굴 인식 AI의 기반으로 활용하고 단어로 규정한다면 어떨까.
 <br><br>
 <b>미디어 아티스트 트레버 페글렌(Trevor Paglen, 미국, 1974년생)</b>은 이미지넷의 판단 알고리즘을 그대로 가져와 사람들이 직접 자신의 셀카를 업로드하면, 인공지능이 어떻게 사람을 분류하는지를 실시간으로 보여줬다. 흑인 남성은 범죄자, 용의자로 분류되고, 안경 쓴 사람은 괴짜, 공부벌레 같은 라벨이 붙는 식이다. 그는 오염된 학습 데이터 속 AI가 내리는 판단에 인간이 가진 편견과 인종 차별이 녹아들어가 있음을 경고했다.
 <br><br>
