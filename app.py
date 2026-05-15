@@ -69,10 +69,11 @@ h1 { text-align: center; font-size: 2rem !important; font-weight: 600 !important
 /* 섹션 헤더 */
 h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; color: #111 !important; word-break: keep-all; }
 
-/* Streamlit 기본 요소 오버라이드 (텍스트 넘침 방지) */
+/* Streamlit 기본 요소 오버라이드 (텍스트 넘침 방지 및 토글 UI 보완) */
 .stRadio > label { font-size: 0.88rem; color: #555; word-break: keep-all; }
 .stRadio [role="radiogroup"] { gap: 8px; }
 .stMarkdown p { word-break: keep-all; overflow-wrap: break-word; }
+.stToggle label p { white-space: nowrap !important; word-break: keep-all; } /* 토글 글씨 쪼개짐 완벽 방지 */
 
 /* 진행 바 텍스트 */
 .progress-label { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #888; text-align: center; margin-top: 4px; word-break: keep-all; }
@@ -87,7 +88,7 @@ h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; co
 .article-text { font-size: 0.92rem; line-height: 1.85; color: #444; word-break: keep-all; }
 .article-text b { color: #111; font-weight: 600; }
 
-/* 2. 모바일 및 태블릿 대응 반응형 디자인 (핵심 수정) */
+/* 2. 모바일 및 태블릿 대응 반응형 디자인 */
 @media screen and (max-width: 768px) {
     .block-container { 
         padding-top: 1.5rem; 
@@ -209,27 +210,18 @@ model, processor, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
 # ---------------------------------------------------------
-# 3. 단어 임베딩 추출 로직
+# 3. 단어 임베딩 전역 캐시 처리 (속도 최적화 핵심)
 # ---------------------------------------------------------
-
-def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
-    if "EMBEDDINGS_CACHE" not in st.session_state:
-        st.session_state.EMBEDDINGS_CACHE = {}
-
-    cache_key = f"mode_{is_demo}"
-    if cache_key in st.session_state.EMBEDDINGS_CACHE:
-        if progress_bar: progress_bar.progress(60)
-        if status_text: status_text.markdown("<div class='progress-label'>AI 단어 사전 로드 완료 (60%)</div>", unsafe_allow_html=True)
-        return st.session_state.EMBEDDINGS_CACHE[cache_key]
-
+# 최초 1회 서버 부팅 시점에만 인코딩을 수행하며 모든 사용자가 결과를 공유합니다.
+@st.cache_resource(show_spinner="AI 단어 사전 모델을 초기화 중입니다 (최초 1회만 소요됩니다)...")
+def get_text_embeddings(is_demo):
     target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
     text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
 
     all_text_features = []
-    batch_size = 64
-    total_batches = (len(text_prompts) + batch_size - 1) // batch_size
-
-    for idx, i in enumerate(range(0, len(text_prompts), batch_size)):
+    batch_size = 128 # 배치 크기를 늘려 연산 속도 향상
+    
+    for i in range(0, len(text_prompts), batch_size):
         batch_prompts = text_prompts[i:i+batch_size]
         inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
         with torch.no_grad():
@@ -245,32 +237,21 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
         feat = F.normalize(feat, p=2, dim=-1)
         all_text_features.append(feat)
 
-        current_prog = 30 + int(30 * ((idx + 1) / total_batches))
-        if progress_bar: progress_bar.progress(current_prog)
-        if status_text: status_text.markdown(f"<div class='progress-label'>AI 단어 사전 학습 중... (최초 1회만 소요됩니다) — {current_prog}%</div>", unsafe_allow_html=True)
-
-        del inputs
-        del text_outputs
+        del inputs, text_outputs
         gc.collect()
 
     text_features = torch.cat(all_text_features, dim=0)
-    st.session_state.EMBEDDINGS_CACHE[cache_key] = (text_features, target_labels)
     return text_features, target_labels
 
 # ---------------------------------------------------------
-# [개선] 강력한 이미지 통합 전처리 함수
+# 4. 강력한 이미지 통합 전처리 함수
 # ---------------------------------------------------------
 
 def load_and_prep_image(file_or_cam):
-    """
-    이미지를 안전하게 열고 전처리합니다.
-    반환: (PIL.Image, None) 성공 / (None, "에러 메시지") 실패
-    """
     error_msg = None
     img = None
 
     try:
-        # 파일 포인터를 바이트로 읽기
         if hasattr(file_or_cam, 'read'):
             raw_bytes = file_or_cam.read()
             if not raw_bytes or len(raw_bytes) < 8:
@@ -279,18 +260,16 @@ def load_and_prep_image(file_or_cam):
         else:
             stream = file_or_cam
 
-        # PIL ImageFile 설정: 잘린 이미지도 부분 복원 허용
         from PIL import ImageFile
         ImageFile.LOAD_TRUNCATED_IMAGES = True
 
         try:
             img = Image.open(stream)
-            img.load()  # 실제 픽셀 데이터 로드 (이 시점에서 손상 감지)
+            img.load()
         except Exception as e:
             err_lower = str(e).lower()
-            # 손상되었지만 부분적으로 읽힌 경우 재시도
             if img is not None:
-                pass  # 부분 로드된 이미지로 계속 진행
+                pass 
             else:
                 if "cannot identify" in err_lower or "no decoder" in err_lower:
                     return None, "지원하지 않는 파일 형식입니다. (JPG, PNG, WebP, BMP, TIFF 권장)"
@@ -299,13 +278,11 @@ def load_and_prep_image(file_or_cam):
                 else:
                     return None, f"이미지를 열 수 없습니다: {str(e)}"
 
-        # EXIF 회전 보정 (iPhone, Android 사진 대응)
         try:
             img = ImageOps.exif_transpose(img)
         except Exception:
-            pass  # EXIF 정보 없는 경우 무시
+            pass
 
-        # 색 공간 통합 변환 (모든 모드 → RGB)
         if img.mode == 'RGBA':
             background = Image.new('RGB', img.size, (255, 255, 255))
             background.paste(img, mask=img.split()[3])
@@ -327,12 +304,10 @@ def load_and_prep_image(file_or_cam):
         elif img.mode != 'RGB':
             img = img.convert('RGB')
 
-        # 최소 크기 검사
         w, h = img.size
         if w < 50 or h < 50:
             return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
 
-        # 최대 크기 제한 (메모리 절약)
         max_size = 1200
         if max(w, h) > max_size:
             if w > h:
@@ -349,7 +324,7 @@ def load_and_prep_image(file_or_cam):
         return None, f"알 수 없는 오류가 발생했습니다: {str(e)}"
 
 # ---------------------------------------------------------
-# 4. 이미지 분석
+# 5. 이미지 분석 코어
 # ---------------------------------------------------------
 
 def get_realtime_translation(eng_word):
@@ -390,11 +365,13 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    text_features, target_labels = get_text_embeddings(is_demo_mode, progress_bar, status_text)
+    # 변경점: 캐시된 임베딩을 즉시 불러옴 (로딩 바 표시 생략)
+    update_progress(40, "AI 사전 매칭 중")
+    text_features, target_labels = get_text_embeddings(is_demo_mode)
 
     total_faces = len(faces)
     for i, (x, y, w, h) in enumerate(faces):
-        current_prog = 60 + int(40 * ((i + 1) / max(1, total_faces)))
+        current_prog = 40 + int(50 * ((i + 1) / max(1, total_faces)))
         update_progress(current_prog, f"AI가 시각적 특징에서 단어를 추론 중 ({i+1}/{total_faces})")
 
         x, y = max(0, x), max(0, y)
@@ -476,7 +453,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     return img_pil, detected_results
 
 # ---------------------------------------------------------
-# 5. Streamlit 메인 화면 UI
+# 6. Streamlit 메인 화면 UI
 # ---------------------------------------------------------
 
 st.markdown("<div class='eyebrow'>ImageNet 2011 학습 데이터 기반</div>", unsafe_allow_html=True)
@@ -510,10 +487,10 @@ if option == "웹캠 캡처":
         image_to_process, upload_error = load_and_prep_image(camera_image)
 
 elif option == "사진 업로드":
+    # 변경점: Streamlit의 자체 MIME 타입 필터(type=[...]) 제거
     uploaded_file = st.file_uploader(
         "얼굴이 나온 사진을 업로드하세요.",
-        type=["jpg", "jpeg", "png", "webp", "bmp", "tiff", "gif"],
-        help="JPG, PNG, WebP, BMP, TIFF, GIF 형식을 지원합니다. 파일 크기는 200MB 이하를 권장합니다."
+        help="대부분의 이미지 형식(JPG, PNG, WebP, HEIC 호환 등)을 지원합니다."
     )
     if uploaded_file is not None:
         image_to_process, upload_error = load_and_prep_image(uploaded_file)
@@ -524,8 +501,7 @@ if upload_error:
         ⚠️ <b>이미지를 불러올 수 없습니다</b><br>
         {upload_error}<br><br>
         <span style='font-size:0.82rem; color:#888;'>
-        지원 형식: JPG · PNG · WebP · BMP · TIFF · GIF<br>
-        iPhone 사용자: 설정 → 카메라 → 포맷 → 가장 호환성 높은 포맷으로 변경 후 촬영하면 HEIC 문제가 해결됩니다.
+        iPhone 사용자: 설정 → 카메라 → 포맷 → 가장 호환성 높은 포맷으로 변경 후 촬영하면 시스템 오류가 해결됩니다.
         </span>
     </div>
     """, unsafe_allow_html=True)
@@ -573,7 +549,7 @@ if image_to_process is not None:
         })
 
 # ---------------------------------------------------------
-# 6. 하단 UI: 과거 기록 → 단어 리스트 → 체험 스위치 → 논란 설명
+# 7. 하단 UI: 과거 기록 → 단어 리스트 → 체험 스위치 → 논란 설명
 # ---------------------------------------------------------
 
 if st.session_state.history:
