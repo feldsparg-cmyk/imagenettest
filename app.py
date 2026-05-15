@@ -134,13 +134,11 @@ BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 # 3. 단어 임베딩 추출 로직 (진행도 실시간 업데이트 적용)
 # ---------------------------------------------------------
 def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
-    # Streamlit Cache 대신 수동 상태 관리를 통해 UI(진행도) 프리징 현상 방지
     if "EMBEDDINGS_CACHE" not in st.session_state:
         st.session_state.EMBEDDINGS_CACHE = {}
         
     cache_key = f"mode_{is_demo}"
     
-    # 이미 한 번 계산되었다면 즉시 통과 (30% -> 60% 로 바로 갱신)
     if cache_key in st.session_state.EMBEDDINGS_CACHE:
         if progress_bar: progress_bar.progress(60)
         if status_text: status_text.markdown("⏳ **AI 단어 사전 로드 완료 (60%)**")
@@ -153,7 +151,6 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
     batch_size = 64 
     total_batches = (len(text_prompts) + batch_size - 1) // batch_size
     
-    # 64개씩 쪼개서 연산하며 UI 진행도를 실시간으로 업데이트
     for idx, i in enumerate(range(0, len(text_prompts), batch_size)):
         batch_prompts = text_prompts[i:i+batch_size]
         inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
@@ -173,7 +170,6 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
             feat = F.normalize(feat, p=2, dim=-1)
             all_text_features.append(feat)
             
-        # 30% ~ 60% 구간 퍼센테이지 실시간 계산 및 화면 갱신
         current_prog = 30 + int(30 * ((idx + 1) / total_batches))
         if progress_bar: progress_bar.progress(current_prog)
         if status_text: status_text.markdown(f"⏳ **AI 단어 사전 학습 중... (최초 1회만 소요됩니다) ({current_prog}%)**")
@@ -223,7 +219,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    # 텍스트-이미지 특징 공간 동기화 (진행도 자연스럽게 연동됨)
     text_features, target_labels = get_text_embeddings(is_demo_mode, progress_bar, status_text)
 
     total_faces = len(faces)
@@ -241,10 +236,11 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         with torch.no_grad():
             image_outputs = model.get_image_features(**inputs)
             
+            # [수정됨] 누락된 image_features 변수명 올바르게 연결
             if hasattr(image_outputs, "pooler_output"):
-                feat = image_outputs.pooler_output
-                if feat.shape[-1] != 512 and hasattr(model, "visual_projection"):
-                    feat = model.visual_projection(feat)
+                image_features = image_outputs.pooler_output
+                if image_features.shape[-1] != 512 and hasattr(model, "visual_projection"):
+                    image_features = model.visual_projection(image_features)
             elif isinstance(image_outputs, torch.Tensor):
                 image_features = image_outputs
             else:
@@ -321,14 +317,12 @@ if option == "웹캠 캡처":
     camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
     if camera_image is not None:
         image_to_process = Image.open(camera_image)
-        # [수정됨] EXIF 회전값 적용 (가로 눕힘 방지)
         image_to_process = ImageOps.exif_transpose(image_to_process)
 
 elif option == "사진 업로드":
     uploaded_file = st.file_uploader("얼굴이 나온 사진을 업로드하세요.", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         image_to_process = Image.open(uploaded_file)
-        # [수정됨] EXIF 회전값 적용 (가로 눕힘 방지)
         image_to_process = ImageOps.exif_transpose(image_to_process)
 
 if image_to_process is not None:
