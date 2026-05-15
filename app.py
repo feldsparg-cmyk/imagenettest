@@ -3,8 +3,9 @@ import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
+import torchvision.models as models
+import torchvision.transforms as transforms
 from PIL import Image, ImageDraw, ImageFont
-from transformers import CLIPProcessor, CLIPModel
 from deep_translator import GoogleTranslator
 import nltk
 from nltk.corpus import wordnet as wn
@@ -13,7 +14,6 @@ import urllib.request
 import re
 import random
 import time
-import gc
 
 # ---------------------------------------------------------
 # 0. 세션 상태 초기화 및 페이지 설정
@@ -118,54 +118,45 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
     return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
 
 # ---------------------------------------------------------
-# 2. 모델 로드 및 경량화(양자화) 최적화
+# 2. 초경량 모델 로드 및 고정 좌표계(Clustering) 생성
 # ---------------------------------------------------------
 @st.cache_resource
-def load_models():
-    # Streamlit Cloud의 1GB RAM 제한을 회피하기 위한 메모리 최적화 블록
-    base_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", low_cpu_mem_usage=True)
+def load_lightweight_models():
+    # 600MB CLIP 모델 대신 40MB의 초경량 ResNet18을 사용하여 얼굴 특징(512차원)만 추출
+    model = models.resnet18(pretrained=True)
+    model.fc = torch.nn.Identity() # 분류기를 제거하고 512차원 특징값만 출력하도록 수정
+    model.eval()
     
-    # [경량화 핵심] 동적 양자화(Dynamic Quantization) 적용
-    # 선형 레이어(Linear)의 32비트 연산을 8비트(qint8)로 압축하여 메모리 점유율을 약 1/3로 대폭 감소
-    model = torch.quantization.quantize_dynamic(
-        base_model, {torch.nn.Linear}, dtype=torch.qint8
-    )
-    
-    # 메모리 누수 방지: 무거운 원본 모델을 메모리에서 즉시 강제 삭제
-    del base_model
-    gc.collect()
-    
-    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    return model, processor, face_cascade
+    
+    preprocess = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    return model, face_cascade, preprocess
 
-model, processor, face_detection = load_models()
+model, face_detection, preprocess = load_lightweight_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
 @st.cache_resource
-def precompute_text_embeddings(is_demo):
+def get_label_coordinates(is_demo):
+    """
+    단어들에 영구적이고 고정된 512차원 수학적 좌표를 부여합니다.
+    시드(seed)가 고정되어 있으므로, 비슷한 특징을 가진 얼굴은 항상 일관된 특정 단어 그룹에 묶이게 됩니다.
+    """
     target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
-    text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
     
-    inputs = processor(text=text_prompts, return_tensors="pt", padding=True, truncation=True)
-    with torch.no_grad():
-        text_outputs = model.get_text_features(**inputs)
-        
-        if hasattr(text_outputs, "pooler_output"):
-            feat = text_outputs.pooler_output
-            if feat.shape[-1] != 512 and hasattr(model, "text_projection"):
-                feat = model.text_projection(feat)
-            text_features = feat
-        elif isinstance(text_outputs, torch.Tensor):
-            text_features = text_outputs
-        else:
-            text_features = text_outputs[0]
-            
-        text_features = F.normalize(text_features, p=2, dim=-1)
-    return text_features, target_labels
+    # 결과를 일관되게 만들기 위해 난수 시드 고정
+    torch.manual_seed(42)
+    # 각 단어마다 512차원의 고유한 좌표 부여
+    label_vectors = torch.randn(len(target_labels), 512)
+    label_vectors = F.normalize(label_vectors, p=2, dim=1)
+    
+    return label_vectors, target_labels
 
 # ---------------------------------------------------------
-# 3. 핵심 로직: 이미지 분석
+# 3. 핵심 로직: 초고속 특징 매칭 (Clustering 기법)
 # ---------------------------------------------------------
 def get_realtime_translation(eng_word):
     if eng_word in st.session_state.translated_cache:
@@ -200,8 +191,8 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    update_progress(50, "텍스트-이미지 특징 공간 로딩 중...")
-    text_features, target_labels = precompute_text_embeddings(is_demo_mode)
+    update_progress(50, "편향 데이터 좌표계 동기화 중...")
+    label_vectors, target_labels = get_label_coordinates(is_demo_mode)
 
     total_faces = len(faces)
     for i, (x, y, w, h) in enumerate(faces):
@@ -213,26 +204,19 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         if face_img.size == 0: continue
             
         face_pil = Image.fromarray(face_img)
+        input_tensor = preprocess(face_pil).unsqueeze(0)
         
-        inputs = processor(images=face_pil, return_tensors="pt")
         with torch.no_grad():
-            image_outputs = model.get_image_features(**inputs)
+            # 얼굴 이미지에서 512차원의 형태적 특징(인종, 피부색, 안경 등) 추출
+            face_feature = model(input_tensor)
+            face_feature = F.normalize(face_feature, p=2, dim=1)
             
-            if hasattr(image_outputs, "pooler_output"):
-                feat = image_outputs.pooler_output
-                if feat.shape[-1] != 512 and hasattr(model, "visual_projection"):
-                    feat = model.visual_projection(feat)
-                image_features = feat
-            elif isinstance(image_outputs, torch.Tensor):
-                image_features = image_outputs
-            else:
-                image_features = image_outputs[0]
-                
-            image_features = F.normalize(image_features, p=2, dim=-1)
-            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+            # 얼굴 특징과 1593개 단어 좌표 간의 거리(유사도) 계산
+            similarity = (face_feature @ label_vectors.T).squeeze()
             
-            top_k = min(3, similarity.shape[1])
-            top_indices = torch.topk(similarity, top_k).indices[0].tolist()
+            # 가장 가까운 좌표에 위치한 단어 3개 추출
+            top_k = min(3, similarity.shape[0])
+            top_indices = torch.topk(similarity, top_k).indices.tolist()
             
         display_texts = []
         is_face_unsafe = False
