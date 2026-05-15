@@ -108,8 +108,6 @@ h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; co
 }
 </style>""", unsafe_allow_html=True)
 
-""", unsafe_allow_html=True)
-
 if "history" not in st.session_state:
     st.session_state.history = []
 if "translated_cache" not in st.session_state:
@@ -261,13 +259,6 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
 
 # ---------------------------------------------------------
 # [개선] 강력한 이미지 통합 전처리 함수
-#
-# 개선 사항:
-#   1. 지원 포맷 확대: HEIC/HEIF, WebP, BMP, TIFF, GIF(첫 프레임) 처리
-#   2. 파일 무결성 검사: 파일 읽기 전 바이트 스트림 유효성 확인
-#   3. 상세한 에러 메시지 반환: None 대신 (None, "에러 원인") 튜플 반환
-#   4. 다단계 fallback: truncated 이미지도 부분 복원하여 처리 시도
-#   5. 색 공간 안전 변환: CMYK, P(팔레트), LA 등 모든 모드 처리
 # ---------------------------------------------------------
 
 def load_and_prep_image(file_or_cam):
@@ -316,14 +307,12 @@ def load_and_prep_image(file_or_cam):
 
         # 색 공간 통합 변환 (모든 모드 → RGB)
         if img.mode == 'RGBA':
-            # 알파 채널: 흰 배경에 합성
             background = Image.new('RGB', img.size, (255, 255, 255))
             background.paste(img, mask=img.split()[3])
             img = background
         elif img.mode == 'CMYK':
             img = img.convert('RGB')
         elif img.mode == 'P':
-            # 팔레트 모드 (GIF 등)
             img = img.convert('RGBA')
             background = Image.new('RGB', img.size, (255, 255, 255))
             background.paste(img, mask=img.split()[3])
@@ -338,7 +327,7 @@ def load_and_prep_image(file_or_cam):
         elif img.mode != 'RGB':
             img = img.convert('RGB')
 
-        # 최소 크기 검사 (너무 작은 이미지는 얼굴 인식 불가)
+        # 최소 크기 검사
         w, h = img.size
         if w < 50 or h < 50:
             return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
@@ -521,7 +510,6 @@ if option == "웹캠 캡처":
         image_to_process, upload_error = load_and_prep_image(camera_image)
 
 elif option == "사진 업로드":
-    # [개선] 지원 포맷 확대: webp, bmp, tiff, gif 추가
     uploaded_file = st.file_uploader(
         "얼굴이 나온 사진을 업로드하세요.",
         type=["jpg", "jpeg", "png", "webp", "bmp", "tiff", "gif"],
@@ -530,7 +518,6 @@ elif option == "사진 업로드":
     if uploaded_file is not None:
         image_to_process, upload_error = load_and_prep_image(uploaded_file)
 
-# [개선] 업로드 실패 시 명확한 에러 메시지 표시
 if upload_error:
     st.markdown(f"""
     <div class='upload-error'>
