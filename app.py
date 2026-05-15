@@ -399,7 +399,7 @@ if image_to_process is not None:
                     st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
         
         # [수정됨] 범례 위치를 결과 출력 반복문이 끝난 직후(과거 기록 전)로 재배치
-        st.markdown("<div class='legend-box'><b>🚨:</b> 편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
+        st.markdown("<div class='legend-box'><b>🚨:</b> 이미지넷이 공식적으로 판단한 노골적인 혐오/차별 단어<br> <b>✅:</b> 현재까지 이미지넷 분류 체계에 남아있는 인물 규정 단어(</div>", unsafe_allow_html=True)
     else:
         st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
         
