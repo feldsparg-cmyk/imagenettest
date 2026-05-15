@@ -252,64 +252,50 @@ def get_text_embeddings(is_demo):
 # ---------------------------------------------------------
 
 def load_and_prep_image(file_or_cam):
-    error_msg = None
     img = None
     raw_bytes = None
 
     try:
-        # 파일 포인터를 바이트로 읽기
+        # 파일 포인터를 바이트로 읽기 (버그 방지를 위해 포인터 강제 초기화 추가)
         if hasattr(file_or_cam, 'read'):
+            file_or_cam.seek(0) # 핵심: Streamlit 재실행 시 파일이 빈 값으로 읽히는 문제 해결
             raw_bytes = file_or_cam.read()
             if not raw_bytes or len(raw_bytes) < 8:
                 return None, "파일이 비어있거나 손상되었습니다."
             stream = io.BytesIO(raw_bytes)
         else:
-            # 웹캠 등 이미 BytesIO와 유사한 스트림인 경우
             stream = file_or_cam
             if hasattr(stream, 'getvalue'):
                 raw_bytes = stream.getvalue()
 
-        # PIL ImageFile 설정: 잘린 이미지도 부분 복원 허용
         from PIL import ImageFile
         ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-        # 1차 시도: PIL을 이용한 표준 디코딩
         try:
             img = Image.open(stream)
             img.load()
         except Exception as e:
-            err_lower = str(e).lower()
-            
-            # 2차 시도 (Fallback): OpenCV 강제 디코딩 (구형/손상 헤더 JPG 우회)
-            if raw_bytes and ("cannot identify" in err_lower or "no decoder" in err_lower or "truncated" in err_lower or "premature" in err_lower):
+            # 에러 종류와 상관없이 PIL이 실패하면 무조건 OpenCV 백업 디코딩 실행
+            if raw_bytes:
                 try:
                     np_arr = np.frombuffer(raw_bytes, np.uint8)
                     cv_img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
                     if cv_img is not None:
-                        # OpenCV는 BGR로 읽으므로 RGB로 변환
+                        # OpenCV는 BGR로 읽으므로 RGB로 복원
                         cv_img_rgb = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
                         img = Image.fromarray(cv_img_rgb)
                     else:
                         raise Exception("OpenCV fallback failed")
-                except Exception as fallback_e:
-                    # Fallback 마저 실패하면 원본 오류 메시지 기반 에러 반환
-                    if "cannot identify" in err_lower or "no decoder" in err_lower:
-                        return None, "지원하지 않는 파일 형식입니다. (JPG, PNG, WebP, BMP, TIFF 권장)"
-                    elif "truncated" in err_lower or "premature" in err_lower:
-                        return None, "파일이 불완전하게 저장되어 있습니다. 다시 저장 후 업로드해 보세요."
-                    else:
-                        return None, f"이미지를 열 수 없습니다: {str(e)}"
+                except Exception:
+                    return None, f"이미지 디코딩에 완전히 실패했습니다. (메신저 다운로드 과정 등에서 손상된 파일일 수 있습니다)"
             else:
-                if img is None:
-                    return None, f"이미지를 처리하는 중 오류가 발생했습니다: {str(e)}"
+                return None, f"이미지를 열 수 없습니다: {str(e)}"
 
-        # EXIF 회전 보정 (iPhone, Android 사진 대응)
         try:
             img = ImageOps.exif_transpose(img)
         except Exception:
             pass
 
-        # 색 공간 통합 변환 (모든 모드 → RGB)
         if img.mode == 'RGBA':
             background = Image.new('RGB', img.size, (255, 255, 255))
             background.paste(img, mask=img.split()[3])
@@ -331,12 +317,10 @@ def load_and_prep_image(file_or_cam):
         elif img.mode != 'RGB':
             img = img.convert('RGB')
 
-        # 최소 크기 검사
         w, h = img.size
         if w < 50 or h < 50:
             return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
 
-        # 최대 크기 제한 (메모리 절약)
         max_size = 1200
         if max(w, h) > max_size:
             if w > h:
@@ -485,7 +469,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     return img_pil, detected_results
 
 # ---------------------------------------------------------
-# 6. Streamlit 메인 화면 UI
+# 6. Stream디오 화면 UI
 # ---------------------------------------------------------
 
 st.markdown("<div class='eyebrow'>ImageNet 2011 학습 데이터 기반</div>", unsafe_allow_html=True)
@@ -493,7 +477,7 @@ st.markdown("<h1>AI 얼굴 인식 라벨링 테스트</h1>", unsafe_allow_html=T
 st.markdown("""
 <div class='subtitle'>
 본 테스트는 인간의 편견을 학습한 AI를 보여주는 시뮬레이션입니다.<br>
-전 세계 얼굴 인식 AI의 훈련장으로 쓰이는 IMAGENET의 실제 과거 카테고리 분류(2011년 버전)를 활용해<br>인물 사진과 매칭되는 단어를 보여줍니다.
+전 세계 얼굴 인식 AI의 훈련장으로 쓰이는 IMAGENET의 실제 과거 카테고리 분류를 활용해<br>인물 사진과 매칭되는 단어를 보여줍니다.
 </div>
 """, unsafe_allow_html=True)
 
