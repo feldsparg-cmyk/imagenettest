@@ -192,7 +192,7 @@ def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
     return text_features, target_labels
 
 # ---------------------------------------------------------
-# [수정됨] 강력한 이미지 통합 전처리 함수 (오류 완벽 차단)
+# 강력한 이미지 통합 전처리 함수
 # ---------------------------------------------------------
 def load_and_prep_image(file_or_cam):
     try:
@@ -300,7 +300,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
         display_texts = []
         is_face_unsafe = False
         
-        # [수정됨] 인물별 그룹화를 위한 배열 초기화
         person_results = []
         
         for idx in top_indices:
@@ -331,11 +330,9 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
                 
             person_results.append(res_dict)
 
-        # [수정됨] 결과물 리스트를 인물 단위로 묶어서 추가
         detected_results.append({"person": i + 1, "labels": person_results})
 
         box_color = (255, 0, 0) if is_face_unsafe else (0, 255, 0)
-        # [수정됨] 사진의 바운딩 박스 텍스트 최상단에 [인물 N] 추가
         display_box_text_combined = f"[인물 {i+1}]\n" + "\n".join(display_texts)
 
         draw.rectangle([(x, y), (x+w, y+h)], outline=box_color, width=dynamic_thickness)
@@ -396,15 +393,14 @@ if image_to_process is not None:
         st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
     
     if results:
-        # [수정됨] 하단 결과창에 색상 범례 명시
+        # [수정됨] 범례 표시는 결과 상단에서 한 번만 출력되도록 올바른 위치로 조정됨
+        st.markdown("<div class='legend-box'><b>🚨:</b>편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
         
-        # [수정됨] 결과물을 인물별로 묶어서 그룹화하여 출력
         for person_data in results:
             st.markdown(f"<div class='person-header'>👤 인물 {person_data['person']}</div>", unsafe_allow_html=True)
             for res in person_data['labels']:
+                # [수정됨] 조건문 들여쓰기 정상 복구 완료
                 if res["type"] == "unsafe":
-
-    st.markdown("<div class='legend-box'><b>🚨:</b>편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
                     st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
                 else:
                     st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
@@ -430,7 +426,6 @@ if st.session_state.history:
         with col:
             st.image(item["image"], use_container_width=True)
             if item["results"]:
-                # [수정됨] 썸네일 히스토리에도 인물별 그룹화 적용
                 for person_data in item["results"]:
                     st.markdown(f"<div class='history-text' style='color: #222; font-weight: bold; margin-top: 8px;'>[인물 {person_data['person']}]</div>", unsafe_allow_html=True)
                     for res in person_data['labels']:
