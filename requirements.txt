@@ -6,3 +6,4 @@ torchvision
 Pillow
 nltk
 transformers
+deep-translator
