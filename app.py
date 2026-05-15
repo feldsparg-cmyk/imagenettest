@@ -301,7 +301,7 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
 # ---------------------------------------------------------
 st.markdown("<div style='text-align: center; color: #888; font-size: 1.0rem; font-weight: bold; margin-bottom: 0px;'>이미지넷(Imagenet) 2011년 학습 데이터 기반</div>", unsafe_allow_html=True)
 st.markdown("<h1 style='margin-top: -10px;'>AI 얼굴 인식 라벨링 테스트</h1>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>본 테스트는 인간의 편견을 학습한 AI를 보여주는 시뮬레이션입니다.<br>전 세계 얼굴 인식 AI의 훈련장으로 쓰이는 IMAGENET의 실제 과거 카테고리 분류(2011년 버전)를 활용해 인물 사진과 매칭되는 단어를 보여줍니다.</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>본 테스트는 인간의 편견을 학습한 AI를 보여주는 시뮬레이션입니다.<br>전 세계 얼굴 인식 AI의 훈련장으로 쓰이는 IMAGENET의 실제 과거 카테고리 분류를 활용해 인물 사진과 매칭되는 단어를 보여줍니다.</div>", unsafe_allow_html=True)
 
 if os.path.exists("img.jpg"):
     st.image("img.jpg", use_container_width=True)
