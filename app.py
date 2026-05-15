@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from transformers import CLIPProcessor, CLIPModel
 from deep_translator import GoogleTranslator
 import nltk
@@ -118,11 +118,10 @@ def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"
     return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
 
 # ---------------------------------------------------------
-# 2. 정확도 높은 CLIP 모델 로드 (경량화 해제)
+# 2. 모델 로드
 # ---------------------------------------------------------
 @st.cache_resource
 def load_models():
-    # 정확도 복구를 위해 온전한 CLIP 모델 사용
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -132,18 +131,30 @@ model, processor, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 
 # ---------------------------------------------------------
-# 3. 핵심 로직: 미니 배치 처리를 통한 메모리 폭발 방지
+# 3. 단어 임베딩 추출 로직 (진행도 실시간 업데이트 적용)
 # ---------------------------------------------------------
-@st.cache_resource
-def precompute_text_embeddings(is_demo):
+def get_text_embeddings(is_demo, progress_bar=None, status_text=None):
+    # Streamlit Cache 대신 수동 상태 관리를 통해 UI(진행도) 프리징 현상 방지
+    if "EMBEDDINGS_CACHE" not in st.session_state:
+        st.session_state.EMBEDDINGS_CACHE = {}
+        
+    cache_key = f"mode_{is_demo}"
+    
+    # 이미 한 번 계산되었다면 즉시 통과 (30% -> 60% 로 바로 갱신)
+    if cache_key in st.session_state.EMBEDDINGS_CACHE:
+        if progress_bar: progress_bar.progress(60)
+        if status_text: status_text.markdown("⏳ **AI 단어 사전 로드 완료 (60%)**")
+        return st.session_state.EMBEDDINGS_CACHE[cache_key]
+
     target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
     text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
     
     all_text_features = []
-    batch_size = 64 # 메모리 과부하를 막기 위해 한 번에 64개의 단어씩만 연산
+    batch_size = 64 
+    total_batches = (len(text_prompts) + batch_size - 1) // batch_size
     
-    # 미니 배치 연산 루프
-    for i in range(0, len(text_prompts), batch_size):
+    # 64개씩 쪼개서 연산하며 UI 진행도를 실시간으로 업데이트
+    for idx, i in enumerate(range(0, len(text_prompts), batch_size)):
         batch_prompts = text_prompts[i:i+batch_size]
         inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
         
@@ -162,15 +173,18 @@ def precompute_text_embeddings(is_demo):
             feat = F.normalize(feat, p=2, dim=-1)
             all_text_features.append(feat)
             
-        # 매 배치마다 사용이 끝난 변수들을 강제 삭제하여 메모리 확보
+        # 30% ~ 60% 구간 퍼센테이지 실시간 계산 및 화면 갱신
+        current_prog = 30 + int(30 * ((idx + 1) / total_batches))
+        if progress_bar: progress_bar.progress(current_prog)
+        if status_text: status_text.markdown(f"⏳ **AI 단어 사전 학습 중... (최초 1회만 소요됩니다) ({current_prog}%)**")
+            
         del inputs
         del text_outputs
     
-    # 파이썬 가비지 컬렉터로 메모리 청소
     gc.collect()
     
-    # 분할 연산된 특징들을 하나의 행렬로 병합
     text_features = torch.cat(all_text_features, dim=0)
+    st.session_state.EMBEDDINGS_CACHE[cache_key] = (text_features, target_labels)
     return text_features, target_labels
 
 # ---------------------------------------------------------
@@ -209,12 +223,12 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
     draw = ImageDraw.Draw(img_pil)
     detected_results = []
 
-    update_progress(50, "텍스트-이미지 특징 공간 동기화 중...")
-    text_features, target_labels = precompute_text_embeddings(is_demo_mode)
+    # 텍스트-이미지 특징 공간 동기화 (진행도 자연스럽게 연동됨)
+    text_features, target_labels = get_text_embeddings(is_demo_mode, progress_bar, status_text)
 
     total_faces = len(faces)
     for i, (x, y, w, h) in enumerate(faces):
-        current_prog = 50 + int(40 * ((i + 1) / max(1, total_faces)))
+        current_prog = 60 + int(40 * ((i + 1) / max(1, total_faces)))
         update_progress(current_prog, "AI가 시각적 특징에서 단어를 추론 중입니다...")
         
         x, y = max(0, x), max(0, y)
@@ -231,7 +245,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
                 feat = image_outputs.pooler_output
                 if feat.shape[-1] != 512 and hasattr(model, "visual_projection"):
                     feat = model.visual_projection(feat)
-                image_features = feat
             elif isinstance(image_outputs, torch.Tensor):
                 image_features = image_outputs
             else:
@@ -239,7 +252,6 @@ def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
                 
             image_features = F.normalize(image_features, p=2, dim=-1)
             
-            # 의미론적 유사도 계산 (높은 정확도)
             similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
             
             top_k = min(3, similarity.shape[1])
@@ -309,11 +321,15 @@ if option == "웹캠 캡처":
     camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
     if camera_image is not None:
         image_to_process = Image.open(camera_image)
+        # [수정됨] EXIF 회전값 적용 (가로 눕힘 방지)
+        image_to_process = ImageOps.exif_transpose(image_to_process)
 
 elif option == "사진 업로드":
     uploaded_file = st.file_uploader("얼굴이 나온 사진을 업로드하세요.", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         image_to_process = Image.open(uploaded_file)
+        # [수정됨] EXIF 회전값 적용 (가로 눕힘 방지)
+        image_to_process = ImageOps.exif_transpose(image_to_process)
 
 if image_to_process is not None:
     status_text = st.empty()
@@ -392,15 +408,4 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.toggle("🚨 극단적 편향 모드 켜기 (부정적/편견 단어만 매칭)", key="demo_mode_toggle")
 
-if st.session_state.get("demo_mode_toggle", False):
-    st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
-
-st.markdown("<br><hr>", unsafe_allow_html=True)
-st.subheader("📖 ImageNet Roulette와 데이터 편향성 논란")
-st.markdown("""
-2019년 9월, 아티스트 트레버 페글렌(Trevor Paglen)과 AI 연구자 케이트 크로포드(Kate Crawford)가 공개한 **ImageNet Roulette** 프로젝트는 인공지능 학계와 대중에게 큰 충격을 주었습니다. 이 프로젝트는 방대한 이미지 학습 데이터인 '이미지넷(ImageNet)'에 내재된 차별적 시선을 폭로하기 위해, 사용자의 사진을 올리면 AI가 사람을 어떻게 분류하고 라벨링하는지 직접 체험할 수 있도록 설계되었습니다. 
-
-가벼운 장난처럼 시작된 이 룰렛은 사용자의 얼굴을 '실패자', '범죄자', '매춘부', 심지어는 특정 인종을 비하하는 단어와 매칭하며, 인공지능이 과거 인류의 편견과 혐오를 얼마나 무분별하게 학습했는지를 적나라하게 보여주었습니다.
-
-결국 프로젝트가 소셜 미디어를 통해 확산되며 논란이 거세지자, 이미지넷 측은 문제의 심각성을 인정했습니다. 그 결과 **2019년 9월, 438개의 '안전하지 않은(unsafe)' 카테고리와 1,155개의 '민감한(sensitive)' 카테고리를 포함해 총 1,593개의 혐오·차별적 표현이 데이터베이스에서 전면 삭제**되었습니다. 이와 함께 해당 라벨에 속해 있던 **약 60만 장 이상의 인물 이미지도 영구적으로 제거**되며, 전 세계 AI 개발자들에게 '학습 데이터의 윤리'라는 무거운 과제를 남겼습니다.
-""")
+if st.session_state.get
