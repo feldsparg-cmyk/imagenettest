@@ -22,186 +22,92 @@ import io
 
 st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
 
-st.markdown("""
-<style>
+st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 * { box-sizing: border-box; }
 
-html, body, [class*="css"] {
-    font-family: 'DM Sans', sans-serif;
+/* 1. 전역 폰트 및 한국어 어절 단위 줄바꿈 설정 */
+html, body, [class*="css"] { 
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    word-break: keep-all; 
+    overflow-wrap: break-word; 
 }
 
-.main {
-    background-color: #f8f7f4;
-}
-
-.block-container {
-    padding-top: 2.5rem;
-    padding-bottom: 3rem;
-    max-width: 780px;
-}
+.main { background-color: #f8f7f4; }
+.block-container { padding-top: 2.5rem; padding-bottom: 3rem; max-width: 780px; }
 
 /* 상단 태그 */
-.eyebrow {
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    color: #999;
-    text-transform: uppercase;
-    margin-bottom: 0.6rem;
-}
+.eyebrow { text-align: center; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #999; text-transform: uppercase; margin-bottom: 0.6rem; }
 
 /* 메인 타이틀 */
-h1 {
-    text-align: center;
-    font-size: 2rem !important;
-    font-weight: 600 !important;
-    color: #111 !important;
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    margin-bottom: 1rem !important;
-}
+h1 { text-align: center; font-size: 2rem !important; font-weight: 600 !important; color: #111 !important; letter-spacing: -0.03em; line-height: 1.3; margin-bottom: 1rem !important; word-break: keep-all; }
 
 /* 서브타이틀 */
-.subtitle {
-    text-align: center;
-    color: #666;
-    font-size: 0.93rem;
-    line-height: 1.75;
-    max-width: 560px;
-    margin: 0 auto 2rem auto;
-    word-break: keep-all;
-}
+.subtitle { text-align: center; color: #666; font-size: 0.93rem; line-height: 1.6; max-width: 560px; margin: 0 auto 2rem auto; word-break: keep-all; }
 
 /* 구분선 */
-.divider {
-    border: none;
-    border-top: 1px solid #e0ddd8;
-    margin: 2rem 0;
-}
+.divider { border: none; border-top: 1px solid #e0ddd8; margin: 2rem 0; }
 
 /* 결과 박스 */
-.result-box {
-    padding: 12px 16px;
-    border-radius: 6px;
-    margin-top: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: -0.01em;
-}
-.unsafe-box {
-    background-color: #fff0ef;
-    color: #c0392b;
-    border: 1px solid #f5c6c3;
-}
-.safe-box {
-    background-color: #f0f7f1;
-    color: #2e7d45;
-    border: 1px solid #b8dfc1;
-}
+.result-box { padding: 12px 16px; border-radius: 6px; margin-top: 8px; font-size: 0.9rem; font-weight: 500; text-align: center; letter-spacing: -0.01em; word-break: keep-all; }
+.unsafe-box { background-color: #fff0ef; color: #c0392b; border: 1px solid #f5c6c3; }
+.safe-box { background-color: #f0f7f1; color: #2e7d45; border: 1px solid #b8dfc1; }
 
 /* 인물 헤더 */
-.person-header {
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-top: 1.4rem;
-    color: #333;
-    letter-spacing: -0.01em;
-}
+.person-header { text-align: center; font-weight: 600; font-size: 0.9rem; margin-top: 1.4rem; color: #333; letter-spacing: -0.01em; word-break: keep-all; }
 
 /* 범례 박스 */
-.legend-box {
-    text-align: center;
-    font-size: 0.82rem;
-    color: #777;
-    background-color: #f0ede8;
-    padding: 10px 16px;
-    border-radius: 6px;
-    margin-top: 1.4rem;
-    line-height: 1.7;
-}
+.legend-box { text-align: center; font-size: 0.82rem; color: #777; background-color: #f0ede8; padding: 10px 16px; border-radius: 6px; margin-top: 1.4rem; line-height: 1.6; word-break: keep-all; }
 
 /* 히스토리 텍스트 */
-.history-text {
-    font-size: 0.75rem;
-    text-align: center;
-    margin-top: 4px;
-    line-height: 1.4;
-    font-family: 'DM Mono', monospace;
-}
+.history-text { font-size: 0.75rem; text-align: center; margin-top: 4px; line-height: 1.4; font-family: 'DM Mono', monospace; word-break: keep-all; }
 
 /* 에러 박스 (업로드 실패) */
-.upload-error {
-    background-color: #fff8ed;
-    border: 1px solid #f5d9a3;
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 0.88rem;
-    color: #a05c00;
-    margin-top: 10px;
-}
+.upload-error { background-color: #fff8ed; border: 1px solid #f5d9a3; border-radius: 6px; padding: 12px 16px; font-size: 0.88rem; color: #a05c00; margin-top: 10px; word-break: keep-all; }
 
 /* 섹션 헤더 */
-h2, h3, h4 {
-    font-weight: 600 !important;
-    letter-spacing: -0.02em !important;
-    color: #111 !important;
-}
+h2, h3, h4 { font-weight: 600 !important; letter-spacing: -0.02em !important; color: #111 !important; word-break: keep-all; }
 
-/* Streamlit 기본 요소 오버라이드 */
-.stRadio > label {
-    font-size: 0.88rem;
-    color: #555;
-}
-.stRadio [role="radiogroup"] {
-    gap: 8px;
-}
+/* Streamlit 기본 요소 오버라이드 (텍스트 넘침 방지) */
+.stRadio > label { font-size: 0.88rem; color: #555; word-break: keep-all; }
+.stRadio [role="radiogroup"] { gap: 8px; }
+.stMarkdown p { word-break: keep-all; overflow-wrap: break-word; }
 
 /* 진행 바 텍스트 */
-.progress-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    color: #888;
-    text-align: center;
-    margin-top: 4px;
-}
+.progress-label { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #888; text-align: center; margin-top: 4px; word-break: keep-all; }
 
 /* 스크롤 단어 리스트 */
-.word-list-container {
-    height: 200px;
-    overflow-y: scroll;
-    border: 1px solid #e0ddd8;
-    padding: 14px 18px;
-    background-color: #fff;
-    border-radius: 8px;
-    font-family: 'DM Mono', monospace;
-}
+.word-list-container { height: 200px; overflow-y: auto; border: 1px solid #e0ddd8; padding: 14px 18px; background-color: #fff; border-radius: 8px; font-family: 'DM Mono', monospace; }
 
 /* 모드 섹션 */
-.mode-section {
-    background-color: #fff;
-    border: 1px solid #e0ddd8;
-    border-radius: 10px;
-    padding: 1.2rem 1.6rem;
-    text-align: center;
-}
+.mode-section { background-color: #fff; border: 1px solid #e0ddd8; border-radius: 10px; padding: 1.2rem 1.6rem; text-align: center; word-break: keep-all; }
 
 /* 본문 텍스트 */
-.article-text {
-    font-size: 0.92rem;
-    line-height: 1.85;
-    color: #444;
-    word-break: keep-all;
+.article-text { font-size: 0.92rem; line-height: 1.85; color: #444; word-break: keep-all; }
+.article-text b { color: #111; font-weight: 600; }
+
+/* 2. 모바일 및 태블릿 대응 반응형 디자인 (핵심 수정) */
+@media screen and (max-width: 768px) {
+    .block-container { 
+        padding-top: 1.5rem; 
+        padding-bottom: 2rem; 
+        padding-left: 1.2rem; 
+        padding-right: 1.2rem; 
+    }
+    h1 { font-size: 1.5rem !important; }
+    .subtitle { font-size: 0.85rem; padding: 0 5px; }
+    .mode-section { padding: 1rem; }
+    .word-list-container { padding: 10px 12px; }
 }
-.article-text b {
-    color: #111;
-    font-weight: 600;
+
+@media screen and (max-width: 480px) {
+    h1 { font-size: 1.3rem !important; }
+    .result-box { font-size: 0.85rem; padding: 10px 12px; }
+    .article-text { font-size: 0.85rem; line-height: 1.6; }
 }
-</style>
+</style>""", unsafe_allow_html=True)
+
 """, unsafe_allow_html=True)
 
 if "history" not in st.session_state:
