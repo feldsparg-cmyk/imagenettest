@@ -31,7 +31,7 @@ st.markdown("""
     .safe-box { background-color: #e6ffe6; color: #008000; border: 2px solid #99ff99; }
     .history-text { font-size: 0.8rem; text-align: center; margin-top: 5px; line-height: 1.3; }
     .person-header { text-align: center; font-weight: bold; font-size: 1.1rem; margin-top: 20px; color: #333; }
-    .legend-box { text-align: center; font-size: 0.85rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-top: 10px; margin-bottom: 20px; }
+    .legend-box { text-align: center; font-size: 0.85rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-top: 25px; margin-bottom: 20px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -198,17 +198,14 @@ def load_and_prep_image(file_or_cam):
     try:
         img = Image.open(file_or_cam)
         
-        # 1. EXIF 메타데이터 회전 보정 (에러 발생 시 무시)
         try:
             img = ImageOps.exif_transpose(img)
         except Exception:
             pass
             
-        # 2. 강제 RGB 변환 (RGBA, CMYK 등 배열 충돌 방지)
         if img.mode != 'RGB':
             img = img.convert('RGB')
             
-        # 3. 해상도 폭발 방지 (동적 리사이징)
         max_size = 1000
         w, h = img.size
         if max(w, h) > max_size:
@@ -393,17 +390,16 @@ if image_to_process is not None:
         st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
     
     if results:
-        # [수정됨] 범례 표시는 결과 상단에서 한 번만 출력되도록 올바른 위치로 조정됨
-        st.markdown("<div class='legend-box'><b>🚨:</b>편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
-        
         for person_data in results:
             st.markdown(f"<div class='person-header'>👤 인물 {person_data['person']}</div>", unsafe_allow_html=True)
             for res in person_data['labels']:
-                # [수정됨] 조건문 들여쓰기 정상 복구 완료
                 if res["type"] == "unsafe":
                     st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
                 else:
                     st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
+        
+        # [수정됨] 범례 위치를 결과 출력 반복문이 끝난 직후(과거 기록 전)로 재배치
+        st.markdown("<div class='legend-box'><b>🚨:</b> 편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
     else:
         st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
         
