@@ -404,7 +404,7 @@ if image_to_process is not None:
             for res in person_data['labels']:
                 if res["type"] == "unsafe":
 
-st.markdown("<div class='legend-box'><b>🚨:</b>편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
+    st.markdown("<div class='legend-box'><b>🚨:</b>편견이 담긴 단어로 판단돼 현재는 삭제된 단어<br> <b>✅:</b> AI가 학습 분류에 참고하는 단어</div>", unsafe_allow_html=True)
                     st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
                 else:
                     st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
