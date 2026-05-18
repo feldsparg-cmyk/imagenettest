@@ -16,16 +16,12 @@ import time
 import gc
 import io
 
-# ---------------------------------------------------------
-# 0. 세션 상태 초기화 및 페이지 설정
-# ---------------------------------------------------------
-
-import streamlit.components.v1 as components # 상단 import 영역에 추가
+# 새로 추가하는 컴포넌트 임포트
+import streamlit.components.v1 as components 
 
 # ---------------------------------------------------------
-# 0. 세션 상태 초기화 및 페이지 설정
+# 0. 세션 상태 초기화 및 페이지 설정 (중복 제거하고 한 번만 작성)
 # ---------------------------------------------------------
-
 st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
 
 # --- [카카오톡 인앱 브라우저 감지 및 경고 안내창 스크립트] ---
@@ -33,18 +29,16 @@ kakao_alert_js = """
 <script>
     var ua = navigator.userAgent.toLowerCase();
     
-        // 카카오톡 브라우저인지 감지
-        if (ua.indexOf('kakaotalk') > -1) {
+    // 카카오톡 브라우저인지 감지
+    if (ua.indexOf('kakaotalk') > -1) {
         // 강제 이동 없이 안내 문구만 팝업으로 출력
         alert("카카오톡 브라우저에서는 카메라가 작동하지 않을 수 있습니다.\\n다른 브라우저(사파리, 크롬) 혹은 PC에서 접속 부탁드립니다.");
     }
 </script>
 """
-# 높이와 너비를 0으로 설정해 화면에 보이지 않게 스크립트만 실행
-components.html(kakao_redirect_js, width=0, height=0)
+# 변수명을 kakao_redirect_js가 아닌 kakao_alert_js로 정확히 맞춰서 호출
+components.html(kakao_alert_js, width=0, height=0)
 # -------------------------------------------------------------------------
-
-st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
 
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
