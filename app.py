@@ -33,8 +33,8 @@ kakao_alert_js = """
 <script>
     var ua = navigator.userAgent.toLowerCase();
     
-    // 카카오톡 브라우저인지 감지
-    if (ua.indexOf('kakaotalk') > -1) {
+        // 카카오톡 브라우저인지 감지
+        if (ua.indexOf('kakaotalk') > -1) {
         // 강제 이동 없이 안내 문구만 팝업으로 출력
         alert("카카오톡 브라우저에서는 카메라가 작동하지 않을 수 있습니다.\\n다른 브라우저(사파리, 크롬) 혹은 PC에서 접속 부탁드립니다.");
     }
