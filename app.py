@@ -28,20 +28,15 @@ import streamlit.components.v1 as components # 상단 import 영역에 추가
 
 st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
 
-# --- [카카오톡 인앱 브라우저 감지 및 외부 브라우저 강제 이동 스크립트] ---
-kakao_redirect_js = """
+# --- [카카오톡 인앱 브라우저 감지 및 경고 안내창 스크립트] ---
+kakao_alert_js = """
 <script>
     var ua = navigator.userAgent.toLowerCase();
     
     // 카카오톡 브라우저인지 감지
     if (ua.indexOf('kakaotalk') > -1) {
-        alert("카카오톡 내부 브라우저에서는 카메라 기능이 지원되지 않습니다.\\n안전한 테스트를 위해 기본 브라우저(사파리, 크롬)로 이동합니다.");
-        
-        // Streamlit iframe 환경을 고려해 부모 창의 URL을 가져옴
-        var currentUrl = window.parent.location.href;
-        
-        // 카카오톡 외부 브라우저 호출 스킴을 사용하여 강제 아웃링크 연결
-        window.parent.location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(currentUrl);
+        // 강제 이동 없이 안내 문구만 팝업으로 출력
+        alert("카카오톡 브라우저에서는 카메라가 작동하지 않을 수 있습니다.\\n다른 브라우저(사파리, 크롬) 혹은 PC에서 접속 부탁드립니다.");
     }
 </script>
 """
