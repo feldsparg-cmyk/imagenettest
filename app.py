@@ -115,9 +115,9 @@ a.header-anchor { display: none !important; }
 </style>""", unsafe_allow_html=True)
 
 if "history" not in st.session_state:
-st.session_state.history = []
+    st.session_state.history = []
 if "translated_cache" not in st.session_state:
-st.session_state.translated_cache = {}
+    st.session_state.translated_cache = {}
 
 # ---------------------------------------------------------
 # 1. 환경 설정 및 데이터 로드
@@ -125,80 +125,80 @@ st.session_state.translated_cache = {}
 
 @st.cache_resource
 def setup_environment():
-nltk.download('wordnet', quiet=True)
-nltk.download('omw-1.4', quiet=True)
-font_path = "NanumGothic.ttf"
-if not os.path.exists(font_path):
-url = "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf"
-urllib.request.urlretrieve(url, font_path)
-return font_path
+    nltk.download('wordnet', quiet=True)
+    nltk.download('omw-1.4', quiet=True)
+    font_path = "NanumGothic.ttf"
+    if not os.path.exists(font_path):
+        url = "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf"
+        urllib.request.urlretrieve(url, font_path)
+    return font_path
 
 font_path = setup_environment()
 
 @st.cache_data
 def load_offline_translations(filepath="trans list.txt"):
-trans_dict = {}
-if os.path.exists(filepath):
-with open(filepath, 'r', encoding='utf-8') as f:
-for line in f:
-line = line.strip()
-if not line or line.startswith('🚨') or line.startswith('='):
-continue
-match = re.match(r"^(.*?)\((.*?)\)\s*:\s*(.*)$", line)
-if match:
-eng = match.group(1).strip().lower()
-kor = match.group(2).strip()
-kdef = match.group(3).strip()
-trans_dict[eng] = {"word": kor, "def": kdef}
-else:
-match_no_def = re.match(r"^(.*?)\((.*?)\)", line)
-if match_no_def:
-eng = match_no_def.group(1).strip().lower()
-kor = match_no_def.group(2).strip()
-trans_dict[eng] = {"word": kor, "def": ""}
-return trans_dict
+    trans_dict = {}
+    if os.path.exists(filepath):
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('🚨') or line.startswith('='):
+                    continue
+                match = re.match(r"^(.*?)\((.*?)\)\s*:\s*(.*)$", line)
+                if match:
+                    eng = match.group(1).strip().lower()
+                    kor = match.group(2).strip()
+                    kdef = match.group(3).strip()
+                    trans_dict[eng] = {"word": kor, "def": kdef}
+                else:
+                    match_no_def = re.match(r"^(.*?)\((.*?)\)", line)
+                    if match_no_def:
+                        eng = match_no_def.group(1).strip().lower()
+                        kor = match_no_def.group(2).strip()
+                        trans_dict[eng] = {"word": kor, "def": ""}
+    return trans_dict
 
 @st.cache_data
 def load_bias_labels(bias_filepath="biased.txt", trans_filepath="trans list.txt"):
-person_synset = wn.synset('person.n.01')
-person_hyponyms = set([s for s in person_synset.closure(lambda s: s.hyponyms())])
-wnid_to_synset = {f"n{s.offset():08d}": s for s in person_hyponyms}
-trans_dict = load_offline_translations(trans_filepath)
-bias_labels = []
-seen_words = set()
-if os.path.exists(bias_filepath):
-with open(bias_filepath, 'r', encoding='utf-8') as f:
-for line in f:
-parts = line.strip().split('\t')
-if len(parts) == 2:
-wnid = parts[0]
-words = parts[1]
-if wnid in wnid_to_synset:
-s = wnid_to_synset[wnid]
-main_word = words.split(',')[0].strip()
-eng_lower = main_word.lower()
-if eng_lower in seen_words:
-continue
-seen_words.add(eng_lower)
-if eng_lower in trans_dict:
-kor_word = trans_dict[eng_lower]["word"]
-kor_def = trans_dict[eng_lower]["def"]
-is_unsafe = True
-else:
-try:
-kor_lemmas = s.lemma_names('kor')
-kor_word = kor_lemmas[0] if kor_lemmas else ""
-except:
-kor_word = ""
-kor_def = ""
-is_unsafe = False
-bias_labels.append({
-"word": main_word,
-"kor_word": kor_word,
-"def": kor_def,
-"is_unsafe": is_unsafe
-})
-return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
+    person_synset = wn.synset('person.n.01')
+    person_hyponyms = set([s for s in person_synset.closure(lambda s: s.hyponyms())])
+    wnid_to_synset = {f"n{s.offset():08d}": s for s in person_hyponyms}
+    trans_dict = load_offline_translations(trans_filepath)
+    bias_labels = []
+    seen_words = set()
+    if os.path.exists(bias_filepath):
+        with open(bias_filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                parts = line.strip().split('\t')
+                if len(parts) == 2:
+                    wnid = parts[0]
+                    words = parts[1]
+                    if wnid in wnid_to_synset:
+                        s = wnid_to_synset[wnid]
+                        main_word = words.split(',')[0].strip()
+                        eng_lower = main_word.lower()
+                        if eng_lower in seen_words:
+                            continue
+                        seen_words.add(eng_lower)
+                        if eng_lower in trans_dict:
+                            kor_word = trans_dict[eng_lower]["word"]
+                            kor_def = trans_dict[eng_lower]["def"]
+                            is_unsafe = True
+                        else:
+                            try:
+                                kor_lemmas = s.lemma_names('kor')
+                                kor_word = kor_lemmas[0] if kor_lemmas else ""
+                            except:
+                                kor_word = ""
+                            kor_def = ""
+                            is_unsafe = False
+                        bias_labels.append({
+                            "word": main_word,
+                            "kor_word": kor_word,
+                            "def": kor_def,
+                            "is_unsafe": is_unsafe
+                        })
+    return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람", "def": "", "is_unsafe": False}]
 
 # ---------------------------------------------------------
 # 2. 모델 로드
@@ -206,10 +206,10 @@ return bias_labels if bias_labels else [{"word": "Person", "kor_word": "사람",
 
 @st.cache_resource
 def load_models():
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-return model, processor, face_cascade
+    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    return model, processor, face_cascade
 
 model, processor, face_detection = load_models()
 BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
@@ -219,56 +219,54 @@ BIAS_LABELS = load_bias_labels("biased.txt", "trans list.txt")
 # ---------------------------------------------------------
 @st.cache_resource(show_spinner="AI 단어 사전 모델을 초기화 중입니다 (최초 1회만 소요됩니다)...")
 def get_text_embeddings(is_demo):
-target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
-text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
+    target_labels = [lbl for lbl in BIAS_LABELS if lbl["is_unsafe"]] if is_demo else BIAS_LABELS
+    text_prompts = [f"a photo of a person who is labeled as {lbl['word']}" for lbl in target_labels]
 
-all_text_features = []
-batch_size = 128 
+    all_text_features = []
+    batch_size = 128 
 
-for i in range(0, len(text_prompts), batch_size):
-batch_prompts = text_prompts[i:i+batch_size]
-inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
-with torch.no_grad():
-text_outputs = model.get_text_features(**inputs)
-if hasattr(text_outputs, "pooler_output"):
-feat = text_outputs.pooler_output
-if feat.shape[-1] != 512 and hasattr(model, "text_projection"):
-feat = model.text_projection(feat)
-elif isinstance(text_outputs, torch.Tensor):
-feat = text_outputs
-else:
-feat = text_outputs[0]
-feat = F.normalize(feat, p=2, dim=-1)
-all_text_features.append(feat)
+    for i in range(0, len(text_prompts), batch_size):
+        batch_prompts = text_prompts[i:i+batch_size]
+        inputs = processor(text=batch_prompts, return_tensors="pt", padding=True, truncation=True)
+        with torch.no_grad():
+            text_outputs = model.get_text_features(**inputs)
+            if hasattr(text_outputs, "pooler_output"):
+                feat = text_outputs.pooler_output
+                if feat.shape[-1] != 512 and hasattr(model, "text_projection"):
+                    feat = model.text_projection(feat)
+            elif isinstance(text_outputs, torch.Tensor):
+                feat = text_outputs
+            else:
+                feat = text_outputs[0]
+            feat = F.normalize(feat, p=2, dim=-1)
+            all_text_features.append(feat)
 
-del inputs, text_outputs
-gc.collect()
+    del inputs, text_outputs
+    gc.collect()
 
-text_features = torch.cat(all_text_features, dim=0)
-return text_features, target_labels
+    text_features = torch.cat(all_text_features, dim=0)
+    return text_features, target_labels
 
 # ---------------------------------------------------------
-# 4. 강력한 이미지 통합 전처리 함수 (구형 JPG 오류 완벽 대응 - OpenCV 선처리)
 # 4. 강력한 이미지 통합 전처리 함수 (안정성 최우선 로직)
 # ---------------------------------------------------------
 
 def load_and_prep_image(file_or_cam):
-img = None
+    img = None
     raw_bytes = None
 
-    
-try:
+    try:
         # 파일 포인터를 바이트로 읽기 (버그 방지를 위해 포인터 강제 초기화)
-        # 1. 파일에서 바이트 데이터를 안전하게 추출 (포인터 문제 완벽 차단)
-if hasattr(file_or_cam, 'read'):
-file_or_cam.seek(0)
-raw_bytes = file_or_cam.read()
+        if hasattr(file_or_cam, 'read'):
+            file_or_cam.seek(0)
+            raw_bytes = file_or_cam.read()
             if not raw_bytes or len(raw_bytes) < 8:
                 return None, "파일이 비어있거나 손상되었습니다."
             stream = io.BytesIO(raw_bytes)
         elif hasattr(file_or_cam, 'getvalue'):
             raw_bytes = file_or_cam.getvalue()
-else:
+            stream = io.BytesIO(raw_bytes)
+        else:
             stream = file_or_cam
             if hasattr(stream, 'getvalue'):
                 raw_bytes = stream.getvalue()
@@ -302,62 +300,19 @@ else:
                     return None, "파일이 불완전하게 저장되어 있습니다. 다시 저장 후 업로드해 보세요."
                 else:
                     return None, f"이미지를 열 수 없습니다: {str(e)}"
-            return None, "지원하지 않는 입력 형식입니다."
 
         if not raw_bytes or len(raw_bytes) < 8:
             return None, "파일이 비어있거나 손상되었습니다."
 
-        # 독립적인 바이트 스트림 생성
-        stream = io.BytesIO(raw_bytes)
-        
-        # 2. PIL ImageFile 설정: 잘린 이미지 강제 허용
-        from PIL import ImageFile
-        ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-        # 3. PIL을 이용해 가장 표준적인 방법으로 이미지 로드
-        try:
-            img = Image.open(stream)
-            img.load()  # 실제 데이터 메모리 적재 시도
-        except Exception as e:
-            return None, f"이미지를 해독할 수 없습니다. 형식이 잘못되었거나 심각하게 손상된 파일입니다: {str(e)}"
-
         # EXIF 회전 보정 (iPhone, Android 사진 대응)
-        # 4. EXIF 회전 보정 (실패하더라도 이미지가 날아가지 않도록 안전하게 처리)
-try:
-            img = ImageOps.exif_transpose(img)
-            # ImageOps.exif_transpose는 원본 객체를 변경하므로 실패 시 원본 유지가 중요함
+        try:
             transposed_img = ImageOps.exif_transpose(img)
             if transposed_img is not None:
                 img = transposed_img
-except Exception:
+        except Exception:
             pass
 
         # 색 공간 통합 변환 (모든 모드 → RGB)
-        if img.mode == 'RGBA':
-            background = Image.new('RGB', img.size, (255, 255, 255))
-            background.paste(img, mask=img.split()[3])
-            img = background
-        elif img.mode == 'CMYK':
-            img = img.convert('RGB')
-        elif img.mode == 'P':
-            img = img.convert('RGBA')
-            background = Image.new('RGB', img.size, (255, 255, 255))
-            background.paste(img, mask=img.split()[3])
-            img = background
-        elif img.mode == 'LA':
-            img = img.convert('RGBA')
-            background = Image.new('RGB', img.size, (255, 255, 255))
-            background.paste(img, mask=img.split()[3])
-            img = background
-        elif img.mode == 'L':
-            img = img.convert('RGB')
-        elif img.mode != 'RGB':
-            img = img.convert('RGB')
-
-        # 최소 크기 검사
-            pass # EXIF 정보가 없거나 오류가 나면 무시하고 원본 img 객체 그대로 사용
-
-        # 5. 색 공간 통합 변환 (모든 모드 → RGB)
         try:
             if img.mode == 'RGBA':
                 background = Image.new('RGB', img.size, (255, 255, 255))
@@ -375,161 +330,161 @@ except Exception:
         except Exception as e:
              return None, f"이미지 색상 변환 중 오류가 발생했습니다: {str(e)}"
 
-        # 6. 최소/최대 크기 검사 및 조정
-w, h = img.size
-if w < 50 or h < 50:
-return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
+        # 최소/최대 크기 검사 및 조정
+        w, h = img.size
+        if w < 50 or h < 50:
+            return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
 
         # 최대 크기 제한 (메모리 절약)
-max_size = 1200
-if max(w, h) > max_size:
-if w > h:
-new_w, new_h = max_size, int(h * (max_size / w))
-else:
-new_h, new_w = max_size, int(w * (max_size / h))
-img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        max_size = 1200
+        if max(w, h) > max_size:
+            if w > h:
+                new_w, new_h = max_size, int(h * (max_size / w))
+            else:
+                new_h, new_w = max_size, int(w * (max_size / h))
+            img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
 
-return img, None
+        return img, None
 
-except MemoryError:
-return None, "이미지 파일이 너무 큽니다. 더 작은 파일을 업로드해 주세요."
-except Exception as e:
-return None, f"알 수 없는 오류가 발생했습니다: {str(e)}"
+    except MemoryError:
+        return None, "이미지 파일이 너무 큽니다. 더 작은 파일을 업로드해 주세요."
+    except Exception as e:
+        return None, f"알 수 없는 오류가 발생했습니다: {str(e)}"
 
 # ---------------------------------------------------------
 # 5. 이미지 분석 코어
 # ---------------------------------------------------------
 
 def get_realtime_translation(eng_word):
-if eng_word in st.session_state.translated_cache:
-return st.session_state.translated_cache[eng_word]
-try:
-translated = GoogleTranslator(source='en', target='ko').translate(eng_word)
-st.session_state.translated_cache[eng_word] = translated
-return translated
-except Exception:
-return "번역 오류"
+    if eng_word in st.session_state.translated_cache:
+        return st.session_state.translated_cache[eng_word]
+    try:
+        translated = GoogleTranslator(source='en', target='ko').translate(eng_word)
+        st.session_state.translated_cache[eng_word] = translated
+        return translated
+    except Exception:
+        return "번역 오류"
 
 def process_image(image, is_demo_mode, progress_bar=None, status_text=None):
-def update_progress(val, text):
-if progress_bar: progress_bar.progress(val)
-if status_text: status_text.markdown(f"<div class='progress-label'>{text} — {val}%</div>", unsafe_allow_html=True)
+    def update_progress(val, text):
+        if progress_bar: progress_bar.progress(val)
+        if status_text: status_text.markdown(f"<div class='progress-label'>{text} — {val}%</div>", unsafe_allow_html=True)
 
-update_progress(10, "이미지 분석 준비 중")
+    update_progress(10, "이미지 분석 준비 중")
 
-img_cv = np.array(image)
-img_h, img_w, _ = img_cv.shape
+    img_cv = np.array(image)
+    img_h, img_w, _ = img_cv.shape
 
-dynamic_thickness = max(2, int(img_w * 0.005))
-dynamic_font_size = max(16, int(img_w * 0.025))
-dynamic_font = ImageFont.truetype(font_path, dynamic_font_size)
+    dynamic_thickness = max(2, int(img_w * 0.005))
+    dynamic_font_size = max(16, int(img_w * 0.025))
+    dynamic_font = ImageFont.truetype(font_path, dynamic_font_size)
 
-update_progress(30, "얼굴 영역 탐지 중")
+    update_progress(30, "얼굴 영역 탐지 중")
 
-gray_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2GRAY)
-faces = face_detection.detectMultiScale(
-gray_cv,
-scaleFactor=1.05,
-minNeighbors=3,
-minSize=(50, 50)
-)
+    gray_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2GRAY)
+    faces = face_detection.detectMultiScale(
+        gray_cv,
+        scaleFactor=1.05,
+        minNeighbors=3,
+        minSize=(50, 50)
+    )
 
-img_pil = Image.fromarray(img_cv)
-draw = ImageDraw.Draw(img_pil)
-detected_results = []
+    img_pil = Image.fromarray(img_cv)
+    draw = ImageDraw.Draw(img_pil)
+    detected_results = []
 
-update_progress(40, "AI 사전 매칭 중")
-text_features, target_labels = get_text_embeddings(is_demo_mode)
+    update_progress(40, "AI 사전 매칭 중")
+    text_features, target_labels = get_text_embeddings(is_demo_mode)
 
-total_faces = len(faces)
-for i, (x, y, w, h) in enumerate(faces):
-current_prog = 40 + int(50 * ((i + 1) / max(1, total_faces)))
-update_progress(current_prog, f"AI가 시각적 특징에서 단어를 추론 중 ({i+1}/{total_faces})")
+    total_faces = len(faces)
+    for i, (x, y, w, h) in enumerate(faces):
+        current_prog = 40 + int(50 * ((i + 1) / max(1, total_faces)))
+        update_progress(current_prog, f"AI가 시각적 특징에서 단어를 추론 중 ({i+1}/{total_faces})")
 
-x, y = max(0, x), max(0, y)
-face_img = img_cv[y:y+h, x:x+w]
-if face_img.size == 0: continue
+        x, y = max(0, x), max(0, y)
+        face_img = img_cv[y:y+h, x:x+w]
+        if face_img.size == 0: continue
 
-face_pil = Image.fromarray(face_img)
-inputs = processor(images=face_pil, return_tensors="pt")
+        face_pil = Image.fromarray(face_img)
+        inputs = processor(images=face_pil, return_tensors="pt")
 
-with torch.no_grad():
-image_outputs = model.get_image_features(**inputs)
+        with torch.no_grad():
+            image_outputs = model.get_image_features(**inputs)
 
-if hasattr(image_outputs, "pooler_output"):
-image_features = image_outputs.pooler_output
-if image_features.shape[-1] != 512 and hasattr(model, "visual_projection"):
-image_features = model.visual_projection(image_features)
-elif isinstance(image_outputs, torch.Tensor):
-image_features = image_outputs
-else:
-image_features = image_outputs[0]
+        if hasattr(image_outputs, "pooler_output"):
+            image_features = image_outputs.pooler_output
+            if image_features.shape[-1] != 512 and hasattr(model, "visual_projection"):
+                image_features = model.visual_projection(image_features)
+        elif isinstance(image_outputs, torch.Tensor):
+            image_features = image_outputs
+        else:
+            image_features = image_outputs[0]
 
-image_features = F.normalize(image_features, p=2, dim=-1)
-similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+        image_features = F.normalize(image_features, p=2, dim=-1)
+        similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
 
-top_k = min(3, similarity.shape[1])
-top_indices = torch.topk(similarity, top_k).indices[0].tolist()
+        top_k = min(3, similarity.shape[1])
+        top_indices = torch.topk(similarity, top_k).indices[0].tolist()
 
-display_texts = []
-is_face_unsafe = False
-person_results = []
+        display_texts = []
+        is_face_unsafe = False
+        person_results = []
 
-for idx in top_indices:
-label_data = target_labels[idx]
-eng_word = label_data["word"]
-kor_word = label_data["kor_word"]
-kor_def = label_data["def"]
-is_unsafe = label_data["is_unsafe"]
+        for idx in top_indices:
+            label_data = target_labels[idx]
+            eng_word = label_data["word"]
+            kor_word = label_data["kor_word"]
+            kor_def = label_data["def"]
+            is_unsafe = label_data["is_unsafe"]
 
-# chink 단어의 한국어 의미 강제 변경
-if eng_word.lower() == "chink":
-kor_word = "눈 찢어진 동양인"
+            # chink 단어의 한국어 의미 강제 변경
+            if eng_word.lower() == "chink":
+                kor_word = "눈 찢어진 동양인"
 
-if is_unsafe:
-is_face_unsafe = True
+            if is_unsafe:
+                is_face_unsafe = True
 
-if not is_unsafe and not kor_word:
-kor_word = get_realtime_translation(eng_word)
+            if not is_unsafe and not kor_word:
+                kor_word = get_realtime_translation(eng_word)
 
-display_box_text = f"{eng_word}({kor_word})" if kor_word else eng_word
-display_texts.append(display_box_text)
+            display_box_text = f"{eng_word}({kor_word})" if kor_word else eng_word
+            display_texts.append(display_box_text)
 
-if is_unsafe:
-detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}" if kor_def else f"🚨 {eng_word}({kor_word})"
-res_dict = {"text": detail_text, "type": "unsafe"}
-else:
-detail_text = f"✅ {eng_word}({kor_word})" if kor_word else eng_word
-res_dict = {"text": detail_text, "type": "safe"}
+            if is_unsafe:
+                detail_text = f"🚨 {eng_word}({kor_word}) : {kor_def}" if kor_def else f"🚨 {eng_word}({kor_word})"
+                res_dict = {"text": detail_text, "type": "unsafe"}
+            else:
+                detail_text = f"✅ {eng_word}({kor_word})" if kor_word else eng_word
+                res_dict = {"text": detail_text, "type": "safe"}
 
-person_results.append(res_dict)
+            person_results.append(res_dict)
 
-detected_results.append({"person": i + 1, "labels": person_results})
+        detected_results.append({"person": i + 1, "labels": person_results})
 
-box_color = (255, 0, 0) if is_face_unsafe else (0, 200, 80)
-display_box_text_combined = f"[인물 {i+1}]\n" + "\n".join(display_texts)
+        box_color = (255, 0, 0) if is_face_unsafe else (0, 200, 80)
+        display_box_text_combined = f"[인물 {i+1}]\n" + "\n".join(display_texts)
 
-draw.rectangle([(x, y), (x+w, y+h)], outline=box_color, width=dynamic_thickness)
-bbox = draw.multiline_textbbox((x, y), display_box_text_combined, font=dynamic_font)
-text_w = bbox[2] - bbox[0]
-text_h = bbox[3] - bbox[1]
-draw.rectangle(
-[(x, y - text_h - int(dynamic_thickness*3)), (x + text_w + int(dynamic_thickness*2), y)],
-fill=box_color
-)
-draw.multiline_text(
-(x + 2, y - text_h - int(dynamic_thickness*2)),
-display_box_text_combined,
-font=dynamic_font,
-fill=(0, 0, 0) if box_color == (0, 200, 80) else (255, 255, 255)
-)
+        draw.rectangle([(x, y), (x+w, y+h)], outline=box_color, width=dynamic_thickness)
+        bbox = draw.multiline_textbbox((x, y), display_box_text_combined, font=dynamic_font)
+        text_w = bbox[2] - bbox[0]
+        text_h = bbox[3] - bbox[1]
+        draw.rectangle(
+            [(x, y - text_h - int(dynamic_thickness*3)), (x + text_w + int(dynamic_thickness*2), y)],
+            fill=box_color
+        )
+        draw.multiline_text(
+            (x + 2, y - text_h - int(dynamic_thickness*2)),
+            display_box_text_combined,
+            font=dynamic_font,
+            fill=(0, 0, 0) if box_color == (0, 200, 80) else (255, 255, 255)
+        )
 
-update_progress(100, "분석 완료")
-time.sleep(0.4)
-return img_pil, detected_results
+    update_progress(100, "분석 완료")
+    time.sleep(0.4)
+    return img_pil, detected_results
 
 # ---------------------------------------------------------
-# 6. Stream디오 화면 UI
+# 6. Streamlit 화면 UI
 # ---------------------------------------------------------
 
 st.markdown("<div class='eyebrow'>ImageNet 2011 학습 데이터 기반</div>", unsafe_allow_html=True)
@@ -542,109 +497,109 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if os.path.exists("img.jpg"):
-st.image("img.jpg", use_container_width=True)
+    st.image("img.jpg", use_container_width=True)
 
 st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
 demo_mode = st.session_state.get("demo_mode_toggle", False)
 
 option = st.radio(
-"이미지 입력 방식을 선택하세요:",
-("웹캠 캡처", "사진 업로드"),
-horizontal=True
+    "이미지 입력 방식을 선택하세요:",
+    ("웹캠 캡처", "사진 업로드"),
+    horizontal=True
 )
 
 image_to_process = None
 upload_error = None
 
 if option == "웹캠 캡처":
-camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
-if camera_image is not None:
-image_to_process, upload_error = load_and_prep_image(camera_image)
+    camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
+    if camera_image is not None:
+        image_to_process, upload_error = load_and_prep_image(camera_image)
 
 elif option == "사진 업로드":
-uploaded_file = st.file_uploader(
-"얼굴이 나온 사진을 업로드하세요.",
-help="대부분의 이미지 형식(JPG, PNG, WebP, HEIC 호환 등)을 지원합니다."
-)
-if uploaded_file is not None:
-image_to_process, upload_error = load_and_prep_image(uploaded_file)
+    uploaded_file = st.file_uploader(
+        "얼굴이 나온 사진을 업로드하세요.",
+        help="대부분의 이미지 형식(JPG, PNG, WebP, HEIC 호환 등)을 지원합니다."
+    )
+    if uploaded_file is not None:
+        image_to_process, upload_error = load_and_prep_image(uploaded_file)
 
 if upload_error:
-st.markdown(f"""
-   <div class='upload-error'>
-       ⚠️ <b>이미지를 불러올 수 없습니다</b><br>
-       {upload_error}<br><br>
-       <span style='font-size:0.82rem; color:#888;'>
-       iPhone 사용자: 설정 → 카메라 → 포맷 → 가장 호환성 높은 포맷으로 변경 후 촬영하면 시스템 오류가 해결됩니다.
-       </span>
-   </div>
-   """, unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='upload-error'>
+        ⚠️ <b>이미지를 불러올 수 없습니다</b><br>
+        {upload_error}<br><br>
+        <span style='font-size:0.82rem; color:#888;'>
+        iPhone 사용자: 설정 → 카메라 → 포맷 → 가장 호환성 높은 포맷으로 변경 후 촬영하면 시스템 오류가 해결됩니다.
+        </span>
+    </div>
+    """, unsafe_allow_html=True)
 
 if image_to_process is not None:
-status_text = st.empty()
-progress_bar = st.progress(0)
+    status_text = st.empty()
+    progress_bar = st.progress(0)
 
-processed_image, results = process_image(
-image_to_process,
-is_demo_mode=demo_mode,
-progress_bar=progress_bar,
-status_text=status_text
-)
+    processed_image, results = process_image(
+        image_to_process,
+        is_demo_mode=demo_mode,
+        progress_bar=progress_bar,
+        status_text=status_text
+    )
 
-status_text.empty()
-progress_bar.empty()
+    status_text.empty()
+    progress_bar.empty()
 
-col_img1, col_img2, col_img3 = st.columns([1, 4, 1])
-with col_img2:
-st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
+    col_img1, col_img2, col_img3 = st.columns([1, 4, 1])
+    with col_img2:
+        st.image(processed_image, caption="AI 라벨링 결과", use_container_width=True)
 
-if results:
-for person_data in results:
-st.markdown(f"<div class='person-header'>👤 인물 {person_data['person']}</div>", unsafe_allow_html=True)
-for res in person_data['labels']:
-if res["type"] == "unsafe":
-st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
-else:
-st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
+    if results:
+        for person_data in results:
+            st.markdown(f"<div class='person-header'>👤 인물 {person_data['person']}</div>", unsafe_allow_html=True)
+            for res in person_data['labels']:
+                if res["type"] == "unsafe":
+                    st.markdown(f"<div class='result-box unsafe-box'>{res['text']}</div>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<div class='result-box safe-box'>{res['text']}</div>", unsafe_allow_html=True)
 
-st.markdown("""
-       <div class='legend-box'>
-           🚨 이미지넷이 공식적으로 판단한 노골적인 혐오/차별 단어 &nbsp;·&nbsp;
-           ✅ 현재까지 이미지넷 분류 체계에 남아있는 인물 규정 단어
-       </div>
-       """, unsafe_allow_html=True)
-else:
-st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
+        st.markdown("""
+        <div class='legend-box'>
+            🚨 이미지넷이 공식적으로 판단한 노골적인 혐오/차별 단어 &nbsp;·&nbsp;
+            ✅ 현재까지 이미지넷 분류 체계에 남아있는 인물 규정 단어
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
 
-if not st.session_state.history or st.session_state.history[-1]["results"] != results:
-st.session_state.history.append({
-"image": processed_image,
-"results": results
-})
+    if not st.session_state.history or st.session_state.history[-1]["results"] != results:
+        st.session_state.history.append({
+            "image": processed_image,
+            "results": results
+        })
 
 # ---------------------------------------------------------
 # 7. 하단 UI: 과거 기록 → 단어 리스트 → 체험 스위치 → 논란 설명
 # ---------------------------------------------------------
 
 if st.session_state.history:
-st.markdown("<br><hr class='divider'>", unsafe_allow_html=True)
-st.subheader("과거 분석 기록")
+    st.markdown("<br><hr class='divider'>", unsafe_allow_html=True)
+    st.subheader("과거 분석 기록")
 
-cols = st.columns(4)
-for idx, item in enumerate(reversed(st.session_state.history)):
-col = cols[idx % 4]
-with col:
-st.image(item["image"], use_container_width=True)
-if item["results"]:
-for person_data in item["results"]:
-st.markdown(f"<div class='history-text' style='color:#444; font-weight:600; margin-top:6px;'>[인물 {person_data['person']}]</div>", unsafe_allow_html=True)
-for res in person_data['labels']:
-short_text = res["text"].split(" : ")[0]
-color = "#c0392b" if res["type"] == "unsafe" else "#2e7d45"
-st.markdown(f"<div class='history-text' style='color:{color};'>{short_text}</div>", unsafe_allow_html=True)
-else:
-st.markdown("<div class='history-text' style='color:#aaa;'>미인식</div>", unsafe_allow_html=True)
+    cols = st.columns(4)
+    for idx, item in enumerate(reversed(st.session_state.history)):
+        col = cols[idx % 4]
+        with col:
+            st.image(item["image"], use_container_width=True)
+            if item["results"]:
+                for person_data in item["results"]:
+                    st.markdown(f"<div class='history-text' style='color:#444; font-weight:600; margin-top:6px;'>[인물 {person_data['person']}]</div>", unsafe_allow_html=True)
+                    for res in person_data['labels']:
+                        short_text = res["text"].split(" : ")[0]
+                        color = "#c0392b" if res["type"] == "unsafe" else "#2e7d45"
+                        st.markdown(f"<div class='history-text' style='color:{color};'>{short_text}</div>", unsafe_allow_html=True)
+            else:
+                st.markdown("<div class='history-text' style='color:#aaa;'>미인식</div>", unsafe_allow_html=True)
 
 unsafe_items = [item for item in BIAS_LABELS if item["is_unsafe"]]
 
@@ -662,15 +617,15 @@ st.caption("AI의 얼굴인식 학습 분류에 사용된 실제 혐오/편견 �
 unsafe_html = "<div class='word-list-container'><ul style='list-style-type:none; padding-left:0; margin:0;'>"
 # 필터링된 리스트로 출력
 for item in filtered_unsafe_items:
-word = item["word"]
-kor_word = item["kor_word"]
+    word = item["word"]
+    kor_word = item["kor_word"]
 
-# chink 단어의 한국어 의미 강제 변경
-if word.lower() == "chink":
-kor_word = "눈 찢어진 동양인"
+    # chink 단어의 한국어 의미 강제 변경
+    if word.lower() == "chink":
+        kor_word = "눈 찢어진 동양인"
 
-kor_def = item["def"]
-unsafe_html += f"<li style='color:#c0392b; margin-bottom:6px; font-size:0.82em;'>⚠ <b>{word}({kor_word})</b> : {kor_def}</li>"
+    kor_def = item["def"]
+    unsafe_html += f"<li style='color:#c0392b; margin-bottom:6px; font-size:0.82em;'>⚠ <b>{word}({kor_word})</b> : {kor_def}</li>"
 unsafe_html += "</ul></div>"
 st.markdown(unsafe_html, unsafe_allow_html=True)
 
@@ -681,10 +636,10 @@ st.markdown("<h4 style='text-align:center; margin-bottom:1rem;'>⚙ 체험 모�
 # st.columns를 사용하여 토글을 완벽하게 가운데 정렬
 col_dummy1, col_toggle, col_dummy2 = st.columns([1, 2, 1])
 with col_toggle:
-st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
+    st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
 
 if st.session_state.get("demo_mode_toggle", False):
-st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
+    st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
 
 st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
