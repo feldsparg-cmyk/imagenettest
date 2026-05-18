@@ -1,5 +1,5 @@
 import streamlit as st
-import streamlit.components.v1 as components # [추가] 자바스크립트 강제 실행을 위한 모듈
+import streamlit.components.v1 as components
 import cv2
 import numpy as np
 import torch
@@ -23,19 +23,18 @@ import io
 
 st.set_page_config(page_title="AI 얼굴 인식 라벨링 테스트", layout="centered")
 
-# [추가] 카카오톡 인앱 브라우저 감지 시 외부 브라우저(크롬, 사파리 등)로 강제 이동 로직
-# 카카오톡 내부 브라우저는 카메라 권한 및 파일 업로드 버그가 많아 외부로 우회해야 합니다.
+# [수정] 카카오톡 인앱 브라우저 강제 이탈 스크립트 (CORS 우회 및 최상단 배치로 카메라 중복 로딩 차단)
 components.html(
     """
     <script>
     var ua = navigator.userAgent.toLowerCase();
     if (ua.indexOf("kakaotalk") > -1) {
-        var url = window.location.href;
-        try {
-            // iframe 내부에서 실행될 경우 부모 창의 URL을 가져옴
-            url = window.top.location.href;
-        } catch(e) {}
-        // 카카오톡 전용 외부 브라우저 호출 스킴 실행
+        // Streamlit의 iframe 보안 정책을 우회하여 원본 접속 주소 가져오기
+        var url = document.referrer;
+        if (!url) {
+            url = window.location.href;
+        }
+        // 기기의 기본 브라우저(크롬, 사파리 등)로 즉시 화면 강제 전환
         window.top.location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url);
     }
     </script>
@@ -55,7 +54,9 @@ html, body, [class*="css"] {
     overflow-wrap: break-word; 
 }
 
-.main { background-color: #f8f7f4; }
+/* [수정] 전체 배경색을 완전한 하얀색(#ffffff)으로 변경 */
+.main { background-color: #ffffff; }
+.stApp { background-color: #ffffff; }
 .block-container { padding-top: 2.5rem; padding-bottom: 3rem; max-width: 780px; }
 
 /* 상단 태그 */
@@ -276,7 +277,6 @@ def load_and_prep_image(file_or_cam):
     img = None
     
     try:
-        # 1. 파일에서 바이트 데이터를 안전하게 추출 (포인터 문제 완벽 차단)
         if hasattr(file_or_cam, 'read'):
             file_or_cam.seek(0)
             raw_bytes = file_or_cam.read()
@@ -288,21 +288,17 @@ def load_and_prep_image(file_or_cam):
         if not raw_bytes or len(raw_bytes) < 8:
             return None, "파일이 비어있거나 손상되었습니다."
 
-        # 독립적인 바이트 스트림 생성
         stream = io.BytesIO(raw_bytes)
         
-        # 2. PIL ImageFile 설정: 잘린 이미지 강제 허용
         from PIL import ImageFile
         ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-        # 3. PIL을 이용해 가장 표준적인 방법으로 이미지 로드
         try:
             img = Image.open(stream)
-            img.load()  # 실제 데이터 메모리 적재 시도
+            img.load()  
         except Exception as e:
             return None, f"이미지를 해독할 수 없습니다. 형식이 잘못되었거나 심각하게 손상된 파일입니다: {str(e)}"
 
-        # 4. EXIF 회전 보정 (실패하더라도 이미지가 날아가지 않도록 안전하게 처리)
         try:
             transposed_img = ImageOps.exif_transpose(img)
             if transposed_img is not None:
@@ -310,7 +306,6 @@ def load_and_prep_image(file_or_cam):
         except Exception:
             pass 
 
-        # 5. 색 공간 통합 변환 (모든 모드 → RGB)
         try:
             if img.mode == 'RGBA':
                 background = Image.new('RGB', img.size, (255, 255, 255))
@@ -328,7 +323,6 @@ def load_and_prep_image(file_or_cam):
         except Exception as e:
              return None, f"이미지 색상 변환 중 오류가 발생했습니다: {str(e)}"
 
-        # 6. 최소/최대 크기 검사 및 조정
         w, h = img.size
         if w < 50 or h < 50:
             return None, f"이미지가 너무 작습니다 ({w}×{h}px). 더 큰 이미지를 업로드해 주세요."
@@ -510,7 +504,8 @@ image_to_process = None
 upload_error = None
 
 if option == "웹캠 캡처":
-    camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.")
+    # [수정] 컴포넌트 재렌더링 시 카메라 권한 중복 요청 방지를 위해 고유 키(key) 할당
+    camera_image = st.camera_input("웹캠을 연결하고 사진을 찍어보세요.", key="main_camera_input")
     if camera_image is not None:
         image_to_process, upload_error = load_and_prep_image(camera_image)
 
@@ -567,100 +562,4 @@ if image_to_process is not None:
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.info("얼굴이 명확하게 인식되지 않았습니다. 조명이 밝은 곳에서 정면을 응시해 주세요.")
-
-    if not st.session_state.history or st.session_state.history[-1]["results"] != results:
-        st.session_state.history.append({
-            "image": processed_image,
-            "results": results
-        })
-
-# ---------------------------------------------------------
-# 7. 하단 UI: 과거 기록 → 단어 리스트 → 체험 스위치 → 논란 설명
-# ---------------------------------------------------------
-
-if st.session_state.history:
-    st.markdown("<br><hr class='divider'>", unsafe_allow_html=True)
-    st.subheader("과거 분석 기록")
-
-    cols = st.columns(4)
-    for idx, item in enumerate(reversed(st.session_state.history)):
-        col = cols[idx % 4]
-        with col:
-            st.image(item["image"], use_container_width=True)
-            if item["results"]:
-                for person_data in item["results"]:
-                    st.markdown(f"<div class='history-text' style='color:#444; font-weight:600; margin-top:6px;'>[인물 {person_data['person']}]</div>", unsafe_allow_html=True)
-                    for res in person_data['labels']:
-                        short_text = res["text"].split(" : ")[0]
-                        color = "#c0392b" if res["type"] == "unsafe" else "#2e7d45"
-                        st.markdown(f"<div class='history-text' style='color:{color};'>{short_text}</div>", unsafe_allow_html=True)
-            else:
-                st.markdown("<div class='history-text' style='color:#aaa;'>미인식</div>", unsafe_allow_html=True)
-
-unsafe_items = [item for item in BIAS_LABELS if item["is_unsafe"]]
-
-# 단어 리스트 ABC 오름차순 정렬
-unsafe_items = sorted(unsafe_items, key=lambda x: x["word"].lower())
-
-# 리스트에서 'abbe', 'abbess' 제거 로직
-filtered_unsafe_items = [item for item in unsafe_items if item["word"].lower() not in ["abbe", "abbess"]]
-
-st.markdown("<br>", unsafe_allow_html=True)
-# 개수는 하드코딩으로 총 1,593개 유지
-st.subheader(f"🚨 문제적 편견/혐오 단어 리스트 (총 1,593개)")
-st.caption("AI의 얼굴인식 학습 분류에 사용된 실제 혐오/편견 단어들입니다.")
-
-unsafe_html = "<div class='word-list-container'><ul style='list-style-type:none; padding-left:0; margin:0;'>"
-# 필터링된 리스트로 출력
-for item in filtered_unsafe_items:
-    word = item["word"]
-    kor_word = item["kor_word"]
-    
-    # chink 단어의 한국어 의미 강제 변경
-    if word.lower() == "chink":
-        kor_word = "눈 찢어진 동양인"
-        
-    kor_def = item["def"]
-    unsafe_html += f"<li style='color:#c0392b; margin-bottom:6px; font-size:0.82em;'>⚠ <b>{word}({kor_word})</b> : {kor_def}</li>"
-unsafe_html += "</ul></div>"
-st.markdown(unsafe_html, unsafe_allow_html=True)
-
-st.markdown("<hr class='divider'>", unsafe_allow_html=True)
-
-st.markdown("<h4 style='text-align:center; margin-bottom:1rem;'>⚙ 체험 모드 설정</h4>", unsafe_allow_html=True)
-
-# st.columns를 사용하여 토글을 완벽하게 가운데 정렬
-col_dummy1, col_toggle, col_dummy2 = st.columns([1, 2, 1])
-with col_toggle:
-    st.toggle("🚨 극단적 편향 모드 켜기(부정적/편견단어만\u00A0매칭)", key="demo_mode_toggle")
-
-if st.session_state.get("demo_mode_toggle", False):
-    st.error("⚠️ 이 모드에서는 편향성을 학습한 AI를 보여주기 위해 대상의 특징을 혐오 단어로만 표시합니다.", icon="🚨")
-
-st.markdown("<hr class='divider'>", unsafe_allow_html=True)
-
-st.subheader("LG 구겐하임 어워드 수상자 트레버 페글렌, AI의 보이지 않는 구조에 질문을 던지다")
-st.markdown("""
-<div class='article-text'>
-<b>인공지능(AI)이 당신의 외모를 분석해 한 단어로 규정한다면 어떨까.</b>
-<br><br>
-피부색과 성별, 옷차림만으로 당신은 범죄자, 알코올 중독자라는 낙인이 붙을 수도 있다. 트레버 페글렌은 2019년 관객 참여형 프로젝트 '이미지넷 룰렛(ImageNet Roulette)'을 진행하며 AI가 인간을 분류하는 방식에 내재된 편견을 가감 없이 드러냈다.
-<br><br>
-이미지넷이란 세계 최대 규모의 이미지 데이터베이스로 1,400만개 이상의 이미지와 2만개가 넘는 카테고리 분류를 두고 있다. 지금도 전 세계 개발자들이 이미지넷을 인공지능의 훈련장으로 쓰며 이미지 학습과 얼굴 인식 AI의 기반으로 활용하고 단어로 규정한다면 어떨까.
-<br><br>
-<b>미디어 아티스트 트레버 페글렌(Trevor Paglen, 미국, 1974년생)</b>은 이미지넷의 판단 알고리즘을 그대로 가져와 사람들이 직접 자신의 셀카를 업로드하면, 인공지능이 어떻게 사람을 분류하는지를 실시간으로 보여줬다. 흑인 남성은 범죄자, 용의자로 분류되고, 안경 쓴 사람은 괴짜, 공부벌레 같은 라벨이 붙는 식이다. 그는 오염된 학습 데이터 속 AI가 내리는 판단에 인간이 가진 편견과 인종 차별이 녹아들어가 있음을 경고했다.
-<br><br>
-소셜 미디어를 통해 확산되며 논란이 거세지자, 결국 이미지넷을 관리하던 연구팀은 <b>2019년 9월, 공식 사과와 함께 1,593개의 혐오·차별적 표현을 데이터베이스에서 전면 삭제</b>했다. 해당 카테고리에서만 60만장의 사진이 삭제되었고 분류 체계가 전면 수정되며 AI 업계에 변화를 이끌어 냈다.
-<br><br>
-<b>AI 등 기술의 시선에 질문을 던져온 트레버 페글렌이 'LG 구겐하임 어워드' 수상자로 선정된 것은 우연이 아니다.</b> LG 역시 기술이 단순히 효율성을 높이는 도구를 넘어 인간의 삶에 어떤 영감과 영향을 주는지를 고민해 왔기 때문이다.
-<br><br>
-LG가 추구하는 '책임 있는 AI' 철학은 기술의 윤리적 의미를 성찰하는 페글렌의 작품 세계와 연결된다.
-<br><br>
-LG는 전 세계 기업 중 유일하게 유네스코 AI 윤리 권고 이행 현황을 공개하고 2023년부터 매년 'AI 윤리 책무성 보고서'도 발간하며 매년 기술의 투명성과 책임성을 대외적으로 공표하고 있다.
-<br><br>
-자체 파운데이션 AI 모델 엑사원(EXAONE) 개발에도 AI 위험분류 체계를 적용해 검증하고 있다. LG AI연구원이 개발한 범용 AI 위험분류체계 한국판(KAUT, Korea-Augmented Universal Taxonomy)은 잠재적 위험을 ▲인류 보편적 가치 ▲사회 안전 ▲한국적 특수성 ▲미래 위험 등 4개 핵심 영역, 226개 세부 위험 항목으로 구성되어 있으며, 항목별 5가지 구체적 판별 기준이 있어 하나의 위반 사항만 발생해도 AI가 부적절한 응답을 했다고 분류한다.
-<br><br>
-LG 관계자는 <b>"트레버 페글렌의 작품에 투영된 질문들은 LG가 해왔던 고민과 같은 선상에 있다"며 "LG 역시 AI 역량을 강화해 나감에 있어 투명성, 책임성, 그리고 기술의 인간 중심적 활용이 진정한 혁신의 기반이라고 믿는다"고 말했다. 이어 "그의 수상을 축하하며, 인간의 신뢰를 받을 수 있는 AI 미래를 구축하겠다는 LG의 의지를 다시 한번 다지는 계기가 될 것"</b>이라고 말했다.
-</div>
-""", unsafe_allow_html=True)
+        st.info
